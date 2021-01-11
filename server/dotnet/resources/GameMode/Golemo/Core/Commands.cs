@@ -4655,19 +4655,33 @@ namespace Golemo.Core
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Денежная ценность должна быть выше 0", 3000);
                     return;
                 }
+                if (Main.Players[player].Money < money)
+                {
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "У вас недостаточно средств", 3000);
+                    return;
+                }
 
 
                 // Send request for a game
                 Player target = Main.GetPlayerByID(id);
                 target.SetData("DICE_PLAYER", player);
                 target.SetData("DICE_VALUE", money);
-                Trigger.ClientEvent(target, "openDialog", "DICE", $"Шпилер ({player.Value}) хочет сыграть с вами в бросок костей на {money}$. Вы принимаете?");
+                if (player.Position.DistanceTo(target.Position) > 2)
+                {
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы слишком далеко от игрока", 3000);
+                    return;
+                }
+                if (Main.Players[target].Money < money)
+                {
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "У оппонента недостаточно средств", 3000);
+                    return;
+                }
+                Trigger.ClientEvent(target, "openDialog", "DICE", $"Игрок {player.Name}({player.Value}) хочет сыграть с вами в бросок костей на {money}$. Вы принимаете?");
 
-                Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Игровой запрос на кости был отправлен на ({target.Value}) за ${money}$.", 3000);
+                Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Игровой запрос на кости был отправлен на ({target.Value}) за {money}$.", 3000);
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
         }
-        #region Roll command handler
         public static int acceptDiceGame(Player playerTwo)
         {
             try
@@ -4688,16 +4702,15 @@ namespace Golemo.Core
 
                 while (playerOneResult == playerTwoResult)
                 {
-                    Notify.Send(playerTwo, NotifyType.Warning, NotifyPosition.BottomCenter, $"Играем снова, потому что у вас тот же кубик ${playerTwoResult}, что и у противника", 3000);
-                    Notify.Send(originPlayer, NotifyType.Warning, NotifyPosition.BottomCenter, $"Играем снова, потому что у вас тот же кубик ${playerTwoResult}, что и у противника", 3000);
+                    Notify.Send(playerTwo, NotifyType.Warning, NotifyPosition.BottomCenter, $"Кидаем кости снова, потому что у вас тот же кубик {playerTwoResult}, что и у противника", 3000);
+                    Notify.Send(originPlayer, NotifyType.Warning, NotifyPosition.BottomCenter, $"Кидаем кости снова, потому что у вас тот же кубик {playerTwoResult}, что и у противника", 3000);
 
                     playerOneResult = new Random().Next(1, 6);
                     playerTwoResult = new Random().Next(1, 6);
                 }
 
-
-                Notify.Send(originPlayer, NotifyType.Info, NotifyPosition.BottomCenter, $"У вас ${playerOneResult}, а у вашего оппонента ${playerTwoResult}", 3000);
-                Notify.Send(playerTwo, NotifyType.Info, NotifyPosition.BottomCenter, $"У вас ${playerOneResult}, а у вашего оппонента ${playerTwoResult}", 3000);
+                playerTwo.SendChatMessage("!{#BF11B7}" + $"{playerTwo.Name}" + " на кубике выпало число: " + "!{#277C6B}" + $"{playerTwoResult}");
+                originPlayer.SendChatMessage("!{#BF11B7}" + $"{originPlayer.Name}" + " на кубике выпало число: " + "!{#277C6B}" + $"{playerOneResult}");
 
                 if (playerOneResult > playerTwoResult)
                 {
@@ -4728,6 +4741,5 @@ namespace Golemo.Core
             playerTwo.ResetData("DICE_PLAYER");
             playerTwo.ResetData("DICE_VALUE");
         }
-        #endregion Roll command handler
     }
 }

@@ -2390,6 +2390,9 @@ namespace Golemo
                         case "TICKET":
                             Fractions.FractionCommands.ticketConfirm(player, true);
                             return;
+                        case "DICE":
+                            Commands.acceptDiceGame(player);
+                            return;
                     }
                 }
                 else
@@ -2425,6 +2428,9 @@ namespace Golemo
                             return;
                         case "TICKET":
                             Fractions.FractionCommands.ticketConfirm(player, false);
+                            return;
+                        case "DICE":
+                            Commands.rejectDiceGame(player);
                             return;
                     }
                 }
