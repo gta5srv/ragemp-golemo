@@ -1,4 +1,4 @@
-﻿global.board = mp.browsers.new('package://cef/board.html');
+﻿global.board = mp.browsers.new('package://browser/board.html');
 global.openOutType = -1;
 
 mp.keys.bind(Keys.VK_I, false, function () {
@@ -82,7 +82,7 @@ function closeBoard() {
 var last
 mp.events.add('board', (act, data, index) => {
     if (board === null)
-        global.board = mp.browsers.new('package://cef/board.html');
+        global.board = mp.browsers.new('package://browser/board.html');
     //mp.gui.chat.push(`act: ${act} | data: ${data}`);
 
 	switch(act){

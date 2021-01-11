@@ -6,7 +6,7 @@ mp.keys.bind(0x77, false, function () {
 
 mp.events.add("openAdminPanel", (json, json2) => {
   if (!loggedin || chatActive || editing || cuffed) return;
-  global.adminPanel = mp.browsers.new('package://cef/AdminPanel/index.html');
+  global.adminPanel = mp.browsers.new('package://browser/AdminPanel/index.html');
   global.menuOpen();
   global.adminPanel.active = true;
   setTimeout(function() {

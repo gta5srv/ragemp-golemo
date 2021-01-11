@@ -1,9 +1,10 @@
 {
 	"maxplayers" : 100,
-	"name" : "RAGEMP.PRO (redage_v2)", 
-	"gamemode" : "freeroam", 
+	"name" : "[JJI] Golemo-Mode", 
+	"gamemode" : "roleplay", 
+	"language" : "ru",
 	"stream-distance" : 500.0,
-	"announce" : false,
+	"announce" : true,
 	"csharp" : "enabled",
 	"port": 22005,
 	"voice-chat": true,

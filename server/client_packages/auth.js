@@ -3,8 +3,8 @@ cam.pointAtCoord(-95, 19, 0);
 cam.setActive(true);
 mp.game.cam.renderScriptCams(true, false, 0, true, false);
 
-var respawn = mp.browsers["new"]('package://cef/respawn.html');
-var auth = mp.browsers["new"]('package://cef/auth.html');
+var respawn = mp.browsers["new"]('package://browser/respawn.html');
+var auth = mp.browsers["new"]('package://browser/auth.html');
 auth.execute(`slots.server=${serverid};`);
 mp.gui.cursor.visible = true;
 
@@ -219,8 +219,8 @@ mp.events.add('ready', function () {
     mp.events.call('hideTun');
     mp.game.player.setHealthRechargeMultiplier(0);
 
-    global.menu = mp.browsers["new"]('package://cef/menu.html');
-    global.helpmenu = mp.browsers["new"]('package://cef/help.html');
+    global.menu = mp.browsers["new"]('package://browser/menu.html');
+    global.helpmenu = mp.browsers["new"]('package://browser/help.html');
 
     if (respawn != null) {
         respawn.destroy();

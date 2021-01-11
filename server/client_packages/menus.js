@@ -1025,7 +1025,7 @@ let auto = {
     color: null,
     entity: null,
 }
-const cameraRotator = require("cef/js/vie.js");
+const cameraRotator = require("browser/js/vie.js");
 
 /*var vehCamPosition = new mp.Vector3(-42.3758, -1101.672, 26.42235);
 var vehCamRotation = new mp.Vector3(0, 0, 1.701622);
@@ -1311,7 +1311,7 @@ mp.events.add('openWCraft', (frac, json) => {
 })
 // CAM //
 global.camMenu = false;
-var camMenuCEF = mp.browsers.new('package://cef/cam.html');
+var camMenuCEF = mp.browsers.new('package://browser/cam.html');
 var camMenuValues = { Angle: 0, Dist: 1, Height: 0 };
 
 mp.events.add('camMenu', (status) => {
@@ -1815,7 +1815,7 @@ mp.events.add('helpClose', () => {
     mp.gui.cursor.visible = false;
 })
 // Color picker //
-global.colorp = mp.browsers.new('package://cef/color.html');
+global.colorp = mp.browsers.new('package://browser/color.html');
 mp.events.add('showColorp', () => {
     global.colorp.execute(`show(${true})`);
 })
@@ -1842,7 +1842,7 @@ mp.events.add('scolor', (c) => {
 })
 
 // Report menu
-var report = mp.browsers.new('package://cef/ticket.html');
+var report = mp.browsers.new('package://browser/ticket.html');
 var reportactive = false;
 mp.events.add('addreport', (id_, author_, quest_) => {
     report.execute(`addReport(${id_},'${author_}','${quest_}', false, '')`);
@@ -1873,7 +1873,7 @@ var advertsactive = false;
 
 mp.events.add('enableadvert', (toggle) => {
 	try {
-		if(toggle) adverts = mp.browsers.new('package://cef/adverts.html');
+		if(toggle) adverts = mp.browsers.new('package://browser/adverts.html');
 		advertsloaded = toggle;
 	} catch(e) {
 	}

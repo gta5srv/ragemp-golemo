@@ -2,7 +2,7 @@
 var phoneWindow = null;
 var phoneOppened = false;
 mp.events.add('initPhone', () => {
-    phone = mp.browsers.new('package://cef/phone.html');
+    phone = mp.browsers.new('package://browser/phone.html');
 });
 // // //
 mp.events.add('phoneShow', () => {
