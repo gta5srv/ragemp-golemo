@@ -1,20 +1,19 @@
 const localPlayer = mp.players.local;
-global.realtorMenu = mp.browsers.new('package://browser/realtorHouses/index.html'); //2AC
 
 mp.events.add("openRealtorMenu", () => {
 	if(!global.loggedin) return;
 	global.menuOpen();
+	global.realtorMenu = mp.browsers.new('package://browser/RealtorManager/index.html');
 	global.realtorMenu.active = true;
-	setTimeout(function () { 
-		global.realtorMenu.execute(`realtorMenu.active=true`);
-	}, 250);
+	global.realtorMenu.execute(`realtorMenu.active=true`);
 });
 
 mp.events.add("closeRealtorMenu", () => {
-	setTimeout(function () { 
+	if(global.realtorMenu){
 		global.menuClose();
 		global.realtorMenu.active = false;
-	}, 100);
+		global.realtorMenu.destroy();
+	}
 });
 
 mp.events.add("LoadHouse", (houses) => {

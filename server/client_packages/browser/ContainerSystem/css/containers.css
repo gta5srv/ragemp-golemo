@@ -7,6 +7,10 @@
   user-select: none;
 }
 
+[v-cloak] {
+    display: none;
+}
+
 .container {
   position: absolute;
   top: 50%;

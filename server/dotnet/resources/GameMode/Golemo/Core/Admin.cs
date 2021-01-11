@@ -744,7 +744,7 @@ namespace Golemo.Core
         }
         public static void kickPlayerByName(Player player, string name)
         {
-            if (!Group.CanUseCmd(player, "nkick")) return;
+            if (!Group.CanUseCmd(player, "skick")) return;
             Player target = NAPI.Player.GetPlayerFromName(name);
             if (target == null) return;
             NAPI.Player.KickPlayer(target);
@@ -772,6 +772,18 @@ namespace Golemo.Core
             if (aItem == null)
                 nInventory.Add(player, new nItem(ItemType.BodyArmor, 1, ar.ToString()));
             GameLog.Admin($"{player.Name}", $"armorPlayer({ar})", $"{target.Name}");
+        }
+        public static void ToEatTarget(Player player, Player target, int eat)
+        {
+            if (!Group.CanUseCmd(player, "eat")) return;
+            EatManager.AddEat(target, eat);
+            GameLog.Admin($"{player.Name}", $"healPlayer({eat})", $"{target.Name}");
+        }
+        public static void ToWaterTarget(Player player, Player target, int water)
+        {
+            if (!Group.CanUseCmd(player, "water")) return;
+            EatManager.AddWater(target, water);
+            GameLog.Admin($"{player.Name}", $"healPlayer({water})", $"{target.Name}");
         }
         public static void checkGamemode(Player player, Player target)
         {

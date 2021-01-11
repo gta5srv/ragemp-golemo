@@ -1,4 +1,4 @@
-global.reportsPanel = mp.browsers.new('package://browser/AReports/index.html');
+global.reportsPanel = mp.browsers.new('package://browser/ReportPanel/index.html');
 global.reportsPanel.active = true;
 
 mp.keys.bind(0x23, false, function () {

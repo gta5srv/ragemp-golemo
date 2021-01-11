@@ -12,7 +12,7 @@
 <body style="background:">
 
     <div id="safezone">
-        <div class="inGameHud" v-if="show">
+        <div class="inGameHud" v-if="show" v-cloak>
 		
 			<div class="header_hud">
 				<div class="online"><img src="hud/user.png" class="user"><a class="onlinecount">{{online}}</a></div>
@@ -74,11 +74,11 @@
 			
 		</div>
             
-        <div id="chat" class="chat">
+        <div id="chat" class="chat" v-cloak>
             <ul id="chat_messages"></ul>
         </div>
         
-        <div id="prompt" v-if="text">
+        <div id="prompt" v-if="text" v-cloak>
             <div class="text" v-html="text"></div>
         </div>
         <div id="notify">

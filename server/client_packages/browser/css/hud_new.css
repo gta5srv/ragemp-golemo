@@ -11,6 +11,9 @@
 		.inGameHud {zoom: 100%}
 	}
 
+	[v-cloak] {
+		display: none;
+	}
 
 	body {
 		user-select: none;

@@ -155,6 +155,10 @@ namespace GolemoSDK
         Ygol = 216, // Угорь
         Amyr = 217, // Чёрный амур
         Chyka = 218, // Щука
+
+        //Farmer Jobs Items
+        Hay = 219,
+        Seed = 220,
     }
 
     public class nItem

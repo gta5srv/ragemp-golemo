@@ -112,9 +112,9 @@ namespace Golemo.Core
 
         #region AdminCommands
 
-        /*
-        [Command("sh1")]
-        public static void CMD_sheriffAccept(Player player, int id)
+        #region Add-Ons
+        [Command("eat")] //Добавляет еду игроку
+        public static void CMD_adminEat(Player player, int id, int eat)
         {
             try
             {
@@ -123,11 +123,25 @@ namespace Golemo.Core
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок с таким ID не найден", 3000);
                     return;
                 }
-                Fractions.Sheriff.acceptCall(player, Main.GetPlayerByID(id));
+                Admin.ToEatTarget(player, Main.GetPlayerByID(id), eat);
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
         }
-        */
+        [Command("water")] //Добавляет воду игроку
+        public static void CMD_adminWater(Player player, int id, int water)
+        {
+            try
+            {
+                if (Main.GetPlayerByID(id) == null)
+                {
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок с таким ID не найден", 3000);
+                    return;
+                }
+                Admin.ToWaterTarget(player, Main.GetPlayerByID(id), water);
+            }
+            catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
+        }
+        #endregion
 
         [Command("createrod")] // Создать место для рыбалки (7 лвл)
         public static void CMD_createRod(Player player, float radius)
@@ -172,7 +186,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(client, "setvehdirt")) return;
+                if (!Group.CanUseCmd(client, "vehchange")) return;
 
                 if (!client.IsInVehicle) return;
 
@@ -198,7 +212,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(client, "setvehdirt")) return;
+                if (!Group.CanUseCmd(client, "bankfix")) return;
                 if (Bank.Accounts.ContainsKey(bank))
                 {
                     Bank.RemoveByID(bank);
@@ -214,7 +228,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(client, "setvehdirt")) return;
+                if (!Group.CanUseCmd(client, "gethwid")) return;
                 Player target = Main.GetPlayerByID(ID);
                 if (target == null)
                 {
@@ -231,7 +245,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(client, "setvehdirt")) return;
+                if (!Group.CanUseCmd(client, "getsocialclub")) return;
                 Player target = Main.GetPlayerByID(ID);
                 if (target == null)
                 {
@@ -249,7 +263,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "loggedinfix")) return;
                 if (Main.LoggedIn.ContainsKey(login))
                 {
                     if (NAPI.Player.IsPlayerConnected(Main.LoggedIn[login]))
@@ -269,22 +283,22 @@ namespace Golemo.Core
             catch { }
         }
 
-        [Command("vconfigload")] // Перезагрузить конфиг авто (7 лвл)
+        [Command("vconfigload")]
         public static void CMD_loadConfigVehicles(Player player, int type, int number)
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "vconfigload")) return;
                 if (type == 0) // fractionvehicles
                 {
-                    Fractions.Configs.FractionVehicles[number] = new Dictionary<string, Tuple<VehicleHash, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>>();
+                    Fractions.Configs.FractionVehicles[number] = new Dictionary<string, Tuple<string, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>>();
                     DataTable result = MySQL.QueryRead($"SELECT * FROM `fractionvehicles` WHERE `fraction`={number}");
                     if (result == null || result.Rows.Count == 0) return;
                     foreach (DataRow Row in result.Rows)
                     {
                         var fraction = Convert.ToInt32(Row["fraction"]);
                         var numberplate = Row["number"].ToString();
-                        var model = (VehicleHash)NAPI.Util.GetHashKey(Row["model"].ToString());
+                        var model = Row["model"].ToString();
                         var position = JsonConvert.DeserializeObject<Vector3>(Row["position"].ToString());
                         var rotation = JsonConvert.DeserializeObject<Vector3>(Row["rotation"].ToString());
                         var minrank = Convert.ToInt32(Row["rank"]);
@@ -292,7 +306,7 @@ namespace Golemo.Core
                         var color2 = Convert.ToInt32(Row["colorsec"]);
                         VehicleManager.VehicleCustomization components = JsonConvert.DeserializeObject<VehicleManager.VehicleCustomization>(Row["components"].ToString());
 
-                        Fractions.Configs.FractionVehicles[fraction].Add(numberplate, new Tuple<VehicleHash, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>(model, position, rotation, minrank, color1, color2, new VehicleManager.VehicleCustomization()));
+                        Fractions.Configs.FractionVehicles[fraction].Add(numberplate, new Tuple<string, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>(model, position, rotation, minrank, color1, color2, new VehicleManager.VehicleCustomization()));
                     }
 
                     NAPI.Task.Run(() =>
@@ -418,13 +432,13 @@ namespace Golemo.Core
             }
             catch (Exception e) { Log.Write("vconfigload: " + e.Message, nLog.Type.Error); }
         }
-        
+
         [Command("addpromo")] // Добавить промокод (7 лвл)
         public static void CMD_addPromo(Player player, int uuid, string promocode)
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "addpromo")) return;
                 promocode = promocode.ToLower();
 
                 Main.PromoCodes.Add(promocode, new Tuple<int, int, int>(1, 0, uuid));
@@ -489,7 +503,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "newvnum")) return;
                 if (!VehicleManager.Vehicles.ContainsKey(oldNum))
                 {
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Такой машины не существует", 3000);
@@ -545,7 +559,7 @@ namespace Golemo.Core
         [Command("hidenick")] // Скрыть ник (7 лвл)
         public static void CMD_hidenick(Player player)
         {
-            if (!Group.CanUseCmd(player, "setvehdirt")) return;
+            if (!Group.CanUseCmd(player, "hidenick")) return;
             if (!player.HasSharedData("HideNick") || !player.GetSharedData<bool>("HideNick"))
             {
                 player.SendChatMessage("~g~HideNick ON");
@@ -687,7 +701,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "setdim")) return;
+                if (!Group.CanUseCmd(player, "checkdim")) return;
 
                 var target = Main.GetPlayerByID(id);
                 if (target == null)
@@ -915,7 +929,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "unwarn")) return;
+                if (!Group.CanUseCmd(player, "offunwarn")) return;
 
                 if (!Main.PlayerNames.ContainsValue(target))
                 {
@@ -981,7 +995,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(client, "ban")) return;
+                if (!Group.CanUseCmd(client, "bansync")) return;
                 Notify.Send(client, NotifyType.Warning, NotifyPosition.BottomCenter, "Начинаю процедуру синхронизации...", 4000);
                 Ban.Sync();
                 Notify.Send(client, NotifyType.Success, NotifyPosition.BottomCenter, "Процедура завершена!", 3000);
@@ -1024,7 +1038,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "allspawncar")) return;
+                if (!Group.CanUseCmd(player, "sc")) return;
                 player.SetClothes(id, draw, texture);
                 if (id == 11) player.SetClothes(3, Customization.CorrectTorso[Main.Players[player].Gender][draw], 0);
                 if (id == 1) Customization.SetMask(player, draw, texture);
@@ -1036,7 +1050,7 @@ namespace Golemo.Core
         public static void CMD_setAccessories(Player player, int id, int draw, int texture)
         {
             if (!Main.Players.ContainsKey(player)) return;
-            if (!Group.CanUseCmd(player, "allspawncar")) return;
+            if (!Group.CanUseCmd(player, "sac")) return;
             if (draw > -1)
                 player.SetAccessories(id, draw, texture);
             else
@@ -1048,7 +1062,7 @@ namespace Golemo.Core
         public static void CMD_checkwanted(Player player, int id)
         {
             if (!Main.Players.ContainsKey(player)) return;
-            if (!Group.CanUseCmd(player, "setvehdirt")) return;
+            if (!Group.CanUseCmd(player, "checkwanted")) return;
             var target = Main.GetPlayerByID(id);
             if (target == null)
             {
@@ -1162,7 +1176,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(client, "fixgovbizprices")) return;
+                if (!Group.CanUseCmd(client, "fixweaponsshops")) return;
 
                 foreach (var biz in BusinessManager.BizList.Values)
                 {
@@ -1439,7 +1453,7 @@ namespace Golemo.Core
         [Command("whitelistdel")] // Удалить игрока из WhiteList (8 лвл)
         public static void CMD_whitelistdel(Player player, string socialClub)
         {
-            if (!Group.CanUseCmd(player, "setvehdirt")) return;
+            if (!Group.CanUseCmd(player, "whitelistdel")) return;
 
             try
             {
@@ -1472,7 +1486,7 @@ namespace Golemo.Core
         [Command("whitelistadd")] // Добавить игрока из WhiteList (8 лвл)
         public static void CMD_whitelistadd(Player player, string socialClub)
         {
-            if (!Group.CanUseCmd(player, "setvehdirt")) return;
+            if (!Group.CanUseCmd(player, "whitelistadd")) return;
 
             try
             {
@@ -1605,7 +1619,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "svm")) return;
+                if (!Group.CanUseCmd(player, "svn")) return;
                 if (!player.IsInVehicle) return;
                 Vehicle v = player.Vehicle;
                 if (alpha != 0)
@@ -1630,7 +1644,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "svm")) return;
+                if (!Group.CanUseCmd(player, "svhid")) return;
                 if (!player.IsInVehicle) return;
                 Vehicle v = player.Vehicle;
                 if (hlcolor >= 0 && hlcolor <= 12)
@@ -1708,7 +1722,7 @@ namespace Golemo.Core
                 {
                     try
                     {
-                        if (!Group.CanUseCmd(client, "vehc")) return;
+                        if (!Group.CanUseCmd(client, "delmycars")) return;
                         foreach (var v in NAPI.Pools.GetAllVehicles())
                         {
                             if (v.HasData("ACCESS") && v.GetData<string>("ACCESS") == "ADMIN")
@@ -1736,8 +1750,42 @@ namespace Golemo.Core
         {
             Admin.saveCoords(player, name);
         }
-        
-        [Command("setfractun")] // Установить тюнинг на фракционное авто (8 лвл)
+
+        [Command("savepos")]
+        public static void CMD_saveCoords(Player player, string msg = "No name")
+        {
+            if (!Group.CanUseCmd(player, "savepos")) return;
+            Vector3 pos = NAPI.Entity.GetEntityPosition(player);
+            Vector3 rot = NAPI.Entity.GetEntityRotation(player);
+            if (NAPI.Player.IsPlayerInAnyVehicle(player))
+            {
+                Vehicle vehicle = player.Vehicle;
+                pos = NAPI.Entity.GetEntityPosition(vehicle) + new Vector3(0, 0, 0.5);
+                rot = NAPI.Entity.GetEntityRotation(vehicle);
+            }
+            try
+            {
+                StreamWriter saveCoords = new StreamWriter("logs/savedcoords.txt", true, Encoding.UTF8);
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+                saveCoords.Write($"{msg}   Coords: new Vector3({pos.X}, {pos.Y}, {pos.Z}),    JSON: {JsonConvert.SerializeObject(pos)}      \r\n");
+                saveCoords.Write($"{msg}   Rotation: new Vector3({rot.X}, {rot.Y}, {rot.Z}),     JSON: {JsonConvert.SerializeObject(rot)}    \r\n");
+                saveCoords.Write($"===========================================================================================================================\r\n\n");
+                saveCoords.Close();
+            }
+
+            catch (Exception error)
+            {
+                NAPI.Chat.SendChatMessageToPlayer(player, "Exeption: " + error);
+            }
+
+            finally
+            {
+                NAPI.Chat.SendChatMessageToPlayer(player, "Coords: " + NAPI.Entity.GetEntityPosition(player));
+            }
+
+        }
+
+        [Command("setfractun")]
         public static void ACMD_setfractun(Player player, int cat = -1, int id = -1)
         {
             try
@@ -1760,8 +1808,9 @@ namespace Golemo.Core
                     }
 
                     string number = player.Vehicle.NumberPlate;
-                    Tuple<VehicleHash, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization> oldtuple = Fractions.Configs.FractionVehicles[fractionid][number];
-                    VehicleHash oldvehhash = oldtuple.Item1;
+                    Tuple<string, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization> oldtuple = Fractions.Configs.FractionVehicles[fractionid][number];
+                    string oldname = oldtuple.Item1;
+                    VehicleHash oldvehhash = (VehicleHash)NAPI.Util.GetHashKey(oldname);
                     Vector3 oldvehpos = oldtuple.Item2;
                     Vector3 oldvehrot = oldtuple.Item3;
                     int oldvehrank = oldtuple.Item4;
@@ -1851,7 +1900,7 @@ namespace Golemo.Core
                             oldvehdata.WheelsColor = id;
                             break;
                     }
-                    Fractions.Configs.FractionVehicles[fractionid][number] = new Tuple<VehicleHash, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>(oldvehhash, oldvehpos, oldvehrot, oldvehrank, oldvehc1, oldvehc2, oldvehdata);
+                    Fractions.Configs.FractionVehicles[fractionid][number] = new Tuple<string, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>(oldname, oldvehpos, oldvehrot, oldvehrank, oldvehc1, oldvehc2, oldvehdata);
                     MySqlCommand cmd = new MySqlCommand
                     {
                         CommandText = "UPDATE `fractionvehicles` SET `components`=@com WHERE `number`=@num"
@@ -1988,8 +2037,8 @@ namespace Golemo.Core
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"ACMD_newfracveh\":\n" + e.ToString(), nLog.Type.Error); }
         }
-        
-        [Command("setfracveh")] // Изменить машину фракции (8 лвл)
+
+        [Command("setfracveh")]
         public static void ACMD_setfracveh(Player player, string vehname, int rank, int c1, int c2)
         {
             try
@@ -2022,8 +2071,9 @@ namespace Golemo.Core
                     Vector3 pos = NAPI.Entity.GetEntityPosition(vehicle) + new Vector3(0, 0, 0.5);
                     Vector3 rot = NAPI.Entity.GetEntityRotation(vehicle);
                     VehicleManager.VehicleCustomization data = Fractions.Configs.FractionVehicles[fractionid][vehicle.NumberPlate].Item7;
-                    if (Fractions.Configs.FractionVehicles[fractionid][vehicle.NumberPlate].Item1 != vh) data = new VehicleManager.VehicleCustomization();
-                    Fractions.Configs.FractionVehicles[fractionid][vehicle.NumberPlate] = new Tuple<VehicleHash, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>(vh, pos, rot, rank, c1, c2, data);
+                    VehicleHash vehhash = (VehicleHash)NAPI.Util.GetHashKey(Fractions.Configs.FractionVehicles[fractionid][vehicle.NumberPlate].Item1);
+                    if (vehhash != vh) data = new VehicleManager.VehicleCustomization();
+                    Fractions.Configs.FractionVehicles[fractionid][vehicle.NumberPlate] = new Tuple<string, Vector3, Vector3, int, int, int, VehicleManager.VehicleCustomization>(vehname, pos, rot, rank, c1, c2, data);
                     MySqlCommand cmd = new MySqlCommand
                     {
                         CommandText = "UPDATE `fractionvehicles` SET `model`=@mod,`position`=@pos,`rotation`=@rot,`rank`=@ra,`colorprim`=@col,`colorsec`=@sec,`components`=@com WHERE `number`=@num"
@@ -2047,7 +2097,7 @@ namespace Golemo.Core
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"ACMD_setfracveh\":\n" + e.ToString(), nLog.Type.Error); }
         }
-        
+
         [Command("stop")] // Выключить сервер (8 лвл)
         public static void CMD_stopServer(Player player, string text = null)
         {
@@ -2067,7 +2117,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt"))
+                if (!Group.CanUseCmd(player, "giveitem"))
                 {
                     return;
                 }
@@ -2473,19 +2523,12 @@ namespace Golemo.Core
             c.SendChatMessage("Pos: " + pos.X + "| " + pos.Y + "| " + pos.Z);
             c.SendChatMessage("Rotation");
             c.SendChatMessage("Z: " + rot.Z);
-        }
-        
-        [Command("ped")] // ped sich selber geben / Стать хаскеном (1 лвл)
-        public void HandlePad(Player c)
-        {
-            if (!Group.CanUseCmd(c, "a")) return;
-            c.SetSkin(PedHash.Husky);
-        }
+        }    
         
         [Command("restart")] // Перезагрузить сервер (8 лвл)
         public void HandleShutDown(Player cc, int second)
         {
-            if (!Group.CanUseCmd(cc, "setvehdirt")) return;
+            if (!Group.CanUseCmd(cc, "restart")) return;
 
             if (second < 5 || second > 900)
             {
@@ -2509,27 +2552,13 @@ namespace Golemo.Core
             });
         }
         
-        [Command("dim")] // dimension  command / Изменить виртуальный мир (8 лвл)
-        public void HandleTp(Player c, uint d)
-        {
-            if (!Group.CanUseCmd(c, "setvehdirt")) return;
-            c.Dimension = d;
-        }
-
-        [Command("mtp2")] // teleport zu den Kondinarten x y Z (8 лвл)
-        public void HandleTp(Player c, double x, double y, double z)
-        {
-            if (!Group.CanUseCmd(c, "setvehdirt")) return;
-            c.Position = new Vector3(x, y, z);
-        }
-        
         [Command("veh")] // Создать авто (4 лвл)
         public static void CMD_createVehicle(Player player, string name, int a, int b)
         {
             try
             {
                 if (player == null || !Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "vehc")) return;
+                if (!Group.CanUseCmd(player, "veh")) return;
                 VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(name);
                 player.SendChatMessage("vh " + vh);
                 if (vh == 0)
@@ -2556,7 +2585,7 @@ namespace Golemo.Core
             try
             {
                 if (player == null || !Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "vehhash")) return;
                 var veh = NAPI.Vehicle.CreateVehicle(Convert.ToInt32(name, 16), player.Position, player.Rotation.Z, 0, 0);
                 veh.Dimension = player.Dimension;
                 veh.NumberPlate = "PROJECT";
@@ -2575,7 +2604,7 @@ namespace Golemo.Core
             try
             {
                 if (player == null || !Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "vehs")) return;
                 VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(name);
                 if (vh == 0) throw null;
                 for (int i = count; i > 0; i--)
@@ -2600,7 +2629,7 @@ namespace Golemo.Core
             try
             {
                 if (player == null || !Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "vehcs")) return;
                 VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(name);
                 if (vh == 0) throw null;
                 for (int i = count; i > 0; i--)
@@ -2626,7 +2655,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(client)) return;
-                if (!Group.CanUseCmd(client, "setvehdirt")) return;
+                if (!Group.CanUseCmd(client, "vehcustompcolor")) return;
                 Color color = new Color(r, g, b);
 
                 var number = client.Vehicle.NumberPlate;
@@ -2646,7 +2675,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "aclear")) return;
                 if (!Main.PlayerNames.ContainsValue(target))
                 {
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Игрок не найден", 3000);
@@ -2760,7 +2789,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(client)) return;
-                if (!Group.CanUseCmd(client, "setvehdirt")) return;
+                if (!Group.CanUseCmd(client, "vehcustomscolor")) return;
                 Color color = new Color(r, g, b);
 
                 var number = client.Vehicle.NumberPlate;
@@ -2778,7 +2807,7 @@ namespace Golemo.Core
         public static void CMD_FindByVeh(Player player, string number)
         {
             if (!Main.Players.ContainsKey(player)) return;
-            if (!Group.CanUseCmd(player, "setvehdirt")) return;
+            if (!Group.CanUseCmd(player, "findbyveh")) return;
             if (number.Length > 8)
             {
                 Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, "Количество символов в номерном знаке не может превышать 8.", 3000);
@@ -2794,7 +2823,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(client)) return;
-                if (!Group.CanUseCmd(client, "setvehdirt")) return;
+                if (!Group.CanUseCmd(client, "vehcustom")) return;
 
                 if (!client.IsInVehicle) return;
 
@@ -2934,7 +2963,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "tp")) return;
+                if (!Group.CanUseCmd(player, "goto")) return;
                 if (!player.IsInVehicle) return;
                 var target = Main.GetPlayerByID(id);
                 if (target == null)
@@ -2953,7 +2982,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "tp")) return;
+                if (!Group.CanUseCmd(player, "flip")) return;
                 Player target = Main.GetPlayerByID(id);
                 if (target == null)
                 {
@@ -3077,7 +3106,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "loadipl")) return;
                 NAPI.World.RequestIpl(ipl);
                 player.SendChatMessage("Вы подгрузили IPL: " + ipl);
             }
@@ -3091,7 +3120,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "unloadipl")) return;
                 NAPI.World.RemoveIpl(ipl);
                 player.SendChatMessage("Вы выгрузили IPL: " + ipl);
             }
@@ -3105,7 +3134,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "loadprop")) return;
                 Trigger.ClientEvent(player, "loadProp", x, y, z, prop);
                 player.SendChatMessage("Вы подгрузили Interior Prop: " + prop);
             }
@@ -3119,7 +3148,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "unloadprop")) return;
                 Trigger.ClientEvent(player, "UnloadProp", x, y, z, prop);
                 player.SendChatMessage("Вы выгрузили Interior Prop: " + prop);
             }
@@ -3133,7 +3162,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "starteffect")) return;
                 Trigger.ClientEvent(player, "startScreenEffect", effect, dur, loop);
                 player.SendChatMessage("Вы включили Effect: " + effect);
             }
@@ -3147,7 +3176,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "setvehdirt")) return;
+                if (!Group.CanUseCmd(player, "stopeffect")) return;
                 Trigger.ClientEvent(player, "stopScreenEffect", effect);
                 player.SendChatMessage("Вы выключили Effect: " + effect);
             }
@@ -3325,7 +3354,7 @@ namespace Golemo.Core
         [Command("unban", GreedyArg = true)] // Разбанить игрока (3 лвл)
         public static void CMD_unbanTarget(Player player, string name)
         {
-            if (!Group.CanUseCmd(player, "ban")) return;
+            if (!Group.CanUseCmd(player, "unban")) return;
             try
             {
                 Admin.unbanPlayer(player, name);
@@ -3336,7 +3365,7 @@ namespace Golemo.Core
         [Command("unhardban", GreedyArg = true)] // Снять хар-бан у игрока (3 лвл)
         public static void CMD_unhardbanTarget(Player player, string name)
         {
-            if (!Group.CanUseCmd(player, "ban")) return;
+            if (!Group.CanUseCmd(player, "unhardban")) return;
             try
             {
                 Admin.unhardbanPlayer(player, name);
@@ -3347,7 +3376,7 @@ namespace Golemo.Core
         [Command("offgivereds")] // Выдать RedBucks в оффлайне (8 лвл)
         public static void CMD_offredbaks(Player client, string name, long amount)
         {
-            if (!Group.CanUseCmd(client, "setvehdirt")) return;
+            if (!Group.CanUseCmd(client, "offgivereds")) return;
             try
             {
                 name = name.ToLower();
@@ -3419,7 +3448,7 @@ namespace Golemo.Core
                     return;
                 }
 
-                if (!Group.CanUseCmd(player, "mute")) return;
+                if (!Group.CanUseCmd(player, "vmute")) return;
                 player.SetSharedData("voice.muted", true);
                 Trigger.ClientEvent(player, "voice.mute");
             }
@@ -3437,7 +3466,7 @@ namespace Golemo.Core
                     return;
                 }
 
-                if (!Group.CanUseCmd(player, "unmute")) return;
+                if (!Group.CanUseCmd(player, "vunmute")) return;
                 player.SetSharedData("voice.muted", false);
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
@@ -3748,7 +3777,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "a")) return;
+                if (!Group.CanUseCmd(player, "ptime")) return;
                 Player target = Main.GetPlayerByID(id);
                 if (target == null)
                 {
@@ -3836,20 +3865,16 @@ namespace Golemo.Core
                         return;
                     }
                 }
-                player.SetData("NEXT_REPORT", DateTime.Now.AddMinutes(2));
-                foreach (var p in Main.Players.Keys.ToList())
+                if (player.HasData("MUTE_TIMER"))
                 {
-                    if (!Main.Players.ContainsKey(p)) continue;
-                    if (Main.Players[p].AdminLVL >= 1)
-                    {
-                        p.SendChatMessage($"~b~[Report] {player.Name} ({player.Value}): {message}");
-                    }
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Нельзя отправлять репорт во время Mute, дождитесь его окончания", 3000);
+                    return;
                 }
-                Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы отправили жалобу: {message}", 3000);
-                player.SetData("IS_REPORT", true);
+                ReportSys.AddReport(player, message);
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
         }
+
         [Command("givearmylic")]
         public static void CMD_GiveArmyLicense(Player player, int id)
         {
@@ -4125,7 +4150,7 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "a")) return;
+                if (!Group.CanUseCmd(player, "c")) return;
                 NAPI.Chat.SendChatMessageToPlayer(player, "Coords", NAPI.Entity.GetEntityPosition(player).ToString());
                 NAPI.Chat.SendChatMessageToPlayer(player, "Rot", NAPI.Entity.GetEntityRotation(player).ToString());
             }

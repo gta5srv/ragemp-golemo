@@ -14,23 +14,45 @@ namespace Golemo.Core
 
         public void onResourceStart()
         {
-            Log.Write("Staring timers.", nLog.Type.Info);
-            Timers.StartTask("checkwater", 180000, () => CheckWater());
-            Timers.StartTask("checkeat", 300000, () => CheckEat());
-            Log.Write("Timers started.", nLog.Type.Success);
+            try
+            {
+                Timers.StartTask("checkwater", 360000, () => CheckWater()); //320000
+                Timers.StartTask("checkeat", 340000, () => CheckEat());
+                Log.Write("Timers started.", nLog.Type.Success);
+            }
+            catch (Exception e)
+            {
+                Log.Write($"Error started timers. \n Exeption: {e}", nLog.Type.Error);
+            }
         }
+
+        [ServerEvent(Event.PlayerDeath)]
+        public void OnPlayerDeath(Player player, Player killer, uint reason)
+        {
+            SetEat(player, 30);
+            SetWater(player, 30);
+        }
+
         public static void SetEat(Player player, int change)
         {
-            Main.Players[player].Eat = change;
-            MySQL.Query($"UPDATE characters SET eat={Main.Players[player].Eat} WHERE uuid={Main.Players[player].UUID}");
-            GUI.Dashboard.sendStats(player);
-            Trigger.ClientEvent(player, "UpdateEat", Main.Players[player].Eat, Convert.ToString(change));
+            try
+            {
+                Main.Players[player].Eat = change;
+                MySQL.Query($"UPDATE characters SET eat={Main.Players[player].Eat} WHERE uuid={Main.Players[player].UUID}");
+                GUI.Dashboard.sendStats(player);
+                Trigger.ClientEvent(player, "UpdateEat", Main.Players[player].Eat, Convert.ToString(change));
+            }
+            catch { Log.Write("ERROR SET EAT", nLog.Type.Error); }
         }
         public static void AddEat(Player player, int change)
         {
             if (Main.Players[player].Eat + change > 100)
             {
                 Main.Players[player].Eat = 100;
+            }
+            else if (Main.Players[player].Eat + change < 0)
+            {
+                Main.Players[player].Eat = 0;
             }
             else
             {
@@ -42,16 +64,24 @@ namespace Golemo.Core
         }
         public static void SetWater(Player player, int change)
         {
-            Main.Players[player].Water = change;
-            MySQL.Query($"UPDATE characters SET water={Main.Players[player].Water} WHERE uuid={Main.Players[player].UUID}");
-            Trigger.ClientEvent(player, "UpdateWater", Main.Players[player].Water, Convert.ToString(change));
-            GUI.Dashboard.sendStats(player);
+            try
+            {
+                Main.Players[player].Water = change;
+                MySQL.Query($"UPDATE characters SET water={Main.Players[player].Water} WHERE uuid={Main.Players[player].UUID}");
+                Trigger.ClientEvent(player, "UpdateWater", Main.Players[player].Water, Convert.ToString(change));
+                GUI.Dashboard.sendStats(player);
+            }
+            catch { Log.Write("ERROR SET WATER", nLog.Type.Error); }
         }
         public static void AddWater(Player player, int change)
         {
             if (Main.Players[player].Water + change > 100)
             {
                 Main.Players[player].Water = 100;
+            }
+            else if (Main.Players[player].Water + change < 0)
+            {
+                Main.Players[player].Water = 0;
             }
             else
             {
@@ -62,100 +92,81 @@ namespace Golemo.Core
             GUI.Dashboard.sendStats(player);
         }
 
-        [ServerEvent(Event.PlayerDeath)]
-        public void OnPlayerDeath(Player player, Player killer, uint reason)
-        {
-            SetEat(player, 40);
-            SetWater(player, 40);
-        }
         public static void CheckEat()
         {
-            NAPI.Task.Run(() =>
+
+            Log.Write("Check Eat.", nLog.Type.Info);
+            foreach (Player player in Main.Players.Keys.ToList())
             {
-                Log.Write("Check Eat.", nLog.Type.Info);
-                foreach (Player player in Main.Players.Keys.ToList())
+                try
                 {
-                    try
+                    if (player.Health > 0)
                     {
-                        if (player.Health > 0)
+                        if (Main.Players[player].Eat > 0 && Main.Players[player].Water > 0)
                         {
-                            var rnd = new Random();
-                            int intrnd = rnd.Next(2, 5);
-                            if (Main.Players[player].Eat > 0 && Main.Players[player].Eat - intrnd > 0)
+                            if (player.IsInVehicle)
                             {
-                                if (player.IsInVehicle)
-                                {
-                                    AddEat(player, -1);
-                                }
-                                else
-                                {
-                                    AddEat(player, -intrnd);
-                                }
+                                AddEat(player, -1);
                             }
-                            else if (Main.Players[player].Eat - intrnd < 0)
+                            else
                             {
-                                SetEat(player, 0);
+                                AddEat(player, -2);
                             }
-                            if (Main.Players[player].Eat == 0 && player.Health >= 20)
-                            {
-                                player.Health -= 2;
-                            }
-                            else if (Main.Players[player].Water == 0 && Main.Players[player].Eat == 0)
+                        }
+                        else
+                        {
+                            if (Main.Players[player].Eat == 0 && Main.Players[player].Water == 0)
                             {
                                 player.Health -= 4;
                             }
-                            if (Main.Players[player].Eat >= 80 && Main.Players[player].Water >= 80)
+                            else
                             {
-                                if (player.Health + 2 > 100)
+                                if (Main.Players[player].Water == 0)
                                 {
-                                    player.Health = 100;
+                                    AddEat(player, -4);
                                 }
-                                else
+                                if (Main.Players[player].Eat == 0)
                                 {
-                                    player.Health += 2;
+                                    player.Health -= 2;
                                 }
                             }
                         }
                     }
-                    catch { }
                 }
-            });
+                catch (Exception) { }
+            }
         }
         public static void CheckWater()
         {
-            NAPI.Task.Run(() =>
+            Log.Write("Check Water.", nLog.Type.Info);
+            foreach (Player player in Main.Players.Keys.ToList())
             {
-                Log.Write("Check Water.", nLog.Type.Info);
-                foreach (Player player in Main.Players.Keys.ToList())
+                try
                 {
-                    try
+                    if (player.Health > 0)
                     {
-                        if (player.Health > 0)
+                        if (Main.Players[player].Eat > 0 && Main.Players[player].Water > 0)
                         {
-                            if (Main.Players[player].Water > 0 && Main.Players[player].Water - 2 > 0)
+                            if (player.IsInVehicle)
                             {
-                                if (player.IsInVehicle)
-                                {
-                                    AddWater(player, -1);
-                                }
-                                else
-                                {
-                                    AddWater(player, -2);
-                                }
+                                AddWater(player, -1);
                             }
-                            else if (Main.Players[player].Water - 2 < 0)
+                            else
                             {
-                                SetWater(player, 0);
+                                AddWater(player, -2);
                             }
-                            if (Main.Players[player].Water == 0 && player.Health >= 20)
+                        }
+                        else
+                        {
+                            if (Main.Players[player].Water != 0 && Main.Players[player].Eat == 0)
                             {
-                                player.Health -= 2;
+                                AddWater(player, -4);
                             }
                         }
                     }
-                    catch { }
                 }
-            });
+                catch (Exception) { }
+            }
         }
 
     }

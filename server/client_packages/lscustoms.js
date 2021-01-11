@@ -279,7 +279,7 @@ mp.events.add('thov', (id) => {
         localplayer.vehicle.setWindowTint(parseInt(id));
     }
     else if (lscPage == "horn_menu") {
-        localplayer.vehicle.startHorn(1000, hornNames[id], false);
+        localplayer.vehicle.startHorn(1000, hornNames[id], 0);
     }
     else if (lscPage == "lights_menu") {
         localplayer.vehicle.setLights(true);

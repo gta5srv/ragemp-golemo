@@ -2117,6 +2117,24 @@ namespace Golemo
                         return;
                     #endregion
                     #region Add-on Cases
+                    case 800:
+                        Trigger.ClientEvent(player, "openRealtorMenu");
+                        return;
+                    case 801: //todo Farmer
+                        Jobs.FarmerJob.Farmer.OpenFarmerMenu(player);
+                        return;
+                    case 802: //todo Market for Farmer
+                        Jobs.FarmerJob.Market.OpenMarketMenu(player, 0);
+                        return;
+                    case 803: //todo Containers
+                        Core.ContainerSystem.OpenMenuContainer(player);
+                        break;
+                    case 804: //todo FractionCarSpawner
+                        Fractions.CarSpawner.OpenMenuSpawner(player);
+                        break;
+                    //case 808: //todo Arena
+                    //    Arena.Manager.OpenArenaMenu(player, "");
+                    //    break;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion
                     default:

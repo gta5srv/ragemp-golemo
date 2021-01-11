@@ -6,6 +6,10 @@
     font-style: normal;
 }
 
+[v-cloak] {
+    display: none;
+}
+
 body {
     user-select: none;
     margin: 0 auto;

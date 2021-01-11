@@ -21,7 +21,7 @@ namespace Golemo.Houses
         {
             try
             {
-                #region #2AC Creating Marker & Colshape & Blip
+                #region Creating Marker & Colshape & Blip
                 blip = NAPI.Blip.CreateBlip(374, PositionRealtor, 0.9f, 2, "Агентство по недвижимости", shortRange: true, dimension: 0);
                 intmarker = NAPI.Marker.CreateMarker(1, PositionRealtor + new Vector3(0, 0, 0.1), new Vector3(), new Vector3(), 0.5f, new Color(255, 225, 64), false, 0);
                 shape = NAPI.ColShape.CreateCylinderColShape(PositionRealtor, 1, 2, 0);
@@ -29,7 +29,7 @@ namespace Golemo.Houses
                 {
                     try
                     {
-                        NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 512);
+                        NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 800);
                     }
                     catch (Exception ex) { Console.WriteLine("shape.OnEntityEnterColShape: " + ex.Message); }
                 };
@@ -46,17 +46,6 @@ namespace Golemo.Houses
                 RLog.Write("Loaded", nLog.Type.Info);
             }
             catch (Exception e) { RLog.Write(e.ToString(), nLog.Type.Error); }
-        }
-
-        public static void OpenRealtorMenu(Player player)
-        {
-            Trigger.ClientEvent(player, "openRealtorMenu");
-        }
-
-        [RemoteEvent("closeRealtorMenu")]
-        public static void CloseRealtorMenu(Player player)
-        {
-            Trigger.ClientEvent(player, "closeRealtorMenu");
         }
 
         [RemoteEvent("buyRealtorInfoHome")]
@@ -78,7 +67,7 @@ namespace Golemo.Houses
             {
                 try
                 {
-                    CloseRealtorMenu(player);
+                    Trigger.ClientEvent(player, "closeRealtorMenu");
                 }
                 catch { }
             }, 200);
