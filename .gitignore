@@ -8,3 +8,4 @@
 /server/dotnet/resources/release/bin/netcoreapp3.1
 /server/dotnet/server_logs.txt
 /server/dotnet/server_exceptions.txt
+/server/dotnet/resources/GameMode/Golemo/obj
