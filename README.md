@@ -3,15 +3,25 @@
 /*
     Поддержка: JJiGolem, 6er1k;
     Продукт: Golem-Mode;
-    Описание: Игровой мод на платформе Rage:Multiplayer;
+    Платформа: Rage Multiplayer;
     Игра: Grand Theft Auto V;
     Дискорд: https://discord.gg/RqKSczZsNW;
+
+    **Описание:**
+    |  Скоро...............................
+    |......................................
+    |......................................
 */
 #EN
 /*
     Maintainers: JJiGolem, 6er1k;
     Product: Golem-Mode;
-    Description: Game mod on the platform Rage:Multiplayer;
+    Platform: Rage Multiplayer;
     Game: Grand Theft Auto V;
     Discord: https://discord.gg/RqKSczZsNW;
+
+    **Description:**
+    |  Coming Soon.........................
+    |......................................
+    |......................................
 */
