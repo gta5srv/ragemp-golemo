@@ -1,0 +1,9 @@
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\bin\x64\Debug\netcoreapp3.1\GolemoSDK.deps.json
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\bin\x64\Debug\netcoreapp3.1\GolemoSDK.dll
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\bin\x64\Debug\netcoreapp3.1\GolemoSDK.pdb
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\obj\x64\Debug\netcoreapp3.1\GolemoSDK.csprojAssemblyReference.cache
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\obj\x64\Debug\netcoreapp3.1\GolemoSDK.AssemblyInfoInputs.cache
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\obj\x64\Debug\netcoreapp3.1\GolemoSDK.AssemblyInfo.cs
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\obj\x64\Debug\netcoreapp3.1\GolemoSDK.csproj.CoreCompileInputs.cache
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\obj\x64\Debug\netcoreapp3.1\GolemoSDK.dll
+D:\Golemo-Mode\golemo-mode\server\dotnet\resources\GameMode\GolemoSDK\obj\x64\Debug\netcoreapp3.1\GolemoSDK.pdb

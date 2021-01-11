@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "aVD+UWgz3n0PjHkqOoo7s8WfCHyBTM5ltH+JfqPOAvJNbbr1rbk5/75Tfb8rtfMgn3/IxmWG3u/Yyyi6/vQprA==",
+  "success": true,
+  "projectFilePath": "D:\\Golemo-Mode\\golemo-mode\\server\\dotnet\\resources\\GameMode\\Golemo\\Golemo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\mysqlconnector\\1.1.0\\mysqlconnector.1.1.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\ragemp-bootstrapper\\1.1.3\\ragemp-bootstrapper.1.1.3.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\stub.system.data.sqlite.core.netstandard\\1.0.113.1\\stub.system.data.sqlite.core.netstandard.1.0.113.1.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\system.data.sqlite.core\\1.0.113.6\\system.data.sqlite.core.1.0.113.6.nupkg.sha512"
+  ],
+  "logs": []
+}
