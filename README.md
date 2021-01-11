@@ -2,7 +2,7 @@
 #RU
 /*
     Поддержка: JJiGolem, 6er1k;
-    Продукт: Golem-Mode;
+    Продукт: Golemo-Mode;
     Платформа: Rage Multiplayer;
     Игра: Grand Theft Auto V;
     Дискорд: https://discord.gg/RqKSczZsNW;
@@ -12,10 +12,11 @@
     |......................................
     |......................................
 */
+
 #EN
 /*
     Maintainers: JJiGolem, 6er1k;
-    Product: Golem-Mode;
+    Product: Golemo-Mode;
     Platform: Rage Multiplayer;
     Game: Grand Theft Auto V;
     Discord: https://discord.gg/RqKSczZsNW;
