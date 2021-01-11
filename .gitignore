@@ -1,0 +1,8 @@
+/server/client_packages/.listcache
+/server/dotnet/runtime
+/server/dotnet/resources/GameMode/.vs
+/server/dotnet/resources/GameMode/GolemoSDK/bin
+/server/dotnet/resources/GameMode/GolemoSDK/obj
+/server/plugins
+/server/packages
+/server/dotnet/resources/release/bin/netcoreapp3.1

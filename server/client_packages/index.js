@@ -123,11 +123,6 @@ setTimeout(function () {
 	mp.events.call('showHUD', false); 
 }, 1000);
 
-setInterval(function () {
-    var name = (localplayer.getVariable('REMOTE_ID') == undefined) ? `Не авторизован` : `Игрок №${localplayer.getVariable("REMOTE_ID")}`;
-	mp.discord.update('RAGEMP.PRO v2.0', name);
-}, 10000);
-
 var pedsaying = null;
 var pedtext = "";
 var pedtext2 = null;
@@ -256,7 +251,7 @@ require('./board.js');
 //require('./inventory.js');
 require('./hud.js');
 require('./gamertag.js');
-require('./furniture.js');
+require('./libs/house/furniture');
 require('./admesp.js');
 require('./circle.js');
 require('./vehiclesync.js');
@@ -277,7 +272,6 @@ require('./scripts/fingerPointer.js');
 require('./scripts/publicGarage/index.js');
 require('./scripts/SmoothThrottle/SmoothThrottle.js');
 require('./banks/atm.js');
-require('./admin/adminpanel.js');
 
 require('./configs/tattoo.js');
 require('./configs/barber.js');
@@ -285,14 +279,8 @@ require('./configs/clothes.js');
 require('./configs/natives.js');
 require('./configs/tuning.js');
 
-require('./realtor.js');
 require('./radiosync.js');
 
-require('./cayo_perico/heistisland.js');
-
-require('./containers/containers.js');
-
-require('./bigmap.js');
 
 // Работа - Мусорщик (by BlackGold)
 require('./garbageWork/work');
@@ -300,6 +288,40 @@ require('./garbageWork/colshapes');
 require('./garbageWork/peds');
 //
 
+//admin=========================
+require('./libs/admin/adminpanel');
+require('./libs/admin/reportpanel');
+require('./libs/admin/tpwp');
+//==============================
+
+//fractions=====================
+require('./libs/fractions/vehiclespawner');
+//==============================
+
+//house=========================
+require('./libs/house/realtor.js');
+//==============================
+
+//jobs==========================
+require('./libs/jobs/farmer');
+require('./libs/jobs/market');
+//==============================
+
+//utils=========================
+require('./libs/utils/animator');
+require('./libs/utils/discord');
+require('./libs/utils/notify');
+require('./libs/utils/bigmap');
+//==============================
+
+//world=========================
+require('./libs/world/containers');
+//==============================
+
+//dlc===========================
+require('./libs/dlc/heistisland');
+//==============================
+// // // // // // // // // // //
 
 // // // // // // //
 
