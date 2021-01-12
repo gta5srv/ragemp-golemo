@@ -22,7 +22,7 @@ namespace Golemo.Core
         {
             try
             {
-                #region #2AC Creating Marker & Colshape & Blip
+                #region Creating Marker & Colshape & Blip
                 blip = NAPI.Blip.CreateBlip(678, Changenum, 0.6f, 58, "Смена номеров", shortRange: true, dimension: 0);
                 intmarker = NAPI.Marker.CreateMarker(1, Changenum, new Vector3(), new Vector3(), 2f, new Color(66, 170, 255, 150), false, 0);
                 shape = NAPI.ColShape.CreateCylinderColShape(Changenum, 1, 3, 0);
