@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Янв 11 2021 г., 12:05
+-- Время создания: Янв 12 2021 г., 19:19
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.2.28
 
@@ -58,123 +58,6 @@ CREATE TABLE `adminaccess` (
   `isadmin` tinyint(1) NOT NULL,
   `idkey` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `adminaccess`
---
-
-INSERT INTO `adminaccess` (`minrank`, `command`, `isadmin`, `idkey`) VALUES
-(8, 'createstock', 1, 1),
-(5, 'setleader', 1, 2),
-(7, 'guns', 1, 3),
-(5, 'giveammo', 1, 4),
-(8, 'givemoney', 1, 5),
-(4, 'vehc', 1, 6),
-(2, 'hp', 1, 7),
-(5, 'delacars', 1, 8),
-(8, 'givereds', 1, 9),
-(4, 'setdim', 1, 10),
-(5, 'createmp', 1, 11),
-(5, 'startmp', 1, 12),
-(5, 'stopmp', 1, 13),
-(7, 'stt', 1, 14),
-(6, 'setbizmafia', 1, 15),
-(8, 'takeoffbiz', 1, 16),
-(4, 'skick', 1, 17),
-(6, 'setcolour', 1, 18),
-(3, 'fixcar', 1, 19),
-(8, 'createsafe', 1, 20),
-(8, 'allspawncar', 1, 21),
-(8, 'save', 1, 22),
-(3, 'ban', 1, 23),
-(8, 'setfracveh', 1, 24),
-(3, 'delfrac', 1, 25),
-(6, 'startmatwars', 1, 26),
-(8, 'setvehdirt', 1, 27),
-(8, 'createbusiness', 1, 28),
-(8, 'newfracveh', 1, 29),
-(1, 'redname', 1, 30),
-(6, 'setadmin', 1, 31),
-(6, 'setadminrank', 1, 32),
-(4, 'global', 1, 33),
-(2, 'metp', 1, 34),
-(2, 'demorgan', 1, 35),
-(1, 'a', 1, 36),
-(3, 'warn', 1, 37),
-(3, 'unwarn', 1, 38),
-(2, 'tp', 1, 39),
-(2, 'admins', 1, 40),
-(2, 'gm', 1, 41),
-(2, 'sp', 1, 42),
-(3, 'checkmoney', 1, 43),
-(1, 'id', 1, 44),
-(2, 'mute', 1, 45),
-(1, 'asms', 1, 46),
-(1, 'ans', 1, 47),
-(3, 'fz', 1, 48),
-(8, 'udemorgan', 1, 49),
-(6, 'deladmin', 1, 50),
-(3, 'delacar', 1, 51),
-(4, 'setskin', 1, 52),
-(2, 'agm', 1, 53),
-(3, 'ufz', 1, 54),
-(3, 'offban', 1, 55),
-(8, 'newrentveh', 1, 56),
-(8, 'newjobveh', 1, 57),
-(5, 'sendcreator', 1, 58),
-(6, 'delleader', 1, 59),
-(8, 'ar', 1, 60),
-(8, 'st', 1, 61),
-(2, 'unmute', 1, 62),
-(2, 'inv', 1, 63),
-(8, 'oguns', 1, 64),
-(3, 'rescar', 1, 65),
-(8, 'giveclothes', 1, 66),
-(8, 'delhouseowner', 1, 67),
-(3, 'checkprop', 1, 68),
-(8, 'deletebusiness', 1, 69),
-(2, 'afuel', 1, 70),
-(6, 'setviplvl', 1, 71),
-(6, 'sw', 1, 72),
-(6, 'deljob', 1, 73),
-(8, 'stop', 1, 74),
-(8, 'createunloadpoint', 1, 75),
-(8, 'pa', 1, 76),
-(8, 'sa', 1, 77),
-(2, 'stats', 1, 78),
-(2, 'delad', 1, 79),
-(3, 'offjail', 1, 80),
-(3, 'offwarn', 1, 81),
-(8, 'removeobj', 1, 82),
-(6, 'giveexp', 1, 83),
-(8, 'svh', 1, 84),
-(7, 'expmultiplier', 1, 85),
-(7, 'payday', 1, 86),
-(8, 'newsimcard', 1, 87),
-(8, 'fixgovbizprices', 1, 88),
-(8, 'housetypeprice', 1, 89),
-(2, 'kick', 1, 90),
-(3, 'kill', 1, 91),
-(8, 'svm', 1, 92),
-(5, 'changename', 1, 93),
-(7, 'givelic', 1, 94),
-(2, 'tpcar', 1, 95),
-(8, 'lsn', 1, 96),
-(6, 'changestock', 1, 97),
-(8, 'mtp', 1, 98),
-(3, 'tpc', 1, 99),
-(5, 'offdelfrac', 1, 100),
-(8, 'removesafe', 1, 101),
-(8, 'paydaymultiplier', 1, 102),
-(8, 'setproductbyindex', 1, 103),
-(8, 'deleteproducts', 1, 104),
-(8, 'changebizprice', 1, 105),
-(8, 'delhouseowner', 1, 106),
-(7, 'vehhash', 1, 107),
-(4, 'veh', 1, 108),
-(7, 'newvnum', 1, 109),
-(7, 'admins', 1, 110),
-(7, 'stop', 1, 111);
 
 -- --------------------------------------------------------
 
@@ -281,7 +164,7 @@ INSERT INTO `businesses` (`id`, `owner`, `sellprice`, `type`, `products`, `enter
 (19, 'Государство', '500000', '7', '[{\"Price\":100,\"Lefts\":0,\"Autosell\":10,\"Name\":\"Одежда\",\"Ordered\":true}]', '{\"x\":125.596184,\"y\":-223.745468,\"z\":53.43743}', '{\"x\":132.016327,\"y\":-201.47261,\"z\":54.4956436}', '173617', '11', '[]'),
 (20, 'Государство', '500000', '7', '[{\"Price\":100,\"Lefts\":25,\"Autosell\":10,\"Name\":\"Одежда\",\"Ordered\":true}]', '{\"x\":-163.4802,\"y\":-302.8575,\"z\":38.6132851}', '{\"x\":-149.489761,\"y\":-309.134644,\"z\":38.4286957}', '714210', '10', '[]'),
 (22, 'Государство', '500000', '7', '[{\"Price\":100,\"Lefts\":3665,\"Autosell\":10,\"Name\":\"Одежда\",\"Ordered\":true}]', '{\"x\":-709.8169,\"y\":-153.047455,\"z\":36.2951164}', '{\"x\":-726.959534,\"y\":-163.092346,\"z\":37.08786}', '526612', '10', '[]'),
-(23, 'Государство', '3800000', '12', '[{\"Price\":100,\"Lefts\":576,\"Autosell\":10000,\"Name\":\"Запчасти\",\"Ordered\":true}]', '{\"x\":-361.602478,\"y\":-132.873581,\"z\":37.560154}', '{\"x\":-379.471039,\"y\":-119.772125,\"z\":38.68728}', '392248', '11', '[]'),
+(23, 'Государство', '3800000', '12', '[{\"Price\":100,\"Lefts\":557,\"Autosell\":10000,\"Name\":\"Запчасти\",\"Ordered\":true}]', '{\"x\":-361.602478,\"y\":-132.873581,\"z\":37.560154}', '{\"x\":-379.471039,\"y\":-119.772125,\"z\":38.68728}', '392248', '11', '[]'),
 (24, 'Государство', '3800000', '12', '[{\"Price\":95,\"Lefts\":93984,\"Autosell\":0,\"Name\":\"Запчасти\",\"Ordered\":true}]', '{\"x\":-205.807541,\"y\":-1306.96777,\"z\":30.16265}', '{\"x\":-193.220123,\"y\":-1304.82678,\"z\":31.342062}', '141134', '11', '[]'),
 (25, 'Государство', '250000', '0', '[{\"Price\":200,\"Lefts\":496,\"Autosell\":1,\"Name\":\"Монтировка\",\"Ordered\":true},{\"Price\":240,\"Lefts\":544,\"Autosell\":1,\"Name\":\"Фонарик\",\"Ordered\":false},{\"Price\":200,\"Lefts\":550,\"Autosell\":1,\"Name\":\"Молоток\",\"Ordered\":false},{\"Price\":200,\"Lefts\":545,\"Autosell\":1,\"Name\":\"Гаечный ключ\",\"Ordered\":true},{\"Price\":120,\"Lefts\":537,\"Autosell\":1,\"Name\":\"Канистра бензина\",\"Ordered\":true},{\"Price\":60,\"Lefts\":9999,\"Autosell\":1,\"Name\":\"Чипсы\",\"Ordered\":true},{\"Price\":100,\"Lefts\":456,\"Autosell\":1,\"Name\":\"Пицца\",\"Ordered\":true},{\"Price\":200,\"Lefts\":289,\"Autosell\":1,\"Name\":\"Сим-карта\",\"Ordered\":true},{\"Price\":200,\"Lefts\":541,\"Autosell\":1,\"Name\":\"Связка ключей\",\"Ordered\":true}]', '{\"x\":374.3244,\"y\":326.75058,\"z\":102.446358}', '{\"x\":375.335571,\"y\":315.834351,\"z\":103.2855}', '713340', '11', '[]'),
 (26, 'Государство', '250000', '10', '[{\"Price\":100,\"Lefts\":9983,\"Autosell\":0,\"Name\":\"Расходники\",\"Ordered\":true},{\"Price\":100,\"Lefts\":10000,\"Autosell\":0,\"Name\":\"Парики\",\"Ordered\":false}]', '{\"x\":-30.54569,\"y\":-149.898636,\"z\":55.95653}', '{\"x\":-32.1384468,\"y\":-139.677719,\"z\":57.08342}', '862433', '11', '[]'),
@@ -356,7 +239,8 @@ INSERT INTO `businesses` (`id`, `owner`, `sellprice`, `type`, `products`, `enter
 (104, 'Государство', '250000', '11', '[{\"Price\":100,\"Lefts\":47,\"Autosell\":0,\"Name\":\"Маски\",\"Ordered\":false}]', '{\"x\":-1483.1567,\"y\":-226.71503,\"z\":48.879322}', '{\"x\":0.0,\"y\":0.0,\"z\":0.0}', '202414', '-1', '[]'),
 (105, 'Государство', '250000', '15', '[{\"Price\":1200,\"Lefts\":996,\"Autosell\":1,\"Name\":\"Удочка\",\"Ordered\":true},{\"Price\":110,\"Lefts\":941,\"Autosell\":1,\"Name\":\"Наживка\",\"Ordered\":true}]', '{\"x\":-1654.8417,\"y\":-1036.9357,\"z\":12.032769}', '{\"x\":314.557373,\"y\":-1151.36816,\"z\":29.2919159}', '769338', '11', '[{\"Name\":\"Удочка\",\"Amount\":10},{\"Name\":\"Наживка\",\"Amount\":10},{\"Name\":\"Улучшенная удочка\",\"Amount\":1},{\"Name\":\"Удочка MK2\",\"Amount\":1}]'),
 (106, 'Государство', '5000000', '16', '[{\"Price\":13,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Корюшка\",\"Ordered\":false},{\"Price\":16,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Кунджа\",\"Ordered\":false},{\"Price\":10,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Лосось\",\"Ordered\":false},{\"Price\":4,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Окунь\",\"Ordered\":false},{\"Price\":5,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Осётр\",\"Ordered\":false},{\"Price\":12,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Скат\",\"Ordered\":false},{\"Price\":18,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Тунец\",\"Ordered\":false},{\"Price\":5,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Угорь\",\"Ordered\":false},{\"Price\":15,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Чёрный амур\",\"Ordered\":false},{\"Price\":6,\"Lefts\":0,\"Autosell\":1,\"Name\":\"Щука\",\"Ordered\":false}]', '{\"x\":1953.49231,\"y\":3842.458,\"z\":31.061697}', '{\"x\":0.0,\"y\":0.0,\"z\":0.0}', '815214', '-1', '[]'),
-(107, 'Государство', '100000000', '17', '[{\"Price\":300,\"Lefts\":10000,\"Autosell\":0,\"Name\":\"deluxo\",\"Ordered\":true}]', '{\"x\":-177.17743,\"y\":-1158.7092,\"z\":22.693691}', '{\"x\":-177.17743,\"y\":-1158.7092,\"z\":22.693691}', '0', '-1', '[]');
+(107, 'Государство', '100000000', '17', '[{\"Price\":300,\"Lefts\":10000,\"Autosell\":0,\"Name\":\"deluxo\",\"Ordered\":true}]', '{\"x\":-177.17743,\"y\":-1158.7092,\"z\":22.693691}', '{\"x\":-177.17743,\"y\":-1158.7092,\"z\":22.693691}', '0', '-1', '[]'),
+(108, 'Государство', '1000000', '12', '[{\"Price\":100,\"Lefts\":810,\"Autosell\":0,\"Name\":\"Запчасти\",\"Ordered\":false}]', '{\"x\":-920.52277,\"y\":-157.7337,\"z\":40.761223}', '{\"x\":0.0,\"y\":0.0,\"z\":0.0}', '975233', '-1', '[]');
 
 -- --------------------------------------------------------
 
@@ -417,18 +301,17 @@ CREATE TABLE `containers` (
   `position` text DEFAULT NULL,
   `rotation` text NOT NULL,
   `loot` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `containers`
 --
 
 INSERT INTO `containers` (`id`, `name`, `price`, `donate`, `position`, `rotation`, `loot`) VALUES
-(0, 'Низкий', 2500000, 0, '{\"x\":1214,\"y\":-2970,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"lc200\":\"40\", \"m5\":\"30\", \"m5e60\":\"15\", \"lexgs350f\":\"10\",\"m8\":\"5\"}\r\n'),
-(1, 'Средний', 4500000, 0, '{\"x\":1218.6,\"y\":-2970,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"c63coupe\":\"40\", \"e63amg\":\"30\", \"2019m5\":\"15\", \"BRABUS700\":\"10\", \"mgt\":\"5\"}\r\n'),
-(2, 'Премиум+', 7000000, 0, '{\"x\":1214,\"y\":-2990,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"g65\":\"40\", \"gle6c\":\"30\", \"gt63samg\":\"15\", \"gallardo\":\"10\", \"brabus850\":\"5\"}\r\n'),
-(3, 'VIP', 9000000, 0, '{\"x\":1218.6,\"y\":-2990,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"e63\":\"40\", \"e63amg\":\"30\", \"g63amg6x6cop\":\"15\", \"18perfomante\":\"10\",\"g65\":\"5\"}\r\n'),
-(5, 'Низкий', 2500000, 0, '{\"x\":1218.6,\"y\":-3010,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"lc200\":\"40\", \"m5\":\"30\", \"m5e60\":\"15\", \"lexgs350f\":\"10\",\"m8\":\"5\"}\r\n');
+(0, 'LowExpress', 100, 1, '{\"x\":1214,\"y\":-2970,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"f620\":\"40\", \"felon\":\"30\", \"jackal\":\"15\", \"sentinel\":\"10\",\"windsor\":\"5\"}'),
+(1, 'Lowels', 350000, 0, '{\"x\":1218.6,\"y\":-2970,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"clique\":\"40\",\"deviant\":\"30\",\"dominator\":\"15\",\"dukes\":\"10\",\"faction\":\"5\"}'),
+(2, 'Lupoor', 600000, 0, '{\"x\":1214,\"y\":-2990,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"comet2\":\"40\",\"dubsta2\":\"30\",\"elegy2\":\"15\",\"futo\":\"10\",\"superd\":\"5\"}'),
+(3, 'Goldo', 1000000, 0, '{\"x\":1218.6,\"y\":-2990,\"z\":4.8}', '{\"x\":0,\"y\":0,\"z\":-180}', '{\"esskey\":\"40\",\"hakuchou\":\"30\",\"manchez\":\"15\",\"nightblade\":\"10\",\"sanctus\":\"5\"}');
 
 -- --------------------------------------------------------
 
@@ -506,6 +389,19 @@ CREATE TABLE `e_voters` (
   `TimeVoted` text NOT NULL,
   `VotedFor` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `farmer`
+--
+
+CREATE TABLE `farmer` (
+  `uuid` int(11) NOT NULL,
+  `level` int(11) DEFAULT NULL,
+  `exp` int(11) DEFAULT NULL,
+  `allpoints` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -829,12 +725,12 @@ CREATE TABLE `fractions` (
 --
 
 INSERT INTO `fractions` (`id`, `drugs`, `money`, `mats`, `medkits`, `lastserial`, `weapons`, `isopen`, `fuellimit`, `fuelleft`) VALUES
-(1, 1300, 1788500, 115920, 0, '24', '[{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":103,\"Type\":103,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":204,\"Type\":204,\"Count\":100,\"IsActive\":false},{\"Data\":\"201300055\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300083\",\"ID\":143,\"Type\":143,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"families1\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"families1\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"families1\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":142,\"Type\":142,\"Count\":1,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":60,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":15,\"IsActive\":false}]', 1, 0, 0),
-(2, 128, 1240669, 117538, 0, '24', '[{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":4,\"IsActive\":false}]', 1, 0, 0),
-(3, 160, 1297900, 121372, 117, '24', '[]', 1, 0, 0),
-(4, 1173, 6637900, 205930, 176, '24', '[{\"Data\":\"101400098\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300087\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300081\",\"ID\":104,\"Type\":104,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900047\",\"ID\":116,\"Type\":116,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":204,\"Type\":204,\"Count\":40,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900079\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900124\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900125\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900127\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900053\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900089\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900129\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900081\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900143\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900075\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900091\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900132\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900076\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900130\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900063\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900087\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900133\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900142\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900080\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900145\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900088\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900137\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900082\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900146\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900134\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900092\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900122\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900136\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900144\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900135\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900147\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900086\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900141\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900140\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900085\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"201200080\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900084\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900138\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900120\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":110,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":80,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":122,\"Type\":122,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":122,\"Type\":122,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":122,\"Type\":122,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700219\",\"ID\":130,\"Type\":130,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":146,\"Type\":146,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":146,\"Type\":146,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":146,\"Type\":146,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":58,\"IsActive\":false},{\"Data\":\"1004xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1004xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false}]', 1, 0, 0),
-(5, 160, 2833600, 134600, 0, '24', '[{\"Data\":\"100700056\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"101400046\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"101400049\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":142,\"Type\":142,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":142,\"Type\":142,\"Count\":1,\"IsActive\":false},{\"Data\":\"101400044\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700030\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":9,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300076\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false}]', 1, 0, 0),
-(6, 0, 541254, 116408, 128, '147', '[{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":148,\"IsActive\":false},{\"Data\":\"100600058\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false}]', 1, 150000, 150000),
+(1, 1300, 1799300, 115920, 0, '24', '[{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":103,\"Type\":103,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":204,\"Type\":204,\"Count\":100,\"IsActive\":false},{\"Data\":\"201300055\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300083\",\"ID\":143,\"Type\":143,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"families1\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"families1\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"families1\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":142,\"Type\":142,\"Count\":1,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":60,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":15,\"IsActive\":false}]', 1, 0, 0),
+(2, 128, 1250269, 117538, 0, '24', '[{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":4,\"IsActive\":false}]', 1, 0, 0),
+(3, 160, 1306300, 121372, 117, '24', '[]', 1, 0, 0),
+(4, 1173, 6643900, 205930, 176, '24', '[{\"Data\":\"101400098\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300087\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300081\",\"ID\":104,\"Type\":104,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900047\",\"ID\":116,\"Type\":116,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":204,\"Type\":204,\"Count\":40,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900079\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900124\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900125\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900127\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900053\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900089\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900129\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900081\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900143\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900075\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900091\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900132\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900076\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900130\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900063\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900087\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900133\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900142\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900080\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900145\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900088\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900137\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900082\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900146\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900134\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900092\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900122\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900136\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900144\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900135\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900147\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900086\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900141\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900140\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900085\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"201200080\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900084\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900138\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900120\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":120,\"IsActive\":false},{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":110,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":80,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":122,\"Type\":122,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":122,\"Type\":122,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":122,\"Type\":122,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700219\",\"ID\":130,\"Type\":130,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":146,\"Type\":146,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":146,\"Type\":146,\"Count\":1,\"IsActive\":false},{\"Data\":\"777777777\",\"ID\":146,\"Type\":146,\"Count\":1,\"IsActive\":false},{\"Data\":\"1012xxxxx\",\"ID\":123,\"Type\":123,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":58,\"IsActive\":false},{\"Data\":\"1004xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1004xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false}]', 1, 0, 0),
+(5, 160, 2852800, 134600, 0, '24', '[{\"Data\":\"100700056\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"101400046\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"101400049\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":142,\"Type\":142,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":142,\"Type\":142,\"Count\":1,\"IsActive\":false},{\"Data\":\"101400044\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700030\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":126,\"Type\":126,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":200,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":9,\"IsActive\":false},{\"Data\":\"1011xxxxx\",\"ID\":131,\"Type\":131,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300076\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false}]', 1, 0, 0),
+(6, 0, 541268, 116408, 128, '147', '[{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":148,\"IsActive\":false},{\"Data\":\"100600058\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false}]', 1, 150000, 150000),
 (7, 0, 1, 114824, 843, '347', '[{\"Data\":\"100700170\",\"ID\":141,\"Type\":141,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700176\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700216\",\"ID\":117,\"Type\":117,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700217\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700236\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"101400129\",\"ID\":100,\"Type\":100,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700274\",\"ID\":141,\"Type\":141,\"Count\":1,\"IsActive\":false},{\"Data\":\"1001xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700269\",\"ID\":117,\"Type\":117,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":150,\"IsActive\":false},{\"Data\":\"100700285\",\"ID\":102,\"Type\":102,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":58,\"IsActive\":false}]', 1, 1000, 1000),
 (8, 0, 1, 50101, 348, '53', '[{\"Data\":null,\"ID\":200,\"Type\":200,\"Count\":1,\"IsActive\":false}]', 1, 150000, 150000),
 (9, 0, 1, 34336, 489, '376', '[{\"Data\":\"100900035\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900083\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900161\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900172\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":\"100900299\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900307\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"206500033\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900309\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900315\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"100700260\",\"ID\":117,\"Type\":117,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":200,\"IsActive\":false},{\"Data\":\"100900318\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900185\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"201300239\",\"ID\":116,\"Type\":116,\"Count\":1,\"IsActive\":false},{\"Data\":\"1005xxxxx\",\"ID\":115,\"Type\":115,\"Count\":1,\"IsActive\":false},{\"Data\":\"201200089\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900330\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900346\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":203,\"Type\":203,\"Count\":20,\"IsActive\":false},{\"Data\":null,\"ID\":201,\"Type\":201,\"Count\":140,\"IsActive\":false},{\"Data\":\"100900339\",\"ID\":101,\"Type\":101,\"Count\":1,\"IsActive\":false},{\"Data\":\"Admin7777\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900347\",\"ID\":128,\"Type\":128,\"Count\":1,\"IsActive\":false},{\"Data\":\"206700039\",\"ID\":143,\"Type\":143,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900352\",\"ID\":128,\"Type\":128,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900351\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900256\",\"ID\":119,\"Type\":119,\"Count\":1,\"IsActive\":false},{\"Data\":\"206900116\",\"ID\":107,\"Type\":107,\"Count\":1,\"IsActive\":false},{\"Data\":\"100900369\",\"ID\":137,\"Type\":137,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":203,\"Type\":203,\"Count\":9,\"IsActive\":false},{\"Data\":\"100900375\",\"ID\":127,\"Type\":127,\"Count\":1,\"IsActive\":false},{\"Data\":null,\"ID\":202,\"Type\":202,\"Count\":143,\"IsActive\":false}]', 1, 150000, 150000),
@@ -3728,7 +3624,7 @@ INSERT INTO `money` (`id`, `holder`, `balance`, `type`) VALUES
 ('18237', '', '0', '2'),
 ('182606', '', '0', '2'),
 ('182811', '', '0', '3'),
-('184154', '', '0', '2'),
+('184154', '', '-14', '2'),
 ('188394', '', '0', '2'),
 ('188679', '', '0', '2'),
 ('189268', '', '0', '2'),
@@ -3882,6 +3778,7 @@ INSERT INTO `money` (`id`, `holder`, `balance`, `type`) VALUES
 ('353736', '', '0', '2'),
 ('354333', '', '0', '2'),
 ('354814', '', '0', '3'),
+('356596', 'Golem_Melog', '0', '1'),
 ('357472', '', '0', '2'),
 ('357682', '', '0', '2'),
 ('358251', '', '0', '2'),
@@ -3940,6 +3837,7 @@ INSERT INTO `money` (`id`, `holder`, `balance`, `type`) VALUES
 ('426091', '', '0', '2'),
 ('42627', '', '0', '2'),
 ('426487', '', '0', '2'),
+('428471', '', '1000', '3'),
 ('428603', '', '0', '2'),
 ('431200', '', '0', '2'),
 ('431545', '', '0', '2'),
@@ -4453,6 +4351,7 @@ INSERT INTO `money` (`id`, `holder`, `balance`, `type`) VALUES
 ('973273', '', '0', '2'),
 ('974819', '', '0', '2'),
 ('97513', '', '0', '2'),
+('975233', '', '1000', '3'),
 ('975718', '', '0', '3'),
 ('976341', '', '0', '2'),
 ('976999', '', '0', '2'),
@@ -4816,7 +4715,7 @@ ALTER TABLE `characters`
 -- Индексы таблицы `containers`
 --
 ALTER TABLE `containers`
-  ADD PRIMARY KEY (`id`) USING BTREE;
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `customization`
@@ -4835,6 +4734,12 @@ ALTER TABLE `e_candidates`
 --
 ALTER TABLE `e_points`
   ADD PRIMARY KEY (`Election`);
+
+--
+-- Индексы таблицы `farmer`
+--
+ALTER TABLE `farmer`
+  ADD PRIMARY KEY (`uuid`);
 
 --
 -- Индексы таблицы `fractionaccess`
@@ -4958,13 +4863,13 @@ ALTER TABLE `whitelist`
 -- AUTO_INCREMENT для таблицы `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=532;
+  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `adminaccess`
 --
 ALTER TABLE `adminaccess`
-  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `advertised`
@@ -4976,13 +4881,13 @@ ALTER TABLE `advertised`
 -- AUTO_INCREMENT для таблицы `characters`
 --
 ALTER TABLE `characters`
-  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=673;
+  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `customization`
 --
 ALTER TABLE `customization`
-  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=669;
+  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `e_candidates`
@@ -5018,7 +4923,7 @@ ALTER TABLE `fractionvehicles`
 -- AUTO_INCREMENT для таблицы `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idkey` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `othervehicles`
