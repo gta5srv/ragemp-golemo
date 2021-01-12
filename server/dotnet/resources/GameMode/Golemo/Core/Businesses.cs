@@ -4192,6 +4192,8 @@ namespace Golemo.Core
                 var cat = Convert.ToInt32(arguments[0].ToString());
                 var id = Convert.ToInt32(arguments[1].ToString());
 
+                Log.Write($"cat:{cat}, id:{id}");
+
                 var wheelsType = -1;
                 var r = 0;
                 var g = 0;
