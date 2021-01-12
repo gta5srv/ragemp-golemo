@@ -70,7 +70,7 @@ mp.events.add('tpage', (id) => {
                     localplayer.vehicle.toggleMod(18, false);
                 else if (lscPage == "lights_menu") {
                     mp.game.invoke('0xE41033B25D003A07', localplayer.vehicle.handle, 0);
-                    localplayer.vehicle.setLights(false);
+                    localplayer.vehicle.setLights(false); //todo lights
                 } else if (lscPage == "wheels_menu")
                     localplayer.vehicle.setWheelType(lscSettedWheelType);
 
