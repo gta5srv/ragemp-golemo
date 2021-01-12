@@ -152,7 +152,7 @@ mp.game.object.doorControl(mp.game.joaat("prop_ld_bankdoors_02"), 232.6054, 214.
 mp.game.object.doorControl(mp.game.joaat("prop_ld_bankdoors_02"), 231.5075, 216.5148, 106.4049, false, 0.0, 0.0, 0.0);
 mp.game.audio.setAudioFlag("DisableFlightMusic", true);
 
-global.NativeUI = require("./nativeui.js");
+global.NativeUI = require("./src/libs/nativeui");
 global.Menu = NativeUI.Menu;
 global.UIMenuItem = NativeUI.UIMenuItem;
 global.UIMenuListItem = NativeUI.UIMenuListItem;
@@ -236,90 +236,87 @@ mp.events.add('UpdateBank', function (temp, amount) {
 });
 
 // // // // // // //
-require('./client/utils/keys.js');
-require('./menus.js');
-require('./lscustoms.js');
-require('./client/player/afksystem.js');
-require('./character.js');
-require('./render.js');
-require('./main.js');
-require('./voice.js');
+require('./src/client/utils/keys.js');
+require('./src/player/menus');
+require('./src/vehicle/lscustoms');
+require('./src/client/player/afksystem.js');
+require('./src/player/character');
+require('./src/client/render');
+require('./src/player/main');
+require('./src/client/voice');
 
-require('./phone.js');
-require('./checkpoints.js');
-require('./board.js');
-//require('./inventory.js');
-require('./hud.js');
-require('./gamertag.js');
-require('./libs/house/furniture');
-require('./admesp.js');
-require('./circle.js');
-require('./vehiclesync.js');
-require("./spmenu.js");
-require('./basicsync.js');
-require('./gangzones.js');
-require('./fly.js');
-require('./environment.js');
-require('./elections.js');
-require('./animals.js');
-require('./client/utils/utils.js');
-require('./scripts/autopilot.js');
-require('./scripts/crouch.js');
-//require('./scripts/location.js');
-require('./scripts/markers.js');
-require('./scripts/fingerPointer.js');
-//require('./scripts/Hunting.js'); НЕ РАБОТАЕТ
-require('./scripts/publicGarage/index.js');
-require('./scripts/SmoothThrottle/SmoothThrottle.js');
-require('./banks/atm.js');
+require('./src/player/phone');
+require('./src/player/board');
+require('./src/player/hud');
+require('./src/player/gamertag');
+require('./src/admin/admesp');
+require('./src/player/circle');
+require('./src/vehicle/vehiclesync');
+require("./src/admin/spmenu");
+require('./src/client/basicsync');
+require('./src/admin/fly');
+require('./src/world/environment');
+require('./src/player/elections');
+require('./src/world/animals');
+require('./src/client/utils/utils');
+require('./src/scripts/autopilot');
+require('./src/scripts/crouch');
+//require('./scripts/location');
+require('./src/scripts/markers');
+require('./src/scripts/fingerPointer');
+//require('./scripts/Hunting'); НЕ РАБОТАЕТ
+require('./src/scripts/publicGarage/index');
+require('./src/scripts/SmoothThrottle/SmoothThrottle');
+require('./src/banks/atm');
 
-require('./configs/tattoo.js');
-require('./configs/barber.js');
-require('./configs/clothes.js');
-require('./configs/natives.js');
-require('./configs/tuning.js');
+require('./src/configs/tattoo');
+require('./src/configs/barber');
+require('./src/configs/clothes');
+require('./src/configs/natives');
+require('./src/configs/tuning');
 
-require('./radiosync.js');
-
-
-// Работа - Мусорщик (by BlackGold)
-require('./garbageWork/work');
-require('./garbageWork/colshapes');
-require('./garbageWork/peds');
-//
+require('./src/vehicle/radiosync');
 
 //admin=========================
-require('./libs/admin/adminpanel');
-require('./libs/admin/reportpanel');
-require('./libs/admin/tpwp');
+require('./src/admin/adminpanel');
+require('./src/admin/reportpanel');
+require('./src/admin/tpwp');
 //==============================
 
 //fractions=====================
-require('./libs/fractions/vehiclespawner');
+require('./src/fractions/vehiclespawner');
+require('./src/fractions/gangzones');
 //==============================
 
 //house=========================
-require('./libs/house/realtor.js');
+require('./src/house/furniture');
+require('./src/house/realtor');
 //==============================
 
 //jobs==========================
-require('./libs/jobs/farmer');
-require('./libs/jobs/market');
+require('./src/jobs/farmer');
+require('./src/jobs/market');
+require('./src/jobs/garbageWork/work');
+require('./src/jobs/garbageWork/colshapes');
+require('./src/jobs/garbageWork/peds');
 //==============================
 
 //utils=========================
-require('./libs/utils/animator');
-require('./libs/utils/discord');
-require('./libs/utils/notify');
-require('./libs/utils/bigmap');
+require('./src/utils/animator');
+require('./src/utils/bigmap');
+require('./src/utils/checkpoints');
+require('./src/utils/discord');
+require('./src/utils/notify');
+require('./src/utils/screeneffects');
+//==============================
+
+//modules=======================
+require('./src/modules/containers');
+require('./src/modules/island/heistisland');
 //==============================
 
 //world=========================
-require('./libs/world/containers');
-//==============================
-
-//dlc===========================
-require('./libs/dlc/island/heistisland');
+require('./src/world/doormanager');
 //==============================
 // // // // // // // // // // //
 
@@ -362,7 +359,7 @@ global.acheat = {
 }
 
 mp.events.add('authready', () => {
-    require('./auth.js');
+    require('./src/player/auth');
 })
 
 mp.events.add('acpos', () => {

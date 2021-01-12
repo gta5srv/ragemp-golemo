@@ -7,7 +7,6 @@ var auto = new Vue({
         indexM: 0,
         indexC: 0,
         models: [],
-        modelsName: [],
         colors: ["Black Briliant","Blueberry","Cold White"],
         prices: [19,199,1999],
         header: "Автосалон",

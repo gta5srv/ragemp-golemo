@@ -1,4 +1,4 @@
-﻿const vehicleNames = require('./RealCarNames.js');
+﻿const vehicleNames = {};//require('package://src/vehicle/RealCarNames');
 global.menuOpened = true;
 global.menu = null;
 
@@ -1025,7 +1025,7 @@ let auto = {
     color: null,
     entity: null,
 }
-const cameraRotator = require("browser/js/vie.js");
+const cameraRotator = require("./browser/js/vie");
 
 /*var vehCamPosition = new mp.Vector3(-42.3758, -1101.672, 26.42235);
 var vehCamRotation = new mp.Vector3(0, 0, 1.701622);
@@ -1112,15 +1112,7 @@ mp.events.add('openAuto', (models, prices) => {
     if (global.menuCheck()) return;
     autoModels = JSON.parse(models);
 
-    // Подгружаем реальные названия авто
-    let autoNames = [];
-    autoModels.forEach(model => {
-        autoNames.push(vehicleNames.get(model) || "none")
-    });
-    //
-
     setAuto('models', models);
-    setAuto('modelsName', JSON.stringify(autoNames));
     setAuto('colors', JSON.stringify(autoColors));
     setAuto('prices', prices);
 
