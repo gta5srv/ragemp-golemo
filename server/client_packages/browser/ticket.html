@@ -24,7 +24,7 @@
                                 <div class="reportinfo">
                                     <p class="task">Задача</p>
                                     <p class="tasknumber">№ {{report.id}}</p>
-                                    <p class="taskuser">{{report.author}}</p>
+                                    <p class="taskuser">{{report.author}} [{{report.authorId}}]</p>
                                 </div>
                                 <div class="reporttasks">
                                     <p>{{report.text}}</p>
@@ -209,10 +209,11 @@
         }
     })
 
-    function addReport(id_, author_, text_, blocked_, blockedBy_) {
+    function addReport(id_, author_, authorId_, text_, blocked_, blockedBy_) {
         let report = {
             id: id_,
             author: author_,
+            authorId: authorId_,
             text: text_,
             blocked: blocked_,
             blockedBy: blockedBy_

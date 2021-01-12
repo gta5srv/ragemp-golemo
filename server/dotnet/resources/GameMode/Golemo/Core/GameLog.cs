@@ -15,7 +15,7 @@ namespace Golemo.Core
         private static Queue<string> queue = new Queue<string>();
         private static Dictionary<int, DateTime> OnlineQueue = new Dictionary<int, DateTime>();
 
-        private static string DB = MySQL.dbName + "logs";
+        private static string DB = MySQL.GetDateBaseName() + "logs";
 
         private static string insert = "insert into " + DB + ".{0}({1}) values ({2})";
         

@@ -7,8 +7,6 @@ var areportpanel = new Vue({
     answer: null,
     answers: [],
     text: null,
-    playerid: -1,
-    viewtype: "",
   },
   methods: {
     selectanswer(answer) {
@@ -30,7 +28,7 @@ var areportpanel = new Vue({
     },
     submit(report) {
       if(this.text != null && this.text.length > 5 || this.viewtype != '')
-        mp.invoke("command", report + ` ` + this.text + ` ` + this.playerid);
+        mp.invoke("command", report + ` ` + this.text);
         this.text = null;
     },
     loadreply(json) {

@@ -38,9 +38,8 @@ namespace Golemo.Core
             try
             {
                 Main.Players[player].Eat = change;
-                MySQL.Query($"UPDATE characters SET eat={Main.Players[player].Eat} WHERE uuid={Main.Players[player].UUID}");
-                GUI.Dashboard.sendStats(player);
                 Trigger.ClientEvent(player, "UpdateEat", Main.Players[player].Eat, Convert.ToString(change));
+                GUI.Dashboard.sendStats(player);
             }
             catch { Log.Write("ERROR SET EAT", nLog.Type.Error); }
         }
@@ -58,7 +57,6 @@ namespace Golemo.Core
             {
                 Main.Players[player].Eat += change;
             }
-            MySQL.Query($"UPDATE characters SET eat={Main.Players[player].Eat} WHERE uuid={Main.Players[player].UUID}");
             Trigger.ClientEvent(player, "UpdateEat", Main.Players[player].Eat, Convert.ToString(change));
             GUI.Dashboard.sendStats(player);
         }
@@ -67,7 +65,6 @@ namespace Golemo.Core
             try
             {
                 Main.Players[player].Water = change;
-                MySQL.Query($"UPDATE characters SET water={Main.Players[player].Water} WHERE uuid={Main.Players[player].UUID}");
                 Trigger.ClientEvent(player, "UpdateWater", Main.Players[player].Water, Convert.ToString(change));
                 GUI.Dashboard.sendStats(player);
             }
@@ -87,7 +84,6 @@ namespace Golemo.Core
             {
                 Main.Players[player].Water += change;
             }
-            MySQL.Query($"UPDATE characters SET water={Main.Players[player].Water} WHERE uuid={Main.Players[player].UUID}");
             Trigger.ClientEvent(player, "UpdateWater", Main.Players[player].Water, Convert.ToString(change));
             GUI.Dashboard.sendStats(player);
         }

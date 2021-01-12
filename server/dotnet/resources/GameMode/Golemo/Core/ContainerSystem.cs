@@ -250,7 +250,7 @@ namespace Golemo.Core
             VehicleStreaming.SetEngineState(veh, false);
 
             string vNumber = "none";
-            vNumber = VehicleManager.Create(player.Name, vName, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0));
+            vNumber = VehicleManager.Create(player.Name, vName, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), 1000, 100);
             var house = Houses.HouseManager.GetHouse(player, true);
             if (house == null || house.GarageID == 0)
                 Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Ваш приз - {vName}", 2500);

@@ -650,7 +650,8 @@ namespace Golemo
                             house = Houses.HouseManager.GetHouse(player);
                             if (house != null)
                             {
-                                NAPI.Entity.SetEntityPosition(player, house.Position + new Vector3(0, 0, 1.5));
+                                house.SendPlayer(player);
+                                //NAPI.Entity.SetEntityPosition(player, house.Position + new Vector3(0, 0, 1.5));
                                 nInventory.ClearWithoutClothes(player);
                             }
                             else if (Players[player].HotelID != -1)

@@ -144,6 +144,7 @@ mp.events.add('UpdateBank', function (temp, amount) {
 mp.events.add('setWanted', function (lvl) {
     mp.game.gameplay.setFakeWantedLevel(lvl);
 });
+
 var blips = {};
 class BlipHelper {
     static createBlip(name, position, color) {
@@ -239,6 +240,7 @@ mp.events.add('blip_move', function (name, position) {
 mp.events.add('blip_color', function (name, color) {
     BlipHelper.colorBlip(name, color);
 });
+
 mp.keys.bind(Keys.VK_F5, false, function () { // F5 key
     if (global.menuOpened) {
         global.menuClose();
@@ -259,6 +261,7 @@ mp.keys.bind(Keys.VK_F5, false, function () { // F5 key
         mp.events.call('showHUD', global.showhud);
     }
 });
+
 mp.keys.bind(Keys.VK_K, false, function () { // belt system
     if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 400 || global.menuOpened) return;
     if (localplayer.isInAnyVehicle(false)) {

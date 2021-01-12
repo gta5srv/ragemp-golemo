@@ -17,6 +17,7 @@ namespace Golemo.Core
         {
             public int ID { get; set; }
             public string Author { get; set; }
+            public int AuthorID { get; set; }
             public string Question { get; set; }
             public string Response { get; set; }
             public string BlockedBy { get; set; }
@@ -35,7 +36,7 @@ namespace Golemo.Core
                         if (!Main.Players.ContainsKey(target)) continue;
                         if (Main.Players[target].AdminLVL < adminLvL) continue;
 
-                        Trigger.ClientEvent(target, "addreport", ID, Author, Question);
+                        Trigger.ClientEvent(target, "addreport", ID, Author, AuthorID, Question);
                     }
                 }
                 else
@@ -43,7 +44,7 @@ namespace Golemo.Core
                     if (!Main.Players.ContainsKey(someone)) return;
                     if (Main.Players[someone].AdminLVL < adminLvL) return;
                     
-                    Trigger.ClientEvent(someone, "addreport", ID, Author, Question);
+                    Trigger.ClientEvent(someone, "addreport", ID, Author, AuthorID, Question);
                 }
             }
         }
@@ -58,26 +59,27 @@ namespace Golemo.Core
             {
                 Reports = new Dictionary<int, Report>();
 
-                string cmd = @"SELECT * FROM questions;";
+                string cmd = @"TRUNCATE questions;";
+                MySQL.Query(cmd);
 
-                DataTable result = MySQL.QueryRead(cmd);
-                if (result is null) return;
-                foreach(DataRow row in result.Rows)
-                {
-                    if (Convert.ToBoolean((sbyte)row[7]) != false) continue;
+                //DataTable result = MySQL.QueryRead(cmd);
+                //if (result is null) return;
+                //foreach(DataRow row in result.Rows)
+                //{
+                //    if (Convert.ToBoolean((sbyte)row[7]) != false) continue;
 
-                    Reports.Add((int)row[0], new Report
-                    {
-                        ID = (int)row[0],
-                        Author = row[1].ToString(),
-                        Question = Main.BlockSymbols(row[2].ToString()),
-                        BlockedBy = row[3].ToString(),
-                        Response = Main.BlockSymbols(row[4].ToString()),
-                        OpenedDate = (DateTime)row[5],
-                        ClosedDate = (DateTime)row[6],
-                        Status = Convert.ToBoolean((sbyte)row[7])
-                    });
-                }
+                //    Reports.Add((int)row[0], new Report
+                //    {
+                //        ID = (int)row[0],
+                //        Author = row[1].ToString(),
+                //        Question = Main.BlockSymbols(row[2].ToString()),
+                //        BlockedBy = row[3].ToString(),
+                //        Response = Main.BlockSymbols(row[4].ToString()),
+                //        OpenedDate = (DateTime)row[5],
+                //        ClosedDate = (DateTime)row[6],
+                //        Status = Convert.ToBoolean((sbyte)row[7])
+                //    });
+                //}
 
             } catch(Exception e)
             {
@@ -168,6 +170,7 @@ namespace Golemo.Core
                 {
                     ID = id,
                     Author = player.Name,
+                    AuthorID = player.Value,
                     Question = question,
                     BlockedBy = "",
                     Response = "",
@@ -207,6 +210,13 @@ namespace Golemo.Core
                     else
                     {
                         target.SendChatMessage($"~r~Ответ от {player.Name} ({player.Value}): {response}");
+
+                        #region ReportPanel
+                        List<object> newdata = new List<object>() { repID, player.Name, response, Reports[repID].Question };
+                        string json = JsonConvert.SerializeObject(newdata);
+                        Trigger.ClientEvent(target, "reportAnswer", json);
+                        #endregion
+
                         Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"Ответ от {player.Name}: {response}", 5000);
                         foreach (var p in Main.Players.Keys.ToList())
                         {

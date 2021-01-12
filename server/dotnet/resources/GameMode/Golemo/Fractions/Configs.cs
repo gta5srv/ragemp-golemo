@@ -338,24 +338,24 @@ namespace Golemo.Fractions
             //Координаты расположения маркера для каждой фракции
             Dictionary<int, Vector3> FractionsCarSpawnerCoords = new Dictionary<int, Vector3>()
             {
-                { 1, new Vector3(0,0,0)},
-                { 2, new Vector3(102.482956, -1957.5361, 19.62336)},
-                { 3, new Vector3(0,0,0)},
-                { 4, new Vector3(0,0,0)},
-                { 5, new Vector3(979.38043, -1828.0836, 30.069244)},
-                { 6, new Vector3(0,0,0)},
-                { 7, new Vector3(421.32764, -990.5731, 29.583729)},
-                { 8, new Vector3(0,0,0)},
-                { 9, new Vector3(0,0,0)},
-                { 10, new Vector3(0,0,0)},
-                { 11, new Vector3(0,0,0)},
-                { 12, new Vector3(0,0,0)},
-                { 13, new Vector3(0,0,0)},
-                { 14, new Vector3(0,0,0)},
-                { 15, new Vector3(0,0,0)},
-                { 16, new Vector3(0,0,0)},
-                { 17, new Vector3(0,0,0)},
-                { 18, new Vector3(0,0,0)},
+                { 1, new Vector3(-199.96379, -1606.6681, 33.52537)}, //Families
+                { 2, new Vector3(84.731155, -1954.5448, 19.704018)}, //Ballas
+                { 3, new Vector3(482.5498, -1519.4877, 28.171408)}, //Vagos
+                { 4, new Vector3(1417.155, -1497.3917, 58.951546)}, //Marabunte
+                { 5, new Vector3(881.6645, -2168.2346, 31.151388)}, //Bloods
+                { 6, new Vector3(-560.6294, -174.94687, 36.978725)}, //CityHall
+                { 7, new Vector3(421.32764, -990.5731, 29.583729)}, //Police
+                { 8, new Vector3(0,0,0)}, //EMS
+                { 9, new Vector3(0,0,0)}, //FIB
+                { 10, new Vector3(0,0,0)}, //La Cosa Nostra
+                { 11, new Vector3(0,0,0)}, //Russian Mafia
+                { 12, new Vector3(0,0,0)}, //Yakuza Mafia
+                { 13, new Vector3(0,0,0)}, //Armenian Mafia
+                { 14, new Vector3(0,0,0)}, //Army
+                { 15, new Vector3(0,0,0)}, //News
+                { 16, new Vector3(0,0,0)}, //The Lost
+                { 17, new Vector3(0,0,0)}, //Merryweather Security
+                { 18, new Vector3(0,0,0)}, //Sheriff
             };
 
             foreach (var item in FractionsCarSpawnerCoords)

@@ -26,20 +26,20 @@
         <div class="upblock">
           <div class="block">
             <h2>Написать</h2>
-            <div class="selecter">
-              <div class="box">
+            <!-- <div class="selecter"> -->
+              <!-- <div class="box"> -->
                 <!-- <select  v-model="viewtype"> -->
                   <!-- <option disabled value="">Выберите из:</option> -->
                   <!-- <option>Вопрос</option> -->
                   <!-- <option>Жалоба</option> -->
                   <!-- <option>Баг</option> -->
                 <!-- </select> -->
-              </div>
-            </div>
+              <!-- </div> -->
+            <!-- </div> -->
             <div class="rep1">
               <textarea v-model="text" type="text" placeholder="Напишите здесь"></textarea>
               <span>
-                <input v-model="playerid" class="bgInput" type="number" placeholder="Введите ID игрока" v-if="viewtype == `Жалоба`">
+                <!-- <input v-model="playerid" class="bgInput" type="number" placeholder="Введите ID игрока" v-if="viewtype == `Жалоба`"> -->
                 <button @click="submit(`report`)" class="otp" type="button">Отправить сообщение</button>
               </span>
             </div>
