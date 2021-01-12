@@ -199,7 +199,7 @@ namespace Golemo.Jobs.FarmerJob
                     {
                         if (lvl == maxlvl) exp = -1;
                         player.SetData("job_farmer", new int[] { lvl, ++exp, ++allpoints });
-                        player.SendChatMessage($"LVL: {lvl}| EXP: {exp}| ALL: {allpoints}");
+                        //player.SendChatMessage($"LVL: {lvl}| EXP: {exp}| ALL: {allpoints}");
                     }
 
                     var tryAdd = nInventory.TryAdd(player, new nItem(ItemType.Hay));

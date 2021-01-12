@@ -17,7 +17,16 @@ namespace Golemo.Jobs.FarmerJob
 
         private static List<FarmerProduct> Products = new List<FarmerProduct>();
 
-        public static int marketmultiplier = rnd.Next(15, 30);
+        public static int marketmultiplier;
+        private static int _minMultiplier = 15;
+        private static int _maxMultiplier = 51;
+
+        public static void UpdateMultiplier()
+        {
+            marketmultiplier = rnd.Next(_minMultiplier, _maxMultiplier);
+            Log.Write($"Обновлен коэффициент на: {marketmultiplier}");
+        }
+
         private static List<Vector3> shape = new List<Vector3>()
         {
             new Vector3(2367.39, 4881.526, 41.4),
@@ -58,6 +67,7 @@ namespace Golemo.Jobs.FarmerJob
                     }
                 };
                 #endregion
+                UpdateMultiplier();
                 Log.Write("Loaded", nLog.Type.Success);
             }
             catch (Exception e)

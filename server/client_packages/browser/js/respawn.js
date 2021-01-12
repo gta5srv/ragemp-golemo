@@ -1,5 +1,6 @@
 ﻿function set(data) {
-    data = JSON.parse(data);
+	data = JSON.parse(data);
+	$('#spawn-select').css('display', 'flex');
 	
     if (data[2] !== true) {
 		$('#home-spawn').addClass('disabled');

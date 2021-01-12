@@ -16,15 +16,23 @@ namespace GolemoSDK
 
         public static bool Debug = false;
 
+        #region Settings
+        public static string dbHost = "localhost";
+        public static string dbUser = "root";
+        public static string dbPassword = "";
+        public static string dbName = "golemo";
+        public static string dbSslMode = "None";
+        #endregion
+
         public static void Init()
         {
             if (Connection is string) return;
             Connection = 
-                $"Host=localhost;" +
-                $"User=root;" +
-                $"Password=;" + // Ваш пароль от бд в ""
-                $"Database=golemo;" + // Название вашей бд ( какое создадте - такое и будет)
-                $"SslMode=None;";
+                $"Host={dbHost};" +
+                $"User={dbUser};" +
+                $"Password={dbPassword};" + // Ваш пароль от бд в ""
+                $"Database={dbName};" + // Название вашей бд ( какое создадте - такое и будет)
+                $"SslMode={dbSslMode};";
         }
 
         /// <summary>

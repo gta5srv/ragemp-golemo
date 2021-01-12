@@ -1,4 +1,4 @@
-let island = JSON.parse(require('./cayo_perico/island.js'));
+let island = JSON.parse(require('./island'));
 
 class HeistIslandMP {
     isLoaded = false;

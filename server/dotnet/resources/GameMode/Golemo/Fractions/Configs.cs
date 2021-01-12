@@ -325,7 +325,7 @@ namespace Golemo.Fractions
             {
                 if (!Main.Players.ContainsKey(p)) return;
                 if (Main.Players[p].FractionID != FractionID) return;
-                NAPI.Data.SetEntityData(p, "INTERACTIONCHECK", 807);
+                NAPI.Data.SetEntityData(p, "INTERACTIONCHECK", 804);
             };
             shape.OnEntityExitColShape += (s, p) =>
             {

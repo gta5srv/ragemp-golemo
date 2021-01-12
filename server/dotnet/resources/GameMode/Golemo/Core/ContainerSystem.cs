@@ -162,7 +162,7 @@ namespace Golemo.Core
             shape.OnEntityEnterColShape += (s, ent) =>
             {
                 if (!State) return;
-                NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 804);
+                NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 803);
                 NAPI.Data.SetEntityData(ent, "ContainerID", ID);
             };
             shape.OnEntityExitColShape += (s, ent) => 
@@ -200,8 +200,8 @@ namespace Golemo.Core
                     {
                         Timers.Stop($"openDoorContainer{ID}");
                     }
-                    NAPI.Task.Run(() => { Door_l.Rotation -= new Vector3(0, 0, 0.1); });
-                    NAPI.Task.Run(() => { Door_R.Rotation -= new Vector3(0, 0, -0.1); });
+                    NAPI.Task.Run(() => { Door_l.Rotation -= new Vector3(0, 0, 1); });
+                    NAPI.Task.Run(() => { Door_R.Rotation -= new Vector3(0, 0, -1); });
                 });
             });
         }

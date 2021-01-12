@@ -14,7 +14,7 @@ namespace Golemo.Fractions
 {
     class FractionCommands : Script
     {
-        private static nLog Log = new nLog("FractionCommangs");
+        private static nLog Log = new nLog("FractionCommands");
 
         [ServerEvent(Event.PlayerEnterVehicle)]
         public void onPlayerEnterVehicleHandler(Player player, Vehicle vehicle, sbyte seatid)

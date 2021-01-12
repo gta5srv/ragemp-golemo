@@ -2834,6 +2834,8 @@ namespace Golemo
                     Fractions.Cityhall.lastHourTax = 0;
                     Fractions.Ems.HumanMedkitsLefts = 100;
 
+                    Jobs.FarmerJob.Market.UpdateMultiplier(); //farmer
+
                     var rndt = new Random();
                     pluscost = rndt.Next(10, 20);
 
@@ -3218,7 +3220,7 @@ namespace Golemo
         {
             try
             {
-                client.SendChatMessage($"Сборка сервера (by RAGEMP.PRO) !{{#00FFFF}}{Full}!{{#FFF}} успешно запущена !{{#f39c12}}{StartDate}");
+                client.SendChatMessage($"Сборка сервера (by Golemo-Mode) !{{#00FFFF}}{Full}!{{#FFF}} успешно запущена !{{#f39c12}}{StartDate}");
             }
             catch { }
         }
