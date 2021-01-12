@@ -1026,7 +1026,7 @@ namespace Golemo.Fractions
             Customization.CustomPlayerData[Main.Players[target].UUID].Clothes.Mask = new ComponentItem(0, 0);
             if (maskItem != null) Items.onDrop(player, maskItem, null);
 
-            Customization.SetMask(target, 0, 0);;
+            Customization.SetMask(target, 0, 0);
 
             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы сорвали маску с игрока ({target.Value})", 3000);
             Notify.Send(target, NotifyType.Warning, NotifyPosition.BottomCenter, $"Игрок ({player.Value}) сорвал с Вас маску", 3000);
