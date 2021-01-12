@@ -9,7 +9,7 @@ mp.events.add("openJobsMenu", (json) => {
 	global.menuJobs.execute(`menuJobs.setinfo(${json})`);
 });
 
-mp.events.add("closeJobMenu", () => {
+mp.events.add("closeJobsMenu", () => {
 	global.menuClose();
 	global.menuJobs.active = false;
 	global.menuJobs.destroy();

@@ -319,7 +319,7 @@ require('./libs/world/containers');
 //==============================
 
 //dlc===========================
-require('./libs/dlc/heistisland');
+require('./libs/dlc/island/heistisland');
 //==============================
 // // // // // // // // // // //
 
@@ -657,7 +657,7 @@ mp.events.add("setResistStage", function (stage) {
     mp.game.player.setWeaponDefenseModifier(1.3 + resistStages[stage]);
 });
 
-mp.game.gxt.set("PM_PAUSE_HDR", "RAGEMP.PRO");
+mp.game.gxt.set("PM_PAUSE_HDR", "Golemo Mode");
 
 /* Недостающие части IPL карты */
 

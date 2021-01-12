@@ -26,7 +26,7 @@ var menuJobs = new Vue({
     },
     closeMenu() {
       this.active = false
-      mp.trigger("closeJobMenu")
+      mp.trigger("closeJobsMenu")
     }
   }
 })

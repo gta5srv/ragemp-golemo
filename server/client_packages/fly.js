@@ -1,6 +1,4 @@
-﻿// credits to ragempdev
-
-const controlsIds = {
+﻿const controlsIds = {
     F7: 0x76,
     W: 32,
     S: 33,
