@@ -261,10 +261,8 @@ require('./src/world/animals');
 require('./src/client/utils/utils');
 require('./src/scripts/autopilot');
 require('./src/scripts/crouch');
-//require('./scripts/location');
 require('./src/scripts/markers');
 require('./src/scripts/fingerPointer');
-//require('./scripts/Hunting'); НЕ РАБОТАЕТ
 require('./src/scripts/publicGarage/index');
 require('./src/scripts/SmoothThrottle/SmoothThrottle');
 require('./src/banks/atm');
