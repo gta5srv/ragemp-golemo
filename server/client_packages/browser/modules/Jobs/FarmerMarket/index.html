@@ -54,7 +54,7 @@
           <h2>Купить товары</h2>
           <div class="items">
             <div class="item" v-for="(item, index) in buyitems">
-              <img :src="`../../assets/images/icons/items/` + item[1] + `.png`" alt="">
+              <img :src="`../../../assets/images/icons/items/` + item[1] + `.png`" alt="">
               <p>
                 {{item[2]}} <b>${{item[3] ? item[0] * curs : item[0]}}</b>
               </p>
@@ -67,7 +67,7 @@
           <h2>Продать товары</h2>
           <div class="items">
             <div class="item" v-for="(item, index) in sellitems">
-              <img :src="`../../assets/images/icons/items/` + item[1] + `.png`" alt="">
+              <img :src="`../../../assets/images/icons/items/` + item[1] + `.png`" alt="">
               <p>
                 {{item[2]}} <b>${{item[3] ? item[0] * curs : item[0]}}</b>
               </p>

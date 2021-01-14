@@ -160,10 +160,6 @@ position: fixed;
 .context_menu li:last-child {
     margin-bottom: 0;
 }
-@font-face {
-    font-family: 'Acrom';
-    src: url(../fonts/invent.ttf);
-}
 #inventory {
     height: 100%;
     width: 100%;
