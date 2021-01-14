@@ -62,6 +62,9 @@ mp.events.add('render', function (nametags) {
                     y = _nametag[2],
                     distance = _nametag[3];
 
+                    var split = player.name.split("_");
+                    var _playerName = split[0] + " " + split[1];
+
                 if (calculateDistance(playerPos, _player.position) < 15.0) {
                     if (_player.getVariable('INVISIBLE') != true && _player.getVariable('HideNick') != true) {
                         var passportText = '';
@@ -72,13 +75,13 @@ mp.events.add('render', function (nametags) {
 
                             var text = void 0;
                             if (_player.getVariable('IS_MASK') == true) {
-                                if (isAdmin === true) text = '\u0418\u0433\u0440\u043E\u043A \u0432 \u043C\u0430\u0441\u043A\u0435: ' + _player.name + ' (' + _player.remoteId + passportText + ')';else text = 'ID: ' + _player.remoteId;
+                                if (isAdmin === true) text = '\u0418\u0433\u0440\u043E\u043A \u0432 \u043C\u0430\u0441\u043A\u0435: ' + _playerName + ' (' + _player.remoteId + passportText + ')';else text = 'ID: ' + _player.remoteId;
                             } else {
-                                if (isAdmin === true || global.friends[_player.name] !== undefined || global.passports[_player.name] !== undefined) text = _player.name + ' (' + _player.remoteId + passportText + ')';else text = 'ID: ' + _player.remoteId;;
+                                if (isAdmin === true || global.friends[_player.name] !== undefined || global.passports[_player.name] !== undefined) text = _playerName + ' (' + _player.remoteId + passportText + ')';else text = 'ID: ' + _player.remoteId;;
                             }
                             var localFraction = global.localplayer.getVariable('fraction');
                             var playerFraction = _player.getVariable('fraction');
-                            if (localFraction != null && playerFraction != null && localFraction === playerFraction) text = _player.name + ' (' + _player.remoteId + passportText + ')';
+                            if (localFraction != null && playerFraction != null && localFraction === playerFraction) text = _playerName + ' (' + _player.remoteId + passportText + ')';
 
                             var color = _player.getVariable('REDNAME') === true ? [255, 0, 0, 255] : [255, 255, 255, 255];
                             tagLabelPool[_player.remoteId] = { text: text, color: color };
