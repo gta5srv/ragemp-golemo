@@ -1,1 +1,0 @@
-ragemp-server.exe > logs/debug_log.txt

@@ -1,5 +1,0 @@
-﻿<meta>
-  <info name="GolemoMode" type="gamemode"/>
-  <script src="bin/netcoreapp3.1/Golemo.dll"/>
-  <script src="bin/netcoreapp3.1/GolemoSDK.dll"/>
-</meta>
