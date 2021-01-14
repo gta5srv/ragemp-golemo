@@ -1,0 +1,13 @@
+{
+	"maxplayers" : 1000,
+	"name" : "[JJI] Golemo-Mode", 
+	"gamemode" : "roleplay",
+	"language" : "ru",
+	"stream-distance" : 500.0,
+	"announce" : true,
+	"csharp" : "enabled",
+	"port": 22005,
+	"voice-chat": true,
+	"voice-chat-sample-rate": 48000,
+	"api-threading-debugging": false
+}

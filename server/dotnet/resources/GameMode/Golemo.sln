@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Golemo", "Golemo\Golemo.csproj", "{B9E0437C-01DA-437E-9985-CA671E2DD30B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GolemoSDK", "GolemoSDK\GolemoSDK.csproj", "{F6462172-B5F6-4B4E-90FC-563615C27516}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9E0437C-01DA-437E-9985-CA671E2DD30B}.Debug|x64.ActiveCfg = Debug|x64
+		{B9E0437C-01DA-437E-9985-CA671E2DD30B}.Debug|x64.Build.0 = Debug|x64
+		{B9E0437C-01DA-437E-9985-CA671E2DD30B}.Release|x64.ActiveCfg = Release|x64
+		{B9E0437C-01DA-437E-9985-CA671E2DD30B}.Release|x64.Build.0 = Release|x64
+		{F6462172-B5F6-4B4E-90FC-563615C27516}.Debug|x64.ActiveCfg = Debug|x64
+		{F6462172-B5F6-4B4E-90FC-563615C27516}.Debug|x64.Build.0 = Debug|x64
+		{F6462172-B5F6-4B4E-90FC-563615C27516}.Release|x64.ActiveCfg = Release|x64
+		{F6462172-B5F6-4B4E-90FC-563615C27516}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ABA24FF7-D97F-4636-9D38-8380F2523EA1}
+	EndGlobalSection
+EndGlobal

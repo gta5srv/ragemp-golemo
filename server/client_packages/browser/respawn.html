@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Spawn Select</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link type="text/css" rel="stylesheet" href="./assets/css/respawn.css" />
+	
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" src="./assets/js/respawn.js"></script>
+</head>
+<body>
+	<div id="spawn-select">
+		<div id="last-spawn" class="flex-item select-block">
+			<div class="shape shadow">
+				<div class="bg-image">
+					<div class="title-block">
+						<div class="title-text">
+							<span class="bold">Последняя позиция</span>
+						</div>
+					</div>
+					<div class="button-block">
+						<button onclick="spawn(0)" type="button" class="button">Появиться</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="home-spawn" class="flex-item select-block">
+			<div class="shape shadow">
+				<div class="bg-image">
+					<div class="title-block">
+						<div class="title-text">
+							<span class="bold">Дом</span>
+						</div>
+					</div>
+					<div class="button-block">
+						<button onclick="spawn(2)" type="button" class="button">Появиться</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="org-spawn" class="flex-item select-block">
+			<div class="shape shadow">
+				<div class="bg-image">
+					<div class="title-block">
+						<div class="title-text">
+							<span class="bold">Организация</span>
+						</div>
+					</div>
+					<div class="button-block">
+						<button onclick="spawn(1)" type="button" class="button">Появиться</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
