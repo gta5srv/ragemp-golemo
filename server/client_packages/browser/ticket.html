@@ -2,17 +2,22 @@
 <html lang="en" dir="ltr">
 
 <head>
-    <link rel="stylesheet" href="./assets/css/ticket.css">
     <meta charset="utf-8">
     <title>Golemo - Ticket</title>
+    
+    <link rel="stylesheet" href="./assets/css/ticket.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 </head>
 <style>
     body {
         user-select: none;
     }
+    [v-cloak] {
+        display: none;
+    }
 </style>
 <body>
-    <div class="wrapper" id="app" v-show="active">
+    <div class="wrapper" id="app" v-show="active" v-cloak>
         <div class="ticketfull">
             <div class="ticketinside">
                 <div class="report">
@@ -126,8 +131,6 @@
         </div>
     </div>
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 
 <script>
     var app = new Vue({
