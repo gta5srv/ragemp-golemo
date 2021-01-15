@@ -81,7 +81,9 @@ mp.events.add('render', function (nametags) {
                             }
                             var localFraction = global.localplayer.getVariable('fraction');
                             var playerFraction = _player.getVariable('fraction');
-                            if (localFraction != null && playerFraction != null && localFraction === playerFraction) text = _playerName + ' (' + _player.remoteId + passportText + ')';
+                            if (localFraction != null && playerFraction != null && localFraction === playerFraction) 
+								//text = _playerName + ' (' + _player.remoteId + passportText + ')';
+							text = `[${_player.getVariable('fractionRankName')}] ${_player.name} (${_player.getVariable('REMOTE_ID')}${passportText}) `;
 
                             var color = _player.getVariable('REDNAME') === true ? [255, 0, 0, 255] : [255, 255, 255, 255];
                             tagLabelPool[_player.remoteId] = { text: text, color: color };
@@ -91,6 +93,14 @@ mp.events.add('render', function (nametags) {
                         if (label !== undefined) {
                             drawPlayerTag(_player, x, y, label.text, label.color);
                             drawPlayerVoiceIcon(_player, x, y);
+							if (_player.getVariable('IS_DYING'))
+							{
+								drawPlayerTag(_player, x, y - 0.03, "Гражданин в коме", [255,0,0,255]);
+                            }
+                            if (_player.getVariable('IS_ADMIN') === true)
+							{
+								drawPlayercrown(_player, x, y );
+							}
                         }
                     }
                 }
@@ -137,6 +147,9 @@ function drawPlayerTag(player, x, y, displayname, color) {
 
 function drawPlayerVoiceIcon(player, x, y) {
     if (player.isVoiceActive) drawVoiceSprite("mpleaderboard", 'leaderboard_audio_3', [0.7, 0.7], 0, [255, 255, 255, 255], x, y - 0.02 * 0.7);else if (player.getVariable('voice.muted') == true) drawVoiceSprite("mpleaderboard", 'leaderboard_audio_mute', [0.7, 0.7], 0, [255, 0, 0, 255], x, y - 0.02 * 0.7);
+}
+function drawPlayercrown(player, x, y) {
+    drawVoiceSprite("commonmenu", 'mp_hostcrown', [0.7, 0.7], 0, [255, 255, 0, 255], x, y - 0.01);
 }
 
 function drawVoiceSprite(dist, name, scale, heading, colour, x, y, layer) {

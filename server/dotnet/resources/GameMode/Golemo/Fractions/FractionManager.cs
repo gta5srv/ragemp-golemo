@@ -319,6 +319,8 @@ namespace Golemo.Fractions
             }
             Trigger.ClientEvent(player, "fractionChange", fractionID);
             player.SetSharedData("fraction", fractionID);
+            Character acc = Main.Players[player];
+            player.SetSharedData("fractionRankName", Manager.getNickname(acc.FractionID, acc.FractionLVL));
             Log.Write($"Member {player.Name.ToString()} loaded. ", nLog.Type.Success);
         }
         public static void UNLoad(Player player)

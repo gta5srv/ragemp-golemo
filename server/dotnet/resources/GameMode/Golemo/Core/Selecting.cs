@@ -564,6 +564,7 @@ namespace Golemo.Core
                             Trigger.ClientEvent(target, "DeathTimer", false);
                             target.Health = 50;
                             target.ResetData("IS_DYING");
+                            player.ResetSharedData("IS_DYING");
                             Main.Players[target].IsAlive = true;
                             Main.OffAntiAnim(target);
                             if (target.HasData("DYING_TIMER"))

@@ -306,6 +306,7 @@ namespace Golemo.Fractions
 
                 if (Main.Players[player].DemorganTime != 0 || Main.Players[player].ArrestTime != 0)
                     player.SetData("IS_DYING", true);
+                player.SetSharedData("IS_DYING", true);
 
                 if (!player.HasData("IS_DYING"))
                 {
@@ -371,6 +372,7 @@ namespace Golemo.Fractions
                             NAPI.Player.SpawnPlayer(player, spawnPos);
                             NAPI.Player.SetPlayerHealth(player, 20);
                             player.ResetData("IS_DYING");
+                            player.ResetSharedData("IS_DYING");
                             Main.Players[player].IsAlive = true;
                             Main.OffAntiAnim(player);
                             NAPI.Entity.SetEntityDimension(player, dimension);
@@ -400,6 +402,7 @@ namespace Golemo.Fractions
             var timeMsg = (call) ? "10 минут Вас не вылечит медик или кто-нибудь другой" : "3 минут Вас никто не вылечит";
             //player.SetData("DYING_TIMER", Main.StartT(time, time, (o) => { player.Health = 0; }, "DYING_TIMER"));
             player.SetData("DYING_TIMER", Timers.StartOnce(time, () => DeathTimer(player)));
+            player.SetSharedData("IS_DYING", true);
 
             var deadAnimName = deadAnims[Main.rnd.Next(deadAnims.Count)];
             NAPI.Task.Run(() => { try { player.PlayAnimation("dead", deadAnimName, 39); } catch { } }, 500);
