@@ -985,11 +985,6 @@ namespace Golemo
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Такой машины больше не существует", 3000);
                             return;
                         }
-                        if (PublicGarage.spawnedVehiclesNumber.Contains(number))
-                        {
-                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Припаркуйте свой автомобиль перед продажей", 3000);
-                            return;
-                        }
 
                         string vName = VehicleManager.Vehicles[number].Model;
                         Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы предложили {target.Name} купить Ваш {vName} ({number}) за {price}$", 3000);
@@ -2275,13 +2270,6 @@ namespace Golemo
                                 {
                                     Commands.SendToAdmins(3, $"!{{#d35400}}[CAR-SALE-EXPLOIT] {seller.Name} ({seller.Value})");
                                     return;
-                                }
-
-                                // Public garage
-                                if (PublicGarage.spawnedVehiclesNumber.Contains(number))
-                                {
-                                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Продавец должен припарковать автомобиль перед продажей", 3000);
-                                    break;
                                 }
 
                                 int price = player.GetData<int>("CAR_PRICE");
