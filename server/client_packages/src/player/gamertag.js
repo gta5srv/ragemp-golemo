@@ -83,7 +83,7 @@ mp.events.add('render', function (nametags) {
                             var playerFraction = _player.getVariable('fraction');
                             if (localFraction != null && playerFraction != null && localFraction === playerFraction) 
 								//text = _playerName + ' (' + _player.remoteId + passportText + ')';
-							text = `[${_player.getVariable('fractionRankName')}] ${_player.name} (${_player.getVariable('REMOTE_ID')}${passportText}) `;
+							text = `[${_player.getVariable('fractionRankName')}] ${_playerName} (${_player.getVariable('REMOTE_ID')}${passportText}) `;
 
                             var color = _player.getVariable('REDNAME') === true ? [255, 0, 0, 255] : [255, 255, 255, 255];
                             tagLabelPool[_player.remoteId] = { text: text, color: color };
