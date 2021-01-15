@@ -318,7 +318,8 @@ namespace Golemo
 
                 Fractions.Configs.LoadFractionConfigs();
 
-                NAPI.World.SetWeather("XMAS");
+                // NAPI.World.SetWeather("XMAS"); // zima
+                NAPI.World.SetWeather("CLEAR"); // leto
 
                 if (oldconfig.DonateChecker)
                     MoneySystem.Donations.Start();
@@ -2704,7 +2705,8 @@ namespace Golemo
         private static DateTime NextWeatherChange = DateTime.Now.AddMinutes(rnd.Next(30, 70));
         private static List<int> Env_lastDate = new List<int>() { DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year };
         private static List<int> Env_lastTime = new List<int>() { DateTime.Now.Hour, DateTime.Now.Minute };
-        private static string Env_lastWeather = "XMAS";
+        //private static string Env_lastWeather = "XMAS"; //zima
+        private static string Env_lastWeather = "CLEAR";
         public static bool SCCheck = false;
 
         public static void changeWeather(byte id) {
