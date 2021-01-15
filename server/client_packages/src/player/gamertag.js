@@ -62,7 +62,7 @@ mp.events.add('render', function (nametags) {
                     y = _nametag[2],
                     distance = _nametag[3];
 
-                    var split = player.name.split("_");
+                    var split = _player.name.split("_");
                     var _playerName = split[0] + " " + split[1];
 
                 if (calculateDistance(playerPos, _player.position) < 15.0) {
