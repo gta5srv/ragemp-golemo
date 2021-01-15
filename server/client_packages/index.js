@@ -259,12 +259,6 @@ require('./src/world/environment');
 require('./src/player/elections');
 require('./src/world/animals');
 require('./src/client/utils/utils');
-require('./src/scripts/autopilot');
-require('./src/scripts/crouch');
-require('./src/scripts/markers');
-require('./src/scripts/fingerPointer');
-require('./src/scripts/publicGarage/index');
-require('./src/scripts/SmoothThrottle/SmoothThrottle');
 require('./src/banks/atm');
 
 require('./src/configs/tattoo');
