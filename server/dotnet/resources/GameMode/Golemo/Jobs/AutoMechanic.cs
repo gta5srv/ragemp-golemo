@@ -10,6 +10,34 @@ namespace Golemo.Jobs
     class AutoMechanic : Script
     {
         public static List<CarInfo> CarInfos = new List<CarInfo>();
+
+        private static Dictionary<int, ColShape> Cols = new Dictionary<int, ColShape>();
+        // добавляем в этот лист координаты починок
+        public static List<Vector3> Coords = new List<Vector3>()
+        {
+            new Vector3(499.41925, -1335.4012, 29.323275),
+            new Vector3(470.56805, -1023.6964, 27.06632),
+            new Vector3(-357.53308, -115.3788, 37.575314),
+        };
+        [ServerEvent(Event.ResourceStart)]
+        public void onResourceStart()
+        {
+            try
+            {
+                for (int i = 0; i < Coords.Count; i++)
+                {
+                    Cols.Add(i, NAPI.ColShape.CreateCylinderColShape(Coords[i], 1, 2, 0)); 
+                    Cols[i].OnEntityEnterColShape += auto_onEntityEnterColshape;
+                    Cols[i].OnEntityExitColShape += auto_onEntityEnterColshape;
+                    Cols[i].SetData("INTERACT", 135);
+                    NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"~b~Починка авто. \n ~r~Стоимость: {price}$"), Coords[i] + new Vector3(0, 0, 1.3), 10F, 0.6F, 0, new Color(0, 180, 0));
+                    NAPI.Marker.CreateMarker(1, Coords[i] - new Vector3(0, 0, 4.7), new Vector3(), new Vector3(), 4, new Color(255, 0, 0, 220));
+                    NAPI.Blip.CreateBlip(544, Coords[i], 1, 2, Main.StringToU16("Починка авто"), 255, 0, true, 0, 0);
+                }
+
+            }
+            catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }
+        }
         public static void mechanicCarsSpawner()
         {
             for (int a = 0; a < CarInfos.Count; a++)
@@ -30,8 +58,41 @@ namespace Golemo.Jobs
         private static nLog Log = new nLog("Mechanic");
 
         private static int mechanicRentCost = 100;
+        private static int price = 250; // цену на починку редактировать тут
         private static Dictionary<Player, ColShape> orderCols = new Dictionary<Player, ColShape>();
 
+        private void OnEntityEnterColShape(ColShape shape, Player entity)
+        {
+            try
+            {
+                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", shape.GetData<int>("INTERACT"));
+            }
+            catch (Exception ex) { Log.Write("onEntityEnterColshape: " + ex.Message, nLog.Type.Error); }
+        }
+        private void OnEntityExitColShape(ColShape shape, Player entity)
+        {
+            try
+            {
+                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", 0);
+            }
+            catch (Exception ex) { Log.Write("onEntityExitColshape: " + ex.Message, nLog.Type.Error); }
+        }
+        private void auto_onEntityEnterColshape(ColShape shape, Player entity)
+        {
+            try
+            {
+                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", shape.GetData<int>("INTERACT"));
+            }
+            catch (Exception ex) { Log.Write("onEntityEnterColshape: " + ex.Message, nLog.Type.Error); }
+        }
+        private void auto_onEntityExitColshape(ColShape shape, Player entity)
+        {
+            try
+            {
+                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", 0);
+            }
+            catch (Exception ex) { Log.Write("onEntityExitColshape: " + ex.Message, nLog.Type.Error); }
+        }
         public static void mechanicRepair(Player player, Player target, int price)
         {
             if (Main.Players[player].WorkID != 8 || !player.GetData<bool>("ON_WORK"))
@@ -86,6 +147,29 @@ namespace Golemo.Jobs
             NAPI.Data.SetEntityData(player, "ON_WORK", true);
             NAPI.Data.SetEntityData(vehicle, "DRIVER", player);
         }
+
+
+        public static void mechanicfixcar(Player player)
+        {
+            try
+            {
+                if (!player.IsInVehicle)
+                {
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны находиться в транспортном средстве", 3000);
+                    return;
+                }
+                if (Main.Players[player].Money < price)
+                {
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У вас недостаточно денег", 3000);
+                    return;
+                }
+                VehicleManager.RepairCar(player.Vehicle);
+                MoneySystem.Wallet.Change(player, -price);
+                Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы успешно починили транспорт за {price}$", 3000);
+            }
+            catch (Exception e) { Log.Write("EXCEPTION AT \"AutoMechanic\":\n" + e.ToString(), nLog.Type.Error); }
+        }
+
 
         public static void mechanicPay(Player player)
         {

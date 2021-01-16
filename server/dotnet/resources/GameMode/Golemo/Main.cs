@@ -1938,6 +1938,9 @@ namespace Golemo
                     case 60:
                         Fractions.Army.interactPressed(player, id);
                         return;
+                    case 67:
+                        Arenda.OpenarcarsMenu(player);
+                        return;
                     case 37:
                         Fractions.MatsWar.interact(player);
                         return;
@@ -2141,6 +2144,9 @@ namespace Golemo
                     case 381:
                     case 382:
                         Jobs.DrugFarm.interactPressed(player, id);
+                        return;
+                    case 135:
+                        Jobs.AutoMechanic.mechanicfixcar(player);
                         return;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion
