@@ -741,19 +741,18 @@ namespace Golemo.Jobs
             try
             {
                 int i = NAPI.Data.GetEntityData(veh, "NUMBER");
+                NAPI.Task.Run(() => { veh.Delete(); });
 
-                NAPI.Entity.SetEntityPosition(veh, CarInfos[i].Position);
-                NAPI.Entity.SetEntityRotation(veh, CarInfos[i].Rotation);
-                VehicleManager.RepairCar(veh);
+                Vehicle newveh = NAPI.Vehicle.CreateVehicle(CarInfos[i].Model, CarInfos[i].Position, CarInfos[i].Rotation.Z, CarInfos[i].Color1, CarInfos[i].Color2, CarInfos[i].Number);
                 Core.VehicleStreaming.SetEngineState(veh, false);
                 Core.VehicleStreaming.SetLockStatus(veh, false);
-                NAPI.Data.SetEntityData(veh, "WORK", 4);
-                NAPI.Data.SetEntityData(veh, "TYPE", "BUS");
-                NAPI.Data.SetEntityData(veh, "NUMBER", i);
-                NAPI.Data.SetEntityData(veh, "ON_WORK", false);
-                NAPI.Data.SetEntityData(veh, "ACCESS", "WORK");
-                NAPI.Data.SetEntityData(veh, "DRIVER", null);
-                veh.SetSharedData("PETROL", VehicleManager.VehicleTank[veh.Class]);
+                NAPI.Data.SetEntityData(newveh, "WORK", 4);
+                NAPI.Data.SetEntityData(newveh, "TYPE", "BUS");
+                NAPI.Data.SetEntityData(newveh, "NUMBER", i);
+                NAPI.Data.SetEntityData(newveh, "ON_WORK", false);
+                NAPI.Data.SetEntityData(newveh, "ACCESS", "WORK");
+                NAPI.Data.SetEntityData(newveh, "DRIVER", null);
+                newveh.SetSharedData("PETROL", VehicleManager.VehicleTank[newveh.Class]);
             }
             catch (Exception e) { Log.Write("respawnBusCar: " + e.Message, nLog.Type.Error); }
         }
@@ -870,10 +869,8 @@ namespace Golemo.Jobs
                     Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, $"Если Вы не сядете в транспорт через 60 секунд, то рабочий день закончится", 3000);
                     NAPI.Data.SetEntityData(player, "IN_WORK_CAR", false);
                     if (player.HasData("WORK_CAR_EXIT_TIMER"))
-                        //Main.StopT(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"), "timer_24");
                         Timers.Stop(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"));
                     NAPI.Data.SetEntityData(player, "CAR_EXIT_TIMER_COUNT", 0);
-                    //NAPI.Data.SetEntityData(player, "WORK_CAR_EXIT_TIMER", Main.StartT(1000, 1000, (o) => timer_playerExitWorkVehicle(player, vehicle), "BUS_EXIT_CAR_TIMER"));
                     NAPI.Data.SetEntityData(player, "WORK_CAR_EXIT_TIMER", Timers.Start(1000, () => timer_playerExitWorkVehicle(player, vehicle)));
                 }
             } catch (Exception e) { Log.Write("PlayerExitVehicle: " + e.Message, nLog.Type.Error); }
@@ -888,7 +885,6 @@ namespace Golemo.Jobs
                     if (!player.HasData("WORK_CAR_EXIT_TIMER")) return;
                     if (NAPI.Data.GetEntityData(player, "IN_WORK_CAR"))
                     {
-                        //Main.StopT(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"), "timer_25");
                         Timers.Stop(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"));
                         NAPI.Data.ResetEntityData(player, "WORK_CAR_EXIT_TIMER");
                         return;
@@ -903,7 +899,6 @@ namespace Golemo.Jobs
                         Trigger.ClientEvent(player, "deleteCheckpoint", 3, 0);
                         Trigger.ClientEvent(player, "deleteWorkBlip");
 
-                        //Main.StopT(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"), "timer_26");
                         Timers.Stop(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"));
                         NAPI.Data.ResetEntityData(player, "WORK_CAR_EXIT_TIMER");
                         player.SetData("PAYMENT", 0);
@@ -934,7 +929,7 @@ namespace Golemo.Jobs
                     }
                     if (Main.Players[player].WorkID == 4)
                     {
-                        if (vehicle.GetData<Vehicle>("DRIVER") == null)
+                        if (vehicle.GetData<Player>("DRIVER") == null)
                         {
                             if (player.GetData<Player>("WORK") == null)
                             {
