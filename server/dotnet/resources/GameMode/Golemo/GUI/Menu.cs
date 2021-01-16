@@ -101,7 +101,7 @@ namespace Golemo.GUI
                 Trigger.ClientEvent(client, "phoneOpen", data);
                 Main.OnAntiAnim(client);
                 client.PlayAnimation("anim@cellphone@in_car@ds", "cellphone_text_read_base", 49); // Анимация взгляда в телефон для персонажа
-                Core.BasicSync.AttachObjectToPlayer(client, NAPI.Util.GetHashKey("prop_amb_phone"), 6286, new Vector3(0.06, 0.01, -0.02), new Vector3(80, -10, 110)); // Привязываем объект к руке
+                //Core.BasicSync.AttachObjectToPlayer(client, NAPI.Util.GetHashKey("prop_amb_phone"), 6286, new Vector3(0.06, 0.01, -0.02), new Vector3(80, -10, 110)); // Привязываем объект к руке
             }
             catch (Exception e)
             {
@@ -132,7 +132,7 @@ namespace Golemo.GUI
                 Trigger.ClientEvent(client, "phoneOpen", data);
                 Main.OnAntiAnim(client);
                 client.PlayAnimation("anim@cellphone@in_car@ds", "cellphone_text_read_base", 49); // Анимация взгляда в телефон для персонажа
-                Core.BasicSync.AttachObjectToPlayer(client, NAPI.Util.GetHashKey("prop_amb_phone"), 6286, new Vector3(0.06, 0.01, -0.02), new Vector3(80, -10, 110)); // Привязываем объект к руке
+                //Core.BasicSync.AttachObjectToPlayer(client, NAPI.Util.GetHashKey("prop_amb_phone"), 6286, new Vector3(0.06, 0.01, -0.02), new Vector3(80, -10, 110)); // Привязываем объект к руке
             }
             catch (Exception e)
             {
@@ -158,7 +158,7 @@ namespace Golemo.GUI
                 client.ResetData("AntiAnimDown");
                 if (client.IsInVehicle) client.SetData("ToResetAnimPhone", true);
 
-                Core.BasicSync.DetachObject(client);
+                //Core.BasicSync.DetachObject(client);
             }
             catch (Exception e)
             {
@@ -186,7 +186,7 @@ namespace Golemo.GUI
                 client.ResetData("AntiAnimDown");
                 if (client.IsInVehicle) client.SetData("ToResetAnimPhone", true);
 
-                Core.BasicSync.DetachObject(client);
+                //Core.BasicSync.DetachObject(client);
             }
             catch (Exception e)
             {

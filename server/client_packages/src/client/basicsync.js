@@ -30,8 +30,9 @@ function attachObject(player) {
                 attachedObjects[player.id] = object;
             });
         }
-
-        function waitEntity(entity){
+    } catch (e) { } 
+}
+function waitEntity(entity){
             return new Promise(resolve => {
                 let wait = setInterval(() => {
                     if(mp.game.entity.isAnEntity(entity.handle)){
@@ -41,8 +42,6 @@ function attachObject(player) {
                 }, 1);
             });
         }
-    } catch (e) { } 
-}
 
 mp.events.add('toggleInvisible', function (player, toggle) {
     try {

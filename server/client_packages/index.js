@@ -288,9 +288,6 @@ require('./src/house/realtor');
 //jobs==========================
 require('./src/jobs/farmer');
 require('./src/jobs/market');
-require('./src/jobs/garbageWork/work');
-require('./src/jobs/garbageWork/colshapes');
-require('./src/jobs/garbageWork/peds');
 //==============================
 
 //utils=========================
