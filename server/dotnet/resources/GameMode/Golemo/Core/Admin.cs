@@ -192,7 +192,7 @@ namespace Golemo.Core
                 return;
             }
             Main.Players[target].AdminLVL = 1;
-            //Main.AdminSlots.Add(target.GetData("RealSocialClub"), new Main.AdminSlotsData(target.Name, 1, true, false));
+            target.SetSharedData("IS_ADMIN", true);
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы Выдали админ. права игроку {target.Name}", 3000);
             Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"{player.Name} Выдал Вам админ. права", 3000);
             GameLog.Admin($"{player.Name}", $"setAdmin", $"{target.Name}");
@@ -216,8 +216,7 @@ namespace Golemo.Core
                 return;
             }
             Main.Players[target].AdminLVL = 0;
-
-            //Main.AdminSlots.Remove(target.GetData("RealSocialClub"));
+            target.ResetSharedData("IS_ADMIN");
 
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы забрали права у администратора {target.Name}", 3000);
             Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"{player.Name} забрал у Вас админ. права", 3000);
