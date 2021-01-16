@@ -334,14 +334,14 @@ namespace Golemo.GUI
             grupBtn,
             hotelBtn,
             ilanBtn,
-            closeBtn,
             businessBtn,
             adminBtn,
             lockBtn,
             leaveBtn,
             onRadio,
             offRadio,
-            promoBtn
+            promoBtn,
+            park
 
         }
         public enum MenuColor

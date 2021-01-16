@@ -59,31 +59,28 @@ function open(id, canhome, canback, data) {
                 iconBtn(item[0], i, item[1], item[4], item[5],"ilanBtn");
                 break;
             case 14:
-                iconBtn(item[0], i, item[1], item[4], item[5],"closeBtn");
-                break;
-            case 15:
                 iconBtn(item[0], i, item[1], item[4], item[5],"businessBtn");
                 break;
-            case 16:
+            case 15:
                 iconBtn(item[0], i, item[1], item[4], item[5],"adminBtn");
                 break;
-            case 17:
+            case 16:
                 iconBtn(item[0], i, item[1], item[4], item[5],"lockBtn");
                 break;
-            case 18:
+            case 17:
                 iconBtn(item[0], i, item[1], item[4], item[5],"leaveBtn");
                 break;
-            case 19:
+            case 18:
                 iconBtn(item[0], i, item[1], item[4], item[5],"onRadio");
                 break;
-            case 20:
+            case 19:
                 iconBtn(item[0], i, item[1], item[4], item[5],"offRadio");
                 break;
-			case 21:
-                iconBtn(item[0], i, item[1], item[4], item[5],"bankBtn");
-                break;	
-			case 22:
+			case 20:
                 iconBtn(item[0], i, item[1], item[4], item[5],"promoBtn");
+                break;
+			case 21:
+                iconBtn(item[0], i, item[1], item[4], item[5],"park");
                 break;
         }
         IND++;

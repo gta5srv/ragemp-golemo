@@ -41,6 +41,7 @@ var Peds = [
     { Hash: -520477356, Pos: new mp.Vector3(-455.9738, 6014.119, 31.59654), Angle: 357.7483 }, // Bot
     { Hash: -1614285257, Pos: new mp.Vector3(-449.8658, 6012.458, 31.59655), Angle: 308.1411 }, // Kira
     { Hash: -1699520669, Pos: new mp.Vector3(-429.0482, 5997.3, 31.59655), Angle: 86.12 }, // Stepa
+	{ Hash: 0x5719786D, Pos: new mp.Vector3(-1167.388, -700.1123, 21.9), Angle: 310.5682 }, // Парковщик
 ];
 
 /*mp.colshapes.forEach( 

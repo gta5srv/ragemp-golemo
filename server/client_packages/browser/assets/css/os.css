@@ -356,27 +356,6 @@ input[type="text"] {
 	box-shadow: 0 0 20px;
     }
 
-.closeBtn {
-	position: absolute;
-    background-color: rgb(255, 255, 255), transparent;
-    font-size: 14pt;
-    cursor: pointer;
-    background-image: url('../images/phone/back.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 5px;
-    width: 80px;
-    height: 80px;
-	right: 98px;
-	margin-top: 395px;
-}
-
-	.closeBtn:hover {
-	color: #242424;
-    height: 83px;
-    border-radius: 20px;
-    white-space: pre;
-    }
 	
 .taxiBtn {
 	position: absolute;
@@ -538,6 +517,32 @@ input[type="text"] {
 	width: 39px;
 	box-shadow: 0 0 20px;
     }
+	
+    .park {
+        position: absolute;
+        background-color: rgb(255, 255, 255), transparent;
+        font-size: 14pt;
+        margin: 4px 4px 4px 4px;
+        cursor: pointer;
+        background-image: url('../images/phone/park.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 5px;
+        width: 50px;
+        height: 50px;
+        right: 58px;
+        right: 145px;
+        margin-top: 65px;
+    }
+    
+    .park:active {
+        background-color: rgba(27, 27, 35, 0.8);	
+        border-radius: 34px;	
+        border: 4px solid;
+        height: 39px;
+        width: 39px;
+        box-shadow: 0 0 20px;
+        }
 
 .list input {
     width: 58%;

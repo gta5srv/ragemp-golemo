@@ -951,27 +951,30 @@ namespace Golemo
                         price = Convert.ToInt32(text);
                         if (price < 1 || price > 100000000)
                         {
-                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Введите корректные данные", 3000);
+                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Введите сумму от 1$ о 100.000.000$", 3000);
                             return;
                         }
 
-                        /*Houses.House house = Houses.HouseManager.GetHouse(target, true);
-                        if (house == null)
+                        Houses.House house = Houses.HouseManager.GetHouse(target, true);
+                        if (house == null && VehicleManager.getAllPlayerVehicles(target.Name.ToString()).Count > 1)
                         {
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока нет личного дома", 3000);
                             return;
                         }
-                        if (house.GarageID == 0)
+                        if (house != null)
                         {
-                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока нет гаража", 3000);
-                            return;
+                            if (house.GarageID == 0 && VehicleManager.getAllPlayerVehicles(target.Name.ToString()).Count > 1)
+                            {
+                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока нет гаража", 3000);
+                                return;
+                            }
+                            Houses.Garage garage = Houses.GarageManager.Garages[house.GarageID];
+                            if (VehicleManager.getAllPlayerVehicles(target.Name).Count - 1 >= Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
+                            {
+                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока уже максимальное кол-во машин", 3000);
+                                return;
+                            }
                         }
-                        Houses.Garage garage = Houses.GarageManager.Garages[house.GarageID];
-                        if (VehicleManager.getAllPlayerVehicles(target.Name).Count >= Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
-                        {
-                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока уже максимальное кол-во машин", 3000);
-                            return;
-                        }*/
 
                         if (Main.Players[target].Money < price)
                         {
@@ -2132,9 +2135,9 @@ namespace Golemo
                     case 804: //todo FractionCarSpawner
                         Fractions.CarSpawner.OpenMenuSpawner(player);
                         break;
-                    //case 808: //todo Arena
-                    //    Arena.Manager.OpenArenaMenu(player, "");
-                    //    break;
+                    case 556:
+                        Houses.ParkManager.interactionPressed(player, id);
+                        return;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion
                     default:
@@ -2231,15 +2234,18 @@ namespace Golemo
                         case "BUY_CAR":
                             {
                                 Houses.House house = Houses.HouseManager.GetHouse(player, true);
-                                if (house == null)
+                                if (house == null && VehicleManager.getAllPlayerVehicles(player.Name.ToString()).Count > 1)
                                 {
                                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас нет личного дома", 3000);
                                     break;
                                 }
-                                if (house.GarageID == 0)
+                                if (house != null)
                                 {
-                                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас нет гаража", 3000);
-                                    break;
+                                    if (house.GarageID == 0 && VehicleManager.getAllPlayerVehicles(player.Name.ToString()).Count > 1)
+                                    {
+                                        Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас нет гаража", 3000);
+                                        break;
+                                    }
                                 }
                                 Houses.Garage garage = Houses.GarageManager.Garages[house.GarageID];
                                 if (VehicleManager.getAllPlayerVehicles(player.Name).Count >= Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
@@ -2284,10 +2290,17 @@ namespace Golemo
                                 MoneySystem.Wallet.Change(seller, price);
                                 GameLog.Money($"player({Players[player].UUID})", $"player({Players[seller].UUID})", price, $"buyCar({number})");
 
-                                Houses.Garage sellerGarage = Houses.GarageManager.Garages[Houses.HouseManager.GetHouse(seller).GarageID];
-                                sellerGarage.DeleteCar(number);
-
-                                garage.SpawnCar(number);
+                                var houset = Houses.HouseManager.GetHouse(seller, true);
+                                if (houset != null)
+                                {
+                                    Houses.Garage sellerGarage = Houses.GarageManager.Garages[Houses.HouseManager.GetHouse(seller).GarageID];
+                                    sellerGarage.DeleteCar(number);
+                                }
+                                if (house != null)
+                                {
+                                    Houses.Garage Garage = Houses.GarageManager.Garages[Houses.HouseManager.GetHouse(player).GarageID];
+                                    Garage.SpawnCar(number);
+                                }
 
                                 Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы купили {vData.Model} ({number}) за {price}$ у {seller.Name}", 3000);
                                 Notify.Send(seller, NotifyType.Success, NotifyPosition.BottomCenter, $"{player.Name} купил у Вас {vData.Model} ({number}) за {price}$", 3000);
@@ -3557,9 +3570,13 @@ namespace Golemo
             menuItem.Text = "";
             menu.Add(menuItem);
 
-            menuItem = new Menu.Item("close", Menu.MenuItem.closeBtn);
-            menuItem.Text = "";
-            menu.Add(menuItem);
+            if (Houses.HouseManager.GetHouse(player, true) == null)
+            {
+                menuItem = new Menu.Item("park", Menu.MenuItem.park);
+                menuItem.Text = "";
+                menu.Add(menuItem);
+            }
+
 
             await menu.OpenAsync(player);
         }
@@ -3624,6 +3641,9 @@ namespace Golemo
                     return;
                 case "promo":
                     Trigger.ClientEvent(player, "openInput", "Промокод", "Введите промокод", 10, "enter_promocode");
+                    return;
+                case "park":
+                    ParkManager.OpenMenu(player);
                     return;
                 case "acceptcall":
                     Voice.Voice.PhoneCallAcceptCommand(player);

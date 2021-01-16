@@ -685,6 +685,27 @@ namespace Golemo.Houses
                     MoneySystem.Bank.Accounts[house.BankID].Balance = Convert.ToInt32(house.Price / 100 * 0.02) * 2;
 
                     MoneySystem.Wallet.Change(player, -house.Price);
+                    var targetVehicles = VehicleManager.getAllPlayerVehicles(player.Name.ToString());
+                    var vehicle = "";
+                    foreach (var num in targetVehicles)
+                    {
+                        vehicle = num;
+                        break;
+                    }
+                    foreach (var v in NAPI.Pools.GetAllVehicles())
+                    {
+                        if (v.HasData("ACCESS") && v.GetData<string>("ACCESS") == "PERSONAL" && NAPI.Vehicle.GetVehicleNumberPlate(v) == vehicle)
+                        {
+                            var veh = v;
+                            if (veh == null) return;
+                            VehicleManager.Vehicles[vehicle].Fuel = (!NAPI.Data.HasEntityData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : NAPI.Data.GetEntityData(veh, "PETROL");
+                            NAPI.Entity.DeleteEntity(veh);
+                            MoneySystem.Wallet.Change(player, -200);
+                            GameLog.Money($"player({Main.Players[player].UUID})", $"server", 200, $"carEvac");
+                            Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Ваша машина была отогнана в гараж", 3000);
+                            break;
+                        }
+                    }
                     GameLog.Money($"player({Main.Players[player].UUID})", $"server", house.Price, $"houseBuy({house.ID})");
                     return;
                 case "interior":
