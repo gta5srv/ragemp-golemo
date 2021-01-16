@@ -292,7 +292,7 @@ namespace Golemo.Fractions
 
                 if (player.HasData("job_farmer")) Jobs.FarmerJob.Farmer.StartWork(player, false);
 
-                VehicleManager.WarpPlayerOutOfVehicle(player);
+                //VehicleManager.WarpPlayerOutOfVehicle(player);
                 Main.Players[player].IsAlive = false;
                 if (player.HasData("AdminSkin"))
                 {
@@ -333,7 +333,6 @@ namespace Golemo.Fractions
 
                             if (player.HasData("DYING_TIMER"))
                             {
-                                //Main.StopT(player.GetData<string>("DYING_TIMER"), "timer_9");
                                 Timers.Stop(player.GetData<string>("DYING_TIMER"));
                                 player.ResetData("DYING_TIMER");
                             }
@@ -400,7 +399,6 @@ namespace Golemo.Fractions
             var time = (call) ? 600000 : 180000;
             Trigger.ClientEvent(player, "DeathTimer", time);
             var timeMsg = (call) ? "10 минут Вас не вылечит медик или кто-нибудь другой" : "3 минут Вас никто не вылечит";
-            //player.SetData("DYING_TIMER", Main.StartT(time, time, (o) => { player.Health = 0; }, "DYING_TIMER"));
             player.SetData("DYING_TIMER", Timers.StartOnce(time, () => DeathTimer(player)));
             player.SetSharedData("IS_DYING", true);
 
