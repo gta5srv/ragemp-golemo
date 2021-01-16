@@ -5187,22 +5187,25 @@ namespace Golemo.Core
                 MySQL.Query($"DELETE FROM `weapons` WHERE id={id}");
             }
 
-            var owner = NAPI.Player.GetPlayerFromName(biz.Owner);
-            if (owner == null)
+            if (biz.Owner != "Государство" && biz.Owner != "")
             {
-                var split = biz.Owner.Split('_');
-                var data = MySQL.QueryRead($"SELECT biz FROM characters WHERE firstname='{split[0]}' AND lastname='{split[1]}'");
-                List<int> ownerBizs = new List<int>();
-                foreach (DataRow Row in data.Rows)
-                    ownerBizs = JsonConvert.DeserializeObject<List<int>>(Row["biz"].ToString());
-                ownerBizs.Remove(biz.ID);
+                var owner = NAPI.Player.GetPlayerFromName(biz.Owner);
+                if (owner == null)
+                {
+                    var split = biz.Owner.Split('_');
+                    var data = MySQL.QueryRead($"SELECT `biz` FROM `characters` WHERE firstname='{split[0]}' AND lastname='{split[1]}'");
+                    List<int> ownerBizs = new List<int>();
+                    foreach (DataRow Row in data.Rows)
+                        ownerBizs = JsonConvert.DeserializeObject<List<int>>(Row["biz"].ToString());
+                    ownerBizs.Remove(biz.ID);
 
-                MySQL.Query($"UPDATE characters SET biz='{JsonConvert.SerializeObject(ownerBizs)}' WHERE firstname='{split[0]}' AND lastname='{split[1]}'");
-            }
-            else
-            {
-                Main.Players[owner].BizIDs.Remove(id);
-                MoneySystem.Wallet.Change(owner, biz.SellPrice);
+                    MySQL.Query($"UPDATE characters SET biz='{JsonConvert.SerializeObject(ownerBizs)}' WHERE firstname='{split[0]}' AND lastname='{split[1]}'");
+                }
+                else
+                {
+                    Main.Players[owner].BizIDs.Remove(id);
+                    MoneySystem.Wallet.Change(owner, biz.SellPrice);
+                }
             }
             biz.Destroy();
             BizList.Remove(biz.ID);
@@ -6057,8 +6060,9 @@ namespace Golemo.Core
                 try
                 {
                     blip.Delete();
-                    marker.Delete();
+                    if (marker != null) marker.Delete();
                     label.Delete();
+                    mafiaLabel.Delete();
                     shape.Delete();
                     truckerShape.Delete();
                 }
