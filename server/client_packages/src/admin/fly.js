@@ -30,7 +30,7 @@ function pointingAt(distance) {
 
 mp.events.add("AGM", (toggle) => {
 	admingm = toggle;
-	localplayer.setInvincible(toggle);
+    localplayer.setInvincible(toggle);
 	mp.game.graphics.notify(toggle ? '~g~Бессмертие включено' : '~r~Бессмертие выключено');
 });
 

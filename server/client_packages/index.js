@@ -603,9 +603,9 @@ mp.events.add("Player_SetWalkStyle", (player, index) => {
 	}
 });
 
-/*mp.events.add("playerDeath", function (player, reason, killer) {
+mp.events.add("playerDeath", function (player, reason, killer) {
     givenWeapon = -1569615261;
-});*/
+});
 
 mp.events.add("removeAllWeapons", function () {
     givenWeapon = -1569615261;

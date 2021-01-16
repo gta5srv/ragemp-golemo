@@ -337,7 +337,6 @@ namespace Golemo.Fractions
                 {
                     Trigger.ClientEvent(player, "hideLoader");
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Загрузка материалов отменена, так как Вы умерли", 3000);
-                    //Main.StopT(player.GetData<string>("loadMatsTimer"), "Event_PlayerDeath_army");
                     Timers.Stop(player.GetData<string>("loadMatsTimer"));
                     var vehicle = player.GetData<Vehicle>("vehicleMats");
                     NAPI.Data.ResetEntityData(vehicle, "loaderMats");

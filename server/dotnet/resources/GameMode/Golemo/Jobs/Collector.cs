@@ -174,7 +174,6 @@ namespace Golemo.Jobs
                     Customization.ApplyCharacter(player);
                     if (player.HasData("WORK_CAR_EXIT_TIMER"))
                     {
-                        //Main.StopT(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"), "timer_14");
                         Timers.Stop(NAPI.Data.GetEntityData(player, "WORK_CAR_EXIT_TIMER"));
                         NAPI.Data.ResetEntityData(player, "WORK_CAR_EXIT_TIMER");
                     }
