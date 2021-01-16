@@ -2135,8 +2135,12 @@ namespace Golemo
                     case 804: //todo FractionCarSpawner
                         Fractions.CarSpawner.OpenMenuSpawner(player);
                         break;
-					case 556:
+                    case 556:
                         Houses.ParkManager.interactionPressed(player, id);
+                        return;
+                    case 381:
+                    case 382:
+                        Jobs.DrugFarm.interactPressed(player, id);
                         return;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion
@@ -2842,7 +2846,7 @@ namespace Golemo
                     Fractions.Ems.HumanMedkitsLefts = 100;
 
                     Jobs.FarmerJob.Market.UpdateMultiplier(); //farmer
-
+                    Jobs.DrugFarm.UpdateMultiplier(); //drugfarm
                     var rndt = new Random();
                     pluscost = rndt.Next(10, 20);
 
