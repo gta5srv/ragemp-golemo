@@ -1,4 +1,4 @@
-﻿var updateGameTime = false;
+﻿var updateGameTime = true;
 var setTimeCMDused = false;
 
 var nowTime = { Hour: 0, Minute: 0 };
