@@ -57,7 +57,7 @@ namespace Golemo.Core
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (player.VehicleSeat != -1)
+                if (player.VehicleSeat != 0)
                 {
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны быть в водительском месте", 3000);
                     return;
