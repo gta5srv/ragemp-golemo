@@ -209,32 +209,13 @@ mp.keys.bind(Keys.VK_B, false, function () { // 2 key
     }
 });
 
-/*
-mp.keys.bind(Keys.VK_UP, false, function () { // стрелка вверх
-    if (!loggedin || chatActive || editing || global.menuCheck() || cuffed || localplayer.getVariable('InDeath') == true || new Date().getTime() - lastCheck < 400) return;
-    mp.events.callRemote('openPlayerMenu');
-	mp.game.mobile.createMobilePhone(3);
-	mp.game.mobile.setMobilePhoneScale (0);
-	mp.game.mobile.scriptIsMovingMobilePhoneOffscreen(false);
-	mp.game.mobile.setPhoneLean(false);
-    lastCheck = new Date().getTime();
-});
-
-mp.keys.bind(Keys.VK_DOWN, true, function() {   // стрелка вниз
-    mp.game.invoke ('0x3BC861DF703E5097', mp.players.local.handle, true);
-	//mp.events.call("phoneHide");
-	//mp.events.call("phoneClose");
-    mp.events.callRemote("closePlayerMenu");
-});
-*/
-
 mp.keys.bind(Keys.VK_M, false, function () {
 
     if (!loggedin || chatActive || editing || global.menuCheck() || cuffed || localplayer.getVariable('InDeath') == true || new Date().getTime() - lastCheck < 400) return;
     
     if (global.phoneOpen)
     {
-        mp.game.invoke ('0x3BC861DF703E5097', mp.players.local.handle, true);
+
         mp.events.callRemote("closePlayerMenu");
 
         global.phoneOpen = 0;
@@ -242,10 +223,6 @@ mp.keys.bind(Keys.VK_M, false, function () {
     else
     {
         mp.events.callRemote('openPlayerMenu');
-        mp.game.mobile.createMobilePhone(3);
-        mp.game.mobile.setMobilePhoneScale (0);
-        mp.game.mobile.scriptIsMovingMobilePhoneOffscreen(false);
-        mp.game.mobile.setPhoneLean(false);
         lastCheck = new Date().getTime();
 
         global.phoneOpen = 1;
