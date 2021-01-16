@@ -3538,15 +3538,17 @@ namespace Golemo.Core
             try
             {
                 if (!Group.CanUseCmd(player, "agm")) return;
-                if (!player.HasSharedData("AGM") || player.GetSharedData<bool>("AGM"))
+                if (!player.HasData("AGM") || !player.GetData<bool>("AGM"))
                 {
+                    player.SendChatMessage($"true");
                     Trigger.ClientEvent(player, "AGM", true);
-                    player.SetSharedData("AGM", true);
+                    player.SetData("AGM", true);
                 }
                 else
                 {
+                    player.SendChatMessage($"false");
                     Trigger.ClientEvent(player, "AGM", false);
-                    player.SetSharedData("AGM", false);
+                    player.SetData("AGM", false);
                 }
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
