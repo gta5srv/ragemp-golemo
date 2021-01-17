@@ -1938,9 +1938,6 @@ namespace Golemo
                     case 60:
                         Fractions.Army.interactPressed(player, id);
                         return;
-                    case 67:
-                        Arenda.OpenarcarsMenu(player);
-                        return;
                     case 37:
                         Fractions.MatsWar.interact(player);
                         return;
