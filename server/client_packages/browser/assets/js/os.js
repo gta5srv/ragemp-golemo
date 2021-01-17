@@ -82,6 +82,9 @@ function open(id, canhome, canback, data) {
 			case 21:
                 iconBtn(item[0], i, item[1], item[4], item[5],"park");
                 break;
+            case 22:
+                iconBtn(item[0], i, item[1], item[4], item[5],"forb");
+                break;
         }
         IND++;
     });

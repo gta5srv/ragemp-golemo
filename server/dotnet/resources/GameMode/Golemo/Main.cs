@@ -175,8 +175,6 @@ namespace Golemo
         {
             try
             {
-                //NAPI.TextLabel.CreateTextLabel("~r~Мутный Тип", new Vector3(-875.41, -848.00, 20.40), 7f, 0.3f, 0, new Color(255, 255, 255), true, 0);
-                //NAPI.TextLabel.CreateTextLabel("~y~Барыга", new Vector3(1134.20, -878.71, 55.03), 7f, 0.3f, 0, new Color(255, 255, 255), true, 0);
 
                 NAPI.Server.SetAutoRespawnAfterDeath(false);
                 NAPI.Task.Run(() =>
@@ -184,6 +182,7 @@ namespace Golemo
                     NAPI.Server.SetGlobalServerChat(false);
                     NAPI.World.SetTime(DateTime.Now.Hour, 0, 0);
                 });
+                Timers.StartOnceTask(10000, () => Forbes.SyncMajors()); // frobes
 
                 DataTable result = MySQL.QueryRead("SELECT `uuid`,`firstname`,`lastname`,`sim`,`lvl`,`exp`,`fraction`,`money`,`bank`,`adminlvl` FROM `characters`");
                 if (result != null)
@@ -2847,6 +2846,7 @@ namespace Golemo
                     
                     Fractions.Cityhall.lastHourTax = 0;
                     Fractions.Ems.HumanMedkitsLefts = 100;
+                    Forbes.SyncMajors(); //forbes
 
                     Jobs.FarmerJob.Market.UpdateMultiplier(); //farmer
                     Jobs.DrugFarm.UpdateMultiplier(); //drugfarm
@@ -3515,6 +3515,10 @@ namespace Golemo
             menuItem.Text = "";
             menu.Add(menuItem);
 
+            menuItem = new Menu.Item("forb", Menu.MenuItem.forb);
+            menuItem.Text = "";
+            menu.Add(menuItem);
+
             if (Main.Players[player].BizIDs.Count > 0)
             {
                 menuItem = new Menu.Item("biz", Menu.MenuItem.businessBtn);
@@ -3606,6 +3610,9 @@ namespace Golemo
                     return;
                 case "services":
                     OpenServicesMenu(player);
+                    return;
+                case "forb":
+                    Forbes.OpenForbes(player);
                     return;
                 case "citymanage":
                     OpenMayorMenu(player);
