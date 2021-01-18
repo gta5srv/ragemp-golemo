@@ -2144,6 +2144,9 @@ namespace Golemo
                     case 135:
                         Jobs.AutoMechanic.mechanicfixcar(player);
                         return;
+                    case 101:
+                        Houses.AutoSelltoGov.OpenCarsSellMenu(player);
+                        return;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion
                     default:

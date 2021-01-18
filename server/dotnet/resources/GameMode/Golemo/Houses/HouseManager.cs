@@ -1382,9 +1382,6 @@ namespace Golemo.Houses
                         break;
                 }
             }
-            menuItem = new Menu.Item("sell", Menu.MenuItem.Button);
-            menuItem.Text = $"Продать ({price}$)";
-            menu.Add(menuItem);
 
             menuItem = new Menu.Item("close", Menu.MenuItem.Button);
             menuItem.Text = "Закрыть";
