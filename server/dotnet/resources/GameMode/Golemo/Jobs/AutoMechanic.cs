@@ -31,7 +31,7 @@ namespace Golemo.Jobs
                     Cols[i].OnEntityExitColShape += auto_onEntityEnterColshape;
                     Cols[i].SetData("INTERACT", 135);
                     NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"~b~Починка авто. \n ~r~Стоимость: {price}$"), Coords[i] + new Vector3(0, 0, 1.3), 10F, 0.6F, 0, new Color(0, 180, 0));
-                    NAPI.Marker.CreateMarker(1, Coords[i] - new Vector3(0, 0, 4.7), new Vector3(), new Vector3(), 4, new Color(255, 0, 0, 220));
+                    NAPI.Marker.CreateMarker(1, Coords[i] - new Vector3(0, 0, 5.9), new Vector3(), new Vector3(), 4, new Color(255, 0, 0, 220));
                     NAPI.Blip.CreateBlip(544, Coords[i], 1, 2, Main.StringToU16("Починка авто"), 255, 0, true, 0, 0);
                 }
 
@@ -153,6 +153,7 @@ namespace Golemo.Jobs
         {
             try
             {
+                if (player.GetData<int>("INTERACTIONCHECK") != 135) return;
                 if (!player.IsInVehicle)
                 {
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны находиться в транспортном средстве", 3000);
@@ -165,6 +166,7 @@ namespace Golemo.Jobs
                 }
                 VehicleManager.RepairCar(player.Vehicle);
                 MoneySystem.Wallet.Change(player, -price);
+                NAPI.Data.ResetEntityData(player, "INTERACTIONCHECK");
                 Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы успешно починили транспорт за {price}$", 3000);
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"AutoMechanic\":\n" + e.ToString(), nLog.Type.Error); }
