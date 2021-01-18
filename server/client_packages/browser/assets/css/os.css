@@ -160,81 +160,50 @@ input[type="text"] {
     border-width: 0;
 }
 
-.contactBtn {
-	position: absolute;
+	.contactBtn {
     background-color: rgb(255, 255, 255), transparent;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
-	background-image: url('../images/phone/phone.png');
+    background-image: url('../images/phone/phone.png');
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 49px;
-    height: 49px;
-	right: 205px;
+    width: 55px;
+    height: 55px;
 }
 
-	.contactBtn:active {
-	color: #242424;
-	border-radius: 34px;	
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    white-space: pre;
-    }
-
 .gpsBtn {
-	position: absolute;
     background-color: rgb(255, 255, 255) transparent;
     font-size: 14pt;
-    margin: 4px 4px 4px 4px; /* üst,  */
+    margin: 4px 4px 4px 4px;; /* üst,  */
     cursor: pointer;
     background-image: url('../images/phone/gps.png');
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 52px;
-    height: 52px;
-	right: 145px;
+    width: 55px;
+    height: 55px;
 }
-
-	.gpsBtn:active {
-	color: #242424;
-	border-radius: 34px;	
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    white-space: pre;
-    }
 	
 .servicesBtn {
-	position: absolute;
     background-color: rgb(255, 255, 255) transparent;
+    color: green;
     font-size: 14pt;
-    margin: 4px 4px 4px 4px; /* üst,  */
+    margin: 4px 4px 4px 4px;
+    padding: 5px;
     cursor: pointer;
     background-image: url('../images/phone/servisler.png');
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 49px;
-    height: 49px;
-	right: 85px;
+    width: 46px;
+    height: 46px;
 }
 
-	.servicesBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }
-
 .grupBtn {
-    position: absolute;
     background-color: rgb(255, 255, 255), transparent;
+    color: green;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
@@ -242,24 +211,13 @@ input[type="text"] {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 50px;
-    right: 40px;
-    height: 50px;
-    margin-top: 65px;
+    width: 55px;
+    height: 55px;
 }
 
-	.grupBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }
-
 .businessBtn {
-	position: absolute;
     background-color: rgb(255, 255, 255), transparent;
+    color: green;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
@@ -267,24 +225,13 @@ input[type="text"] {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 47px;
-    height: 47px;
-	right: 100px;
-	margin-top: 67px;
+    width: 55px;
+    height: 55px;
 }
 
-	.businessBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }
-
 .homeBtn {
-	position: absolute;
     background-color: rgb(255, 255, 255), transparent;
+    color: green;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
@@ -292,25 +239,13 @@ input[type="text"] {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 50px;
-    height: 50px;
-	right: 58px;
-	right: 205px;
-	margin-top: 65px;
+    width: 55px;
+    height: 55px;
 }
 
-	.homeBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }
-
 .hotelBtn {
-	position: absolute;
     background-color: rgb(255, 255, 255), transparent;
+    color: green;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
@@ -318,23 +253,13 @@ input[type="text"] {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 50px;
-    height: 50px;
-	right: 48px;
+    width: 55px;
+    height: 55px;
 }
 
-	.hotelBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }
-
 .ilanBtn {
-	position: absolute;
     background-color: rgb(255, 255, 255), transparent;
+    color: green;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
@@ -342,24 +267,14 @@ input[type="text"] {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 50px;
-    height: 50px;
-	right: 26px;
+    width: 55px;
+    height: 55px;
 }
 
-	.ilanBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }
-
 	
-.taxiBtn {
-	position: absolute;
+.taxi {
     background-color: rgb(255, 255, 255), transparent;
+    color: green;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
@@ -367,23 +282,13 @@ input[type="text"] {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 50px;
-    height: 50px;
-	right: 100px;
-	margin-top: 65px;
+    width: 55px;
+    height: 55px;
 }
-
-	.taxiBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }	
 
 .adminBtn {
     background-color: rgb(255, 255, 255), transparent;
+    color: green;
     font-size: 14pt;
     margin: 4px 4px 4px 4px;
     cursor: pointer;
@@ -391,18 +296,9 @@ input[type="text"] {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
 }
-
-	.adminBtn:active {
-	background-color: rgba(27, 27, 35, 0.8);	
-	border-radius: 34px;	
-	border: 4px solid;
-	height: 39px;
-	width: 39px;
-	box-shadow: 0 0 20px;
-    }
 
 .lockBtn {
     background-color: rgb(255, 255, 255), transparent;
