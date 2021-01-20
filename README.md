@@ -8,9 +8,8 @@
 | Платформа | [RageMultiplayer](https://rage.mp/) |
 | Игра | [GTA V](https://www.rockstargames.com/V/ru/) |
 
-
+#### Описание:
 ```
-Описание:
 |  Скоро...............................
 |......................................
 |......................................
@@ -23,8 +22,9 @@
 | Product | [Golemo-Mode](https://gitlab.com/JJiGolem/golemo-mode) |
 | Platform | [RageMultiplayer](https://rage.mp/) |
 | Game | [GTA V](https://www.rockstargames.com/V/ru/) |
+
+#### Description:
 ```
-Description:
 |  Coming Soon.........................
 |......................................
 |......................................
