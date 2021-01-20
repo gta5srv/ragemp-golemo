@@ -291,6 +291,7 @@ require('./src/jobs/market');
 //==============================
 
 //player========================
+require('./src/player/crouch');
 require('./src/player/fingerpoints');
 //==============================
 
