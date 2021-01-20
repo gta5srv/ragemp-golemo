@@ -290,6 +290,10 @@ require('./src/jobs/farmer');
 require('./src/jobs/market');
 //==============================
 
+//player========================
+require('./src/player/fingerpoints');
+//==============================
+
 //utils=========================
 require('./src/utils/animator');
 require('./src/utils/bigmap');
