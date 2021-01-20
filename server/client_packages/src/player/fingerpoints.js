@@ -138,7 +138,7 @@ mp.events.add("fpsync.update", (playerH, camPitch, camHeading) => {
 });
 
 mp.keys.bind(0x42, true, () => {
-    //if(login == false) return;
+    if (!loggedin || chatActive || editing || global.menuOpened) return;
     if (mp.players.local.isTypingInTextChat) {
         return;
     }
@@ -146,7 +146,7 @@ mp.keys.bind(0x42, true, () => {
 });
 
 mp.keys.bind(0x42, false, () => {
-    //if(login == false) return;
+    if (!loggedin || chatActive || editing || global.menuOpened) return;
     if (mp.players.local.isTypingInTextChat) {
         return;
     }
