@@ -443,7 +443,7 @@ namespace Golemo.Fractions
             #region Logic
             if (fraclvl < minrank)
             {
-                if (notify)
+                if (notify && minrank < 100)
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Нет доступа", 3000);
                 return false;
             }
