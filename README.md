@@ -30,5 +30,5 @@
 |......................................
 ```
 
-### Discord: https://discord.gg/RqKSczZsNW;
+### Discord: https://discord.gg/RqKSczZsNW
 
