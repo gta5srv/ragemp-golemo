@@ -1265,10 +1265,7 @@ mp.events.add('openWShop', (id, json) => {
     global.menu.execute('wshop.active=1');
     wshop.lid = id;
 })
-// WEAPON CRAFT //
-/*mp.keys.bind(0x78, false, function () { // F9
-    mp.events.call('openWCraft', 0, '[[0,1,0,1,0,1,0]]');
-});*/
+
 let wcraft = {
     tab: 0,
     frac: 0,
@@ -1293,7 +1290,7 @@ mp.events.add('closeWCraft', () => {
     wcraft.top = 0;
 })
 mp.events.add('openWCraft', (frac, json) => {
-    //mp.gui.chat.push(`${frac}:${json}`);
+    mp.gui.chat.push(`${frac}:${json}`);
     wcraft.data = JSON.parse(json);
     wcraft.data[4] = [];
     wcraft.frac = frac;
