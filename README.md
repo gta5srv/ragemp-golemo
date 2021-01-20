@@ -4,7 +4,6 @@
     Продукт: Golemo-Mode;
     Платформа: Rage Multiplayer;
     Игра: Grand Theft Auto V;
-    Дискорд: https://discord.gg/RqKSczZsNW;
 ```
     Описание:
     |  Скоро...............................
@@ -18,11 +17,12 @@
     Product: Golemo-Mode;
     Platform: Rage Multiplayer;
     Game: Grand Theft Auto V;
-    Discord: https://discord.gg/RqKSczZsNW;
 ```
     Description:
     |  Coming Soon.........................
     |......................................
     |......................................
 ```
+
+### Discord: https://discord.gg/RqKSczZsNW;
 
