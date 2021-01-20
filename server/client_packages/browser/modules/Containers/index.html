@@ -24,7 +24,7 @@
         <div class="main" v-if="page == 0">
           <div class="upblock">
             <div class="avatar">
-              <img :src="`images/`+container.Name+`.png`">
+              <img :src="`./images/`+container.Name+`.png`">
             </div>
             <div class="info">
               <h2>
@@ -56,7 +56,7 @@
           <h2>Возможные выигрыши</h2>
           <div class="items">
             <div class="item" v-for="(item, index) in filterLoots">
-              <img :src="`images/loots/`+ container.Name +`/`+ item + `.png`" alt="">
+              <img :src="`./images/loots/`+ container.Name +`/`+ item + `.png`" alt="">
               <p>
                 <b>{{item}}</b>
               </p>
