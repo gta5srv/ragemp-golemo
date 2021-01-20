@@ -54,12 +54,12 @@
           <h2>Купить товары</h2>
           <div class="items">
             <div class="item" v-for="(item, index) in buyitems">
-              <img :src="`../../../assets/images/icons/items/` + item[1] + `.png`" alt="">
+              <img :src="`../../../assets/images/icons/items/` + item.ID + `.png`" alt="">
               <p>
-                {{item[2]}} <b>${{item[3] ? item[0] * curs : item[0]}}</b>
+                {{item.Name}} <b>${{item.Ordered ? item.Price * curs : item.Price}}</b>
               </p>
               <input type="number" placeholder="количество" v-model="buyValue">
-              <a class="btnBuy" @click="buy(item[1])">Купить</a>
+              <a class="btnBuy" @click="buy(item.ID)">Купить</a>
             </div>
           </div>
         </div>
@@ -67,12 +67,12 @@
           <h2>Продать товары</h2>
           <div class="items">
             <div class="item" v-for="(item, index) in sellitems">
-              <img :src="`../../../assets/images/icons/items/` + item[1] + `.png`" alt="">
+              <img :src="`../../../assets/images/icons/items/` + item.ID + `.png`" alt="">
               <p>
-                {{item[2]}} <b>${{item[3] ? item[0] * curs : item[0]}}</b>
+                {{item.Name}} <b>${{item.Ordered ? item.Price * curs : item.Price}}</b>
               </p>
               <input type="number" placeholder="количество" v-model="sellValue">
-              <a class="btnBuy" @click="sell(item[1])">Продать</a>
+              <a class="btnBuy" @click="sell(item.ID)">Продать</a>
             </div>
           </div>
         </div>

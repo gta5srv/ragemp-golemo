@@ -169,7 +169,7 @@ namespace Golemo.Jobs.FarmerJob
                 int lvl = jobinfo[0], exp = jobinfo[1], allpoints = jobinfo[2], sec = Convert.ToInt32(rnd.Next(minsec, maxsec) - lvl * 2);
                 if (player.HasData($"regenplant{colID}")) //если колшейп регенерируется
                 {
-                    Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, $"{player.GetData<int>($"regenplant{colID}")}", 2000);
+                    Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, $"Осталось: {player.GetData<int>($"regenplant{colID}")} секунд", 2000);
                     return;
                 }
                 var item = nInventory.Find(Main.Players[player].UUID, ItemType.Seed); //ищем семена у игрока
@@ -199,7 +199,6 @@ namespace Golemo.Jobs.FarmerJob
                     {
                         if (lvl == maxlvl) exp = -1;
                         player.SetData("job_farmer", new int[] { lvl, ++exp, ++allpoints });
-                        //player.SendChatMessage($"LVL: {lvl}| EXP: {exp}| ALL: {allpoints}");
                     }
 
                     var tryAdd = nInventory.TryAdd(player, new nItem(ItemType.Hay));
@@ -263,6 +262,7 @@ namespace Golemo.Jobs.FarmerJob
         #region Play Animation
         private static void PlayFarmerAnimation(Player player)
         {
+            //перенести реализацию анимации на клиент
             Main.OnAntiAnim(player);
             player.PlayAnimation("amb@world_human_gardener_plant@male@enter", "enter", 39);
             NAPI.Task.Run(() => 

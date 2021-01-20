@@ -15,16 +15,14 @@ namespace Golemo.Jobs.FarmerJob
 
         private static nLog Log = new nLog("Market");
 
-        private static List<FarmerProduct> Products = new List<FarmerProduct>();
-
-        public static int marketmultiplier;
+        public static int marketMultiplier;
         private static int _minMultiplier = 15;
         private static int _maxMultiplier = 51;
 
         public static void UpdateMultiplier()
         {
-            marketmultiplier = rnd.Next(_minMultiplier, _maxMultiplier);
-            Log.Write($"Обновлен коэффициент на: {marketmultiplier}");
+            marketMultiplier = rnd.Next(_minMultiplier, _maxMultiplier);
+            Log.Write($"Обновлен коэффициент на: {marketMultiplier}");
         }
 
         private static List<Vector3> shape = new List<Vector3>()
@@ -77,35 +75,17 @@ namespace Golemo.Jobs.FarmerJob
         }
         #endregion
 
-        #region Создание объекта итема
-        private static object MarketItem(FarmerProduct prod)
-        {
-            if (prod != null)
-            {
-                Products.Add(prod);
-            }
-            List<object> data = new List<object>()
-            {
-                prod.Price,
-                prod.ID,
-                prod.Name,
-                prod.Ordered
-            };
-            return data;
-        }
-        #endregion
-
         #region Предметы в маркете
         //цена, номер предмета, название, предмет для покупки или для продажи (если true, то коэффициент будет умножаться на выставленную сумму)
-        private static List<object> SellItems = new List<object>()
+        private static List<Product> SellItems = new List<Product>()
         {
-            MarketItem(new FarmerProduct(7, 219, "Урожай", true)),
-            MarketItem(new FarmerProduct(2, 220, "Семена", false)),
+            new Product(7, 219, "Урожай", true),
+            new Product(2, 220, "Семена", false),
         };
 
-        private static List<object> BuyItems = new List<object>()
+        private static List<Product> BuyItems = new List<Product>()
         {
-            MarketItem(new FarmerProduct(5, 220, "Семена", false)),
+            new Product(5, 220, "Семена", false),
         };
         #endregion
 
@@ -119,7 +99,7 @@ namespace Golemo.Jobs.FarmerJob
             int seedscount = shitem != null ? shitem.Count : 0;
             List<object> data = new List<object>()
             {
-                marketmultiplier,
+                marketMultiplier,
                 hayscount,
                 seedscount,
             };
@@ -160,13 +140,13 @@ namespace Golemo.Jobs.FarmerJob
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно места в инвентаре", 2000);
                 return;
             }
-            int price = 0;
-            string name = null;
-            foreach (var item in Products.FindAll(x => x.ID == id))
+            var item = BuyItems.Find(x => x.ID == id);
+            if (item == null)
             {
-                price = item.Ordered ? item.Price * marketmultiplier * count : item.Price * count;
-                name = item.Name;
+                Notify.Error(player, "Предмет не найден", 2500);
+                return;
             }
+            int price = item.Ordered ? item.Price * marketMultiplier * count : item.Price * count;
             if (Main.Players[player].Money < price)
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно денег", 2000);
@@ -174,8 +154,7 @@ namespace Golemo.Jobs.FarmerJob
             }
             MoneySystem.Wallet.Change(player, -price);
             nInventory.Add(player, new nItem(aItem.Type, count));
-            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы купили {count} {name} за ${price}", 2000);
-
+            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы купили {count} {item.Name} за ${price}", 2000);
         }
         #endregion
 
@@ -189,34 +168,34 @@ namespace Golemo.Jobs.FarmerJob
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно предмета в инвентаре", 2000);
                 return;
             }
-            int price = 0;
-            string name = null;
-            foreach (var item in Products.FindAll(x => x.ID == id))
+            var item = SellItems.Find(x => x.ID == id);
+            if(item == null)
             {
-                price = item.Ordered ? item.Price * marketmultiplier * count : item.Price * count;
-                name = item.Name;
+                Notify.Error(player, "Предмет не найден", 2500);
+                return;
             }
+            int price = item.Ordered ? item.Price * marketMultiplier * count : item.Price * count;
             MoneySystem.Wallet.Change(player, price);
             nInventory.Remove(player, new nItem(aItem.Type, count));
-            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы продали {count} {name} за ${price}", 2000);
-
+            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы продали {count} {item.Name} за ${price}", 2000);
         }
         #endregion
 
         #region FarmerProduct
-        private class FarmerProduct
+        private class Product
         {
-            public FarmerProduct(int price, int id, string name, bool ordered)
+            public int Price { get; set; }
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public bool Ordered { get; set; }
+
+            public Product(int price, int id, string name, bool ordered)
             {
                 Price = price;
                 ID = id;
                 Name = name;
                 Ordered = ordered;
             }
-            public int Price { get; set; }
-            public int ID { get; set; }
-            public string Name { get; set; }
-            public bool Ordered { get; set; }
         }
         #endregion
     }
