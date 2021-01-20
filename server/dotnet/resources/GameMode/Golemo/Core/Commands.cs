@@ -112,6 +112,24 @@ namespace Golemo.Core
 
         #region AdminCommands
 
+        [Command("delfveh")]
+        public static void CMD_deletefveh(Player client, string number)
+        {
+            try
+            {
+                if (!Group.CanUseCmd(client, "delfveh")) return;
+
+                MySqlCommand queryCommand = new MySqlCommand(@" DELETE FROM `fractionvehicles` WHERE `number` = @NUMBER ");
+
+                queryCommand.Parameters.AddWithValue("@NUMBER", number);
+
+                MySQL.Query(queryCommand);
+
+                client.SendChatMessage($"{number} was deleted");
+            }
+            catch { }
+        }
+
         #region Add-Ons
         [Command("eat")] //Добавляет еду игроку
         public static void CMD_adminEat(Player player, int id, int eat)
@@ -2551,14 +2569,14 @@ namespace Golemo.Core
                 Environment.Exit(0);
             });
         }
-        
-        [Command("veh")] // Создать авто (4 лвл)
-        public static void CMD_createVehicle(Player player, string name, int a, int b)
+
+        [Command("veh")]
+        public static void CMD_createVehicle(Player player, string name = "buffalo", int a = 0, int b = 0)
         {
             try
             {
                 if (player == null || !Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "veh")) return;
+                if (!Group.CanUseCmd(player, "vehc")) return;
                 VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(name);
                 player.SendChatMessage("vh " + vh);
                 if (vh == 0)
@@ -2571,14 +2589,44 @@ namespace Golemo.Core
                 veh.NumberPlate = "ADMIN";
                 veh.PrimaryColor = a;
                 veh.SecondaryColor = b;
+                veh.Health = 1000;
                 veh.SetData("ACCESS", "ADMIN");
                 veh.SetData("BY", player.Name);
                 VehicleStreaming.SetEngineState(veh, true);
                 player.SetIntoVehicle(veh, 0);
+                GameLog.Admin($"{player.Name}", $"vehCreate({name})", $"");
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD_veh\":\n" + e.ToString(), nLog.Type.Error); }
         }
-        
+
+        [Command("vehp")]
+        public static void CMD_createVehicle(Player player, string name = "buffalo", string plate = "admin", int a = 0, int b = 0)
+        {
+            try
+            {
+                if (player == null || !Main.Players.ContainsKey(player)) return;
+                if (!Group.CanUseCmd(player, "vehp")) return;
+                VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(name);
+                player.SendChatMessage("vh " + vh);
+                if (vh == 0)
+                {
+                    player.SendChatMessage("vh return");
+                    return;
+                }
+                var veh = NAPI.Vehicle.CreateVehicle(vh, player.Position, player.Rotation.Z, 0, 0);
+                veh.Dimension = player.Dimension;
+                veh.NumberPlate = plate;
+                veh.PrimaryColor = a;
+                veh.SecondaryColor = b;
+                veh.Health = 1000;
+                veh.SetData("ACCESS", "ADMIN");
+                veh.SetData("BY", player.Name);
+                VehicleStreaming.SetEngineState(veh, true);
+                GameLog.Admin($"{player.Name}", $"vehCreate({name})", $"");
+            }
+            catch (Exception e) { Log.Write("EXCEPTION AT \"CMD_veh\":\n" + e.ToString(), nLog.Type.Error); }
+        }
+
         [Command("vehhash")] // Создать авто ??? (8 лвл)
         public static void CMD_createVehicleHash(Player player, string name, int a, int b)
         {

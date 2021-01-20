@@ -64,7 +64,6 @@ namespace Golemo.Jobs.FarmerJob
                     checkpoint.SetData($"plantID", i);
                     checkpoint.OnEntityEnterColShape += PlayerEnterCheckpoint;
                 }
-                Log.Write("Loaded", nLog.Type.Success);
             }
             catch (Exception e)
             {
