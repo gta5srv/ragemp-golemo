@@ -1,7 +1,7 @@
 # Golemo Mode
 
 ## RU
-| Plugin | README |
+| GOLEMO | MODE |
 | ------ | ------ |
 | Поддержка | [JJiGolem](https://gitlab.com/JJiGolem), [6er1k](https://gitlab.com/6er1k) |
 | Продукт | [Golemo-Mode](https://gitlab.com/JJiGolem/golemo-mode) |
@@ -17,7 +17,7 @@
 ```
 
 ## EN
-| Plugin | README |
+| GOLEMO | MODE |
 | ------ | ------ |
 | Maintainers | [JJiGolem](https://gitlab.com/JJiGolem), [6er1k](https://gitlab.com/6er1k) |
 | Product | [Golemo-Mode](https://gitlab.com/JJiGolem/golemo-mode) |
