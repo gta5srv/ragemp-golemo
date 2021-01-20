@@ -12,6 +12,10 @@
 	@media (min-width: 1651px) and (max-width: 2560px) {
 		.atm_new {zoom: 100%}
 	}
+	
+	[v-cloak]{
+		display: none;
+	}
 
 	@font-face {
 		font-family: ProximaNova;

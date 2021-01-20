@@ -9,7 +9,7 @@
 </head>
 
 <body>
-   <div class="atm_new" v-if="active">
+   <div class="atm_new" v-if="active" v-cloak>
 	  <div class="bgshow"></div>
 	  <transition name="fade">
 		<div class="contents" v-if="page == 0">
