@@ -3,7 +3,7 @@
   name,
   title,
   room,
-});//2AC
+});
 const houseClasses = [
   hclass(0, "Трейлер", 0),
   hclass(1, "Econom", "Нищебродские дома", 1),
