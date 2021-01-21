@@ -2051,9 +2051,6 @@ namespace Golemo
                             }
                         }
                         return;
-                    case 599:
-                        Core.Сhangenum.Сhangeplate(player);
-                        return;
                     case 503:
                         if(!Players[player].Achievements[4] && !Players[player].Achievements[5]) { // Первый подход к Frank'у
                             if(Players[player].Achievements[2]) { //TODO: ветка, если игроку дали рекомендацию пойти к Фрэнку, Эмма порекомендовала игрока
@@ -2146,6 +2143,9 @@ namespace Golemo
                         return;
                     case 101:
                         Houses.AutoSelltoGov.OpenCarsSellMenu(player);
+                        return;
+                    case 599:
+                        VehicleHandlers.ChangerNumberPlate.Сhangeplate(player);
                         return;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion

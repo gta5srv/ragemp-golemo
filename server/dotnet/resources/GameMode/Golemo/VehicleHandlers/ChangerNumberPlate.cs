@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Golemo.Core
+namespace Golemo.VehicleHandlers
 {
-    class Сhangenum : Script
+    class ChangerNumberPlate : Script
     {
-        private static nLog RLog = new nLog("cangenum");
+        private static nLog RLog = new nLog("ChangerNumberPlate");
         private static GTANetworkAPI.ColShape shape;
         private static GTANetworkAPI.Marker intmarker;
         private static GTANetworkAPI.Blip blip;
