@@ -211,6 +211,10 @@ namespace Golemo.Core
 
                 if (player.VehicleSeat == 0)
                 {
+                    if (VehicleHandlers.AutoPilot.accessVehicle.Contains(player.Vehicle.DisplayName.ToLower()))
+                    {
+                        player.SetSharedData("isAutouPilot", true);
+                    }
                     if (NAPI.Data.GetEntityData(vehicle, "ACCESS") == "FRACTION")
                     {
                         if (NAPI.Data.GetEntityData(vehicle, "FRACTION") == 14 && vehicle.DisplayName == "BARRACKS")
@@ -278,6 +282,8 @@ namespace Golemo.Core
                 {
                     if (vehicle.GetData<List<Player>>("OCCUPANTS").Contains(player)) vehicle.GetData<List<Player>>("OCCUPANTS").Remove(player);
                 }
+                if (player.HasSharedData("isAutouPilot"))
+                    player.ResetSharedData("isAutouPilot");
             }
             catch (Exception e) { Log.Write("PlayerExitVehicleAttempt: " + e.Message, nLog.Type.Error); }
         }

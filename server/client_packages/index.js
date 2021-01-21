@@ -290,6 +290,11 @@ require('./src/jobs/farmer');
 require('./src/jobs/market');
 //==============================
 
+//modules=======================
+require('./src/modules/containers');
+require('./src/modules/island/heistisland');
+//==============================
+
 //player========================
 require('./src/player/crouch');
 require('./src/player/fingerpoints');
@@ -304,9 +309,8 @@ require('./src/utils/notify');
 require('./src/utils/screeneffects');
 //==============================
 
-//modules=======================
-require('./src/modules/containers');
-require('./src/modules/island/heistisland');
+//vehicle=======================
+require('./src/vehicle/autopilot');
 //==============================
 
 //world=========================
