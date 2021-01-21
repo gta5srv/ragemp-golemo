@@ -66,7 +66,6 @@ namespace Golemo.Jobs.FarmerJob
                 };
                 #endregion
                 UpdateMultiplier();
-                Log.Write("Loaded", nLog.Type.Success);
             }
             catch (Exception e)
             {

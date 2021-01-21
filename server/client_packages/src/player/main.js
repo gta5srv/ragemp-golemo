@@ -237,7 +237,7 @@ mp.keys.bind(0x77, true, function () {  //F8-Key
 });
 
 mp.keys.bind(Keys.VK_X, false, function () { // X key
-    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('fraction') == 0) return;
+    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('fraction') == 0 || localplayer.vehicle) return;
     mp.events.callRemote('playerPressCuffBut');
     lastCheck = new Date().getTime();
 });
