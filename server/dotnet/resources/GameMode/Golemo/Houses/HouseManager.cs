@@ -264,6 +264,7 @@ namespace Golemo.Houses
                 if (roommate != null)
                 {
                     Notify.Send(roommate, NotifyType.Warning, NotifyPosition.BottomCenter, "Вы были выселены из дома", 3000);
+                    roommate.TriggerEvent("changeBlipColor", blip, 2);
                     roommate.TriggerEvent("deleteCheckpoint", 333);
                     roommate.TriggerEvent("deleteGarageBlip");
                 }
@@ -870,6 +871,7 @@ namespace Golemo.Houses
             house.RemoveAllPlayers();
             house.SetOwner(null);
             house.PetName = "null";
+            Trigger.ClientEvent(player, "changeBlipColor", house.blip, 2);
             Trigger.ClientEvent(player, "deleteCheckpoint", 333);
             Trigger.ClientEvent(player, "deleteGarageBlip");
             int price = 0;
@@ -1849,6 +1851,7 @@ namespace Golemo.Houses
             CheckAndKick(player);
             MoneySystem.Wallet.Change(seller, price);
             GameLog.Money($"player({Main.Players[player].UUID})", $"player({Main.Players[seller].UUID})", price, $"houseSell({house.ID})");
+            seller.TriggerEvent("changeBlipColor", house.blip, 2);
             seller.TriggerEvent("deleteCheckpoint", 333);
             seller.TriggerEvent("deleteGarageBlip");
             house.SetOwner(player);
