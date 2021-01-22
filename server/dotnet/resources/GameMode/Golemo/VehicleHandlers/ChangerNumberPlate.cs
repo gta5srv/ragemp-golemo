@@ -18,7 +18,7 @@ namespace Golemo.VehicleHandlers
         private static int Price = 12500;
 
         [ServerEvent(Event.ResourceStart)]
-        public static void EnterShapeRealtor()
+        public static void onResourceStart()
         {
             try
             {

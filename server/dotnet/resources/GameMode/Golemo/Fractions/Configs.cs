@@ -211,6 +211,11 @@ namespace Golemo.Fractions
                 {
                     if (item.HasData("FRACTION") && item.GetData<int>("FRACTION") == fractionid)
                     {
+                        if(item.Position.DistanceTo2D(spawner.Position) > 15)
+                        {
+                            Notify.Error(player, "Машина слишком далеко", 2000);
+                            break;
+                        }
                         if (item.Occupants.Count != 0)
                         {
                             foreach (Player p in item.Occupants)

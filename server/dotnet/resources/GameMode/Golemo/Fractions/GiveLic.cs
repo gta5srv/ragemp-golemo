@@ -9,7 +9,7 @@ namespace Golemo.Fractions
 {
     class GiveLic : Script
     {
-        private static nLog RLog = new nLog("ChangerNumberPlate");
+        private static nLog RLog = new nLog("IssuanceLicences");
         private static GTANetworkAPI.ColShape shapeMed;
         private static GTANetworkAPI.Marker markerMed;
         private static GTANetworkAPI.TextLabel lableMed;
