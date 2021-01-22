@@ -767,7 +767,26 @@ namespace Golemo.Houses
             menu.Add(menuItem);
 
             menuItem = new Menu.Item("sell", Menu.MenuItem.Button);
-            menuItem.Text = $"Продать гос-ву за {Convert.ToInt32(house.Price * 0.6)}$";
+            int price = 0;
+            switch (Main.Accounts[player].VipLvl)
+            {
+                case 0: // None
+                    price = Convert.ToInt32(house.Price * 0.6);
+                    break;
+                case 1: // Bronze
+                    price = Convert.ToInt32(house.Price * 0.65);
+                    break;
+                case 2: // Silver
+                    price = Convert.ToInt32(house.Price * 0.7);
+                    break;
+                case 3: // Gold
+                    price = Convert.ToInt32(house.Price * 0.75);
+                    break;
+                case 4: // Platinum
+                    price = Convert.ToInt32(house.Price * 0.8);
+                    break;
+            }
+            menuItem.Text = $"Продать гос-ву за {Convert.ToInt32(price)}$";
             menu.Add(menuItem);
 
             menuItem = new Menu.Item("close", Menu.MenuItem.Button);
