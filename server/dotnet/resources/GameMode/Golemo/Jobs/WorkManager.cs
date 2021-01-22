@@ -14,26 +14,6 @@ namespace Golemo.Jobs
         private static nLog Log = new nLog("WorkManager");
         public static Random rnd = new Random();
 
-        public static SortedList<int, Vector3> FractionSpawns = new SortedList<int, Vector3>()//Костылина
-        {
-            {1, new Vector3(-219.8333, -1615.615, 35.74932)},    // The Families
-            {2, new Vector3(93.79514, -1961.605, 21.62755)},     // The Ballas Gang
-            {3, new Vector3(1403.206, -1483.664, 60.63504)},     // Los Santos Vagos
-            {4, new Vector3(891.9399, -2174.212, 33.16626)},     // Marabunta Grande
-            {5, new Vector3(480.8304, -1527.922, 30.18241)},     // Blood Street
-            {6, new Vector3(262.9857, 223.3491, 102.5633)},      // Cityhall
-            {7, new Vector3(457.4271, -991.4473, 31.5696)},      // LSPD police
-            {8, new Vector3(244.7622, -1374.57, 40.41434)},      // Emergency care
-            {9, new Vector3(149.4746, -756.9065, 243.0319)},     // FBI 
-            {10, new Vector3(1387.338, 1155.952, 115.2144)},     // La Cosa Nostra 
-            {11, new Vector3(-115.1648, 983.5231, 236.6358)},    // Russian Mafia
-            {12, new Vector3(-1549.22, -86.07732, 55.20967)},    // Yakuza 
-            {13, new Vector3(-1809.738, 444.3138, 129.3889)},    // Armenian Mafia 
-            {14, new Vector3(-2355.625, 3254.189, 33.69071)},    // Army
-            {15, new Vector3(-1063.046, -249.463, 44.0211)},    // LSNews
-            {16, new Vector3(982.2743, -104.14917, 73.72877)},    // The Lost
-            {17, new Vector3(2154.641, 2921.034, -63.02243)},    // Merryweather
-        };
         [ServerEvent(Event.ResourceStart)]
         public void onResourceStart()
         {
@@ -72,7 +52,6 @@ namespace Golemo.Jobs
                 // markers
                 NAPI.Marker.CreateMarker(1, new Vector3(105.4633, -1568.843, 28.60269) - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1f, new Color(255, 255, 255, 220));
                 NAPI.Marker.CreateMarker(1, new Vector3(106.2007, -1563.748, 28.60272) - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1f, new Color(255, 255, 255, 220));
-                NAPI.Marker.CreateMarker(1, new Vector3(-0.51, -436.71, 38.74) - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1f, new Color(255, 255, 255, 220));
             }
             catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }
         }
