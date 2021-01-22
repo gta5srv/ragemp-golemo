@@ -5632,6 +5632,7 @@ namespace Golemo.Core
                 List<string> item = new List<string>();
                 item.Add(p.Name);
                 item.Add($"{p.Price}$");
+                item.Add(Product.GetKeyItem(p.Name).ToString());
                 items.Add(item);
             }
             string json = JsonConvert.SerializeObject(items);
@@ -5947,6 +5948,18 @@ namespace Golemo.Core
         public int Autosell { get; set; }
         public string Name { get; set; }
         public bool Ordered { get; set; }
+
+        public static int GetKeyItem(string name)
+        {
+            try
+            {
+                return nInventory.ItemsNames.FirstOrDefault(x => x.Value == name).Key;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
     }
 
     public class Business

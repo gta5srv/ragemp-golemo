@@ -2,10 +2,11 @@ let menu = {
     active: false,
     self: null,
     el: null,
-    add: function(id, type, name, addit){
+    add: function(id, type, name, addit, key){
         var block = $('<div>');
         block.attr('id',id);
         block.attr('class', 'block');
+        if(key != null) block.append('<img src="./assets/images/icons/items/'+key+'.png"/>');
         block.append('<div class="left">'+name+'</div>');
         if(type == 0) block.append('<div class="right">Устроиться</div>');
         else if(type == 1) block.append('<div class="right">Купить</div>');
@@ -71,7 +72,7 @@ function openShop(data){
     var json = JSON.parse(data);
     json.forEach(function (item, i, arr) {
         // name, additional
-        menu.add(i, 1,item[0],item[1]);
+        menu.add(i, 1, item[0], item[1], item[2]);
     });
     menu.self.children('.buttons').children('#btn3').css('display','inline-block');
 }
