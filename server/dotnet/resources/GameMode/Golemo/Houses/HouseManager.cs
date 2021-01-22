@@ -121,7 +121,7 @@ namespace Golemo.Houses
             };
             #endregion
 
-            label = NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"House {id}"), position + new Vector3(0, 0, 1.5), 5f, 0.4f, 0, new Color(255, 255, 255), false, 0);
+            label = NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"House {id}"), position + new Vector3(0, 0, 1.5), 5f, 0.4f, 4, new Color(255, 255, 255), false, 0);
             UpdateLabel();
         }
         public void UpdateLabel()
@@ -840,8 +840,8 @@ namespace Golemo.Houses
                             price = Convert.ToInt32(house.Price * 0.8);
                             break;
                     }
-                    Trigger.ClientEvent(player, "openDialog", "HOUSE_SELL_TOGOV", $"Вы действительно хотите продать дом за ${price}?");
                     MenuManager.Close(player);
+                    Trigger.ClientEvent(player, "openDialog", "HOUSE_SELL_TOGOV", $"Вы действительно хотите продать дом за ${price}?");
                     return;
                 case "cars":
                     OpenCarsMenu(player);

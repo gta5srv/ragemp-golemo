@@ -239,24 +239,24 @@ mp.events.add('render', () => {
 		}
 
 	    if (nearestObject != null && (entity == null || entity.type != "object")) {
-		    mp.game.graphics.drawText("F2", [nearestObject.position.x, nearestObject.position.y, nearestObject.position.z], {
-			    font: 0,
+		    mp.game.graphics.drawText("[F2]", [nearestObject.position.x, nearestObject.position.y, nearestObject.position.z], {
+			    font: 4,
 	            color: [255, 255, 255, 185],
-		        scale: [0.4, 0.4],
+		        scale: [0.3, 0.3],
 			    outline: true
 			});
 		}
         else if (entity != null && !localplayer.isInAnyVehicle(false)) {
 			if(truckorderveh == null || entity != truckorderveh) {
-				mp.game.graphics.drawText("G", [entity.position.x, entity.position.y, entity.position.z], {
-					font: 0,
+				mp.game.graphics.drawText("[G]", [entity.position.x, entity.position.y, entity.position.z], {
+					font: 4,
 					color: [255, 255, 255, 185],
-					scale: [0.4, 0.4],
+					scale: [0.3, 0.3],
 					outline: true
 				});
 			} else if(entity == truckorderveh) {
-				mp.game.graphics.drawText("Su pedido", [entity.position.x, entity.position.y, entity.position.z], {
-					font: 1,
+				mp.game.graphics.drawText("Ваш трейлер", [entity.position.x, entity.position.y, entity.position.z], {
+					font: 4,
 					color: [255, 255, 255, 255],
 					scale: [1.2, 1.2],
 					outline: true
