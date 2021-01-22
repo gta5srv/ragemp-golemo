@@ -45,20 +45,27 @@ namespace Golemo.Core
         }
         public static void AddEat(Player player, int change)
         {
-            if (Main.Players[player].Eat + change > 100)
+            try
             {
-                Main.Players[player].Eat = 100;
+                if (Main.Players[player].Eat + change > 100)
+                {
+                    Main.Players[player].Eat = 100;
+                }
+                else if (Main.Players[player].Eat + change < 0)
+                {
+                    Main.Players[player].Eat = 0;
+                }
+                else
+                {
+                    Main.Players[player].Eat += change;
+                }
+                Trigger.ClientEvent(player, "UpdateEat", Main.Players[player].Eat, Convert.ToString(change));
+                GUI.Dashboard.sendStats(player);
             }
-            else if (Main.Players[player].Eat + change < 0)
+            catch (Exception e)
             {
-                Main.Players[player].Eat = 0;
+                Log.Write($"Exeption: {e}", nLog.Type.Error);
             }
-            else
-            {
-                Main.Players[player].Eat += change;
-            }
-            Trigger.ClientEvent(player, "UpdateEat", Main.Players[player].Eat, Convert.ToString(change));
-            GUI.Dashboard.sendStats(player);
         }
         public static void SetWater(Player player, int change)
         {
@@ -72,96 +79,116 @@ namespace Golemo.Core
         }
         public static void AddWater(Player player, int change)
         {
-            if (Main.Players[player].Water + change > 100)
+            try
             {
-                Main.Players[player].Water = 100;
+                if (Main.Players[player].Water + change > 100)
+                {
+                    Main.Players[player].Water = 100;
+                }
+                else if (Main.Players[player].Water + change < 0)
+                {
+                    Main.Players[player].Water = 0;
+                }
+                else
+                {
+                    Main.Players[player].Water += change;
+                }
+                Trigger.ClientEvent(player, "UpdateWater", Main.Players[player].Water, Convert.ToString(change));
+                GUI.Dashboard.sendStats(player);
             }
-            else if (Main.Players[player].Water + change < 0)
+            catch (Exception e)
             {
-                Main.Players[player].Water = 0;
+                Log.Write($"Exeption: {e}", nLog.Type.Error);
             }
-            else
-            {
-                Main.Players[player].Water += change;
-            }
-            Trigger.ClientEvent(player, "UpdateWater", Main.Players[player].Water, Convert.ToString(change));
-            GUI.Dashboard.sendStats(player);
         }
 
         public static void CheckEat()
         {
-
-            Log.Write("Check Eat.", nLog.Type.Info);
-            foreach (Player player in Main.Players.Keys.ToList())
+            try
             {
-                try
+                Log.Write("Check Eat.", nLog.Type.Info);
+                foreach (Player player in Main.Players.Keys.ToList())
                 {
-                    if (player.Health > 0)
+                    try
                     {
-                        if (Main.Players[player].Eat > 0 && Main.Players[player].Water > 0)
+                        if (player.Health > 0)
                         {
-                            if (player.IsInVehicle)
+                            if (Main.Players[player].Eat > 0 && Main.Players[player].Water > 0)
                             {
-                                AddEat(player, -1);
-                            }
-                            else
-                            {
-                                AddEat(player, -2);
-                            }
-                        }
-                        else
-                        {
-                            if (Main.Players[player].Eat == 0 && Main.Players[player].Water == 0)
-                            {
-                                player.Health -= 4;
-                            }
-                            else
-                            {
-                                if (Main.Players[player].Water == 0)
+                                if (player.IsInVehicle)
                                 {
-                                    AddEat(player, -4);
+                                    AddEat(player, -1);
                                 }
-                                if (Main.Players[player].Eat == 0)
+                                else
                                 {
-                                    player.Health -= 2;
+                                    AddEat(player, -2);
+                                }
+                            }
+                            else
+                            {
+                                if (Main.Players[player].Eat == 0 && Main.Players[player].Water == 0)
+                                {
+                                    player.Health -= 4;
+                                }
+                                else
+                                {
+                                    if (Main.Players[player].Water == 0)
+                                    {
+                                        AddEat(player, -4);
+                                    }
+                                    if (Main.Players[player].Eat == 0)
+                                    {
+                                        player.Health -= 2;
+                                    }
                                 }
                             }
                         }
                     }
+                    catch (Exception) { }
                 }
-                catch (Exception) { }
+            }
+            catch (Exception e)
+            {
+                Log.Write($"Exeption: {e}", nLog.Type.Error);
             }
         }
         public static void CheckWater()
         {
-            Log.Write("Check Water.", nLog.Type.Info);
-            foreach (Player player in Main.Players.Keys.ToList())
+            try
             {
-                try
+                Log.Write("Check Water.", nLog.Type.Info);
+                foreach (Player player in Main.Players.Keys.ToList())
                 {
-                    if (player.Health > 0)
+                    try
                     {
-                        if (Main.Players[player].Eat > 0 && Main.Players[player].Water > 0)
+                        if (player.Health > 0)
                         {
-                            if (player.IsInVehicle)
+                            if (Main.Players[player].Eat > 0 && Main.Players[player].Water > 0)
                             {
-                                AddWater(player, -1);
+                                if (player.IsInVehicle)
+                                {
+                                    AddWater(player, -1);
+                                }
+                                else
+                                {
+                                    AddWater(player, -2);
+                                }
                             }
                             else
                             {
-                                AddWater(player, -2);
-                            }
-                        }
-                        else
-                        {
-                            if (Main.Players[player].Water != 0 && Main.Players[player].Eat == 0)
-                            {
-                                AddWater(player, -4);
+                                if (Main.Players[player].Water != 0 && Main.Players[player].Eat == 0)
+                                {
+                                    AddWater(player, -4);
+                                }
                             }
                         }
                     }
+                    catch (Exception) { }
                 }
-                catch (Exception) { }
+            }
+            catch (Exception e)
+            {
+                Log.Write($"Exeption: {e}", nLog.Type.Error);
             }
         }
 

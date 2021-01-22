@@ -153,7 +153,7 @@ namespace Golemo.GUI
                 Trigger.ClientEvent(client, "phoneClose");
                 if (!client.IsInVehicle) client.StopAnimation();
 
-                client.ResetData("AntiAnimDown");
+                Main.OffAntiAnim(client);
                 if (client.IsInVehicle) client.SetData("ToResetAnimPhone", true);
             }
             catch (Exception e)

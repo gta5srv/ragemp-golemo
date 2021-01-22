@@ -56,6 +56,7 @@ namespace Golemo.Core.Character
                         player.SetData("RESIST_STAGE", 0);
                         player.SetData("RESIST_TIME", 0);
                         if (AdminLVL > 0) player.SetSharedData("IS_ADMIN", true);
+                        //player.SetSharedData("IS_ADMIN", true);
 
                         Dashboard.sendStats(player);
                         Dashboard.sendItems(player);

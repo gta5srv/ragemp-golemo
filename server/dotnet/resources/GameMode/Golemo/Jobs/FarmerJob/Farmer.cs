@@ -93,7 +93,6 @@ namespace Golemo.Jobs.FarmerJob
                 };
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
                 Trigger.ClientEvent(player, "openJobsMenu", json);
-                //player.SendChatMessage(json);
             }
             catch (Exception e)
             {
@@ -201,7 +200,6 @@ namespace Golemo.Jobs.FarmerJob
                     }
 
                     var tryAdd = nInventory.TryAdd(player, new nItem(ItemType.Hay));
-                    player.SendChatMessage(tryAdd.ToString());
                     if (tryAdd == -1 || tryAdd > 0)
                     {
                         Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно места в инвентаре", 2000);
@@ -263,28 +261,14 @@ namespace Golemo.Jobs.FarmerJob
         {
             //перенести реализацию анимации на клиент
             Main.OnAntiAnim(player);
-            player.PlayAnimation("amb@world_human_gardener_plant@male@enter", "enter", 39);
-            NAPI.Task.Run(() => 
+            player.PlayAnimation("amb@world_human_gardener_plant@male@base", "base", 39);
+            NAPI.Task.Run(() =>
             {
-                player.PlayAnimation("amb@world_human_gardener_plant@male@base", "base", 39);
+                player.StopAnimation();
+                player.Position += new Vector3(0, 0, 0.2);
+                Main.OffAntiAnim(player);
 
-                NAPI.Task.Run(() =>
-                {
-                    player.PlayAnimation("amb@world_human_gardener_plant@male@exit", "exit", 39);
-
-                    NAPI.Task.Run(() =>
-                    {
-                        player.StopAnimation();
-                        Main.OffAntiAnim(player);
-
-                    }, 6000);
-
-                }, 3000);
-
-            }, 3000);
-
-
-            //Trigger.ClientEvent(player, "playScenarioJob", "WORLD_HUMAN_GARDENER_PLANT", 0, true); //воспроизводится анимация
+            }, 6000);
         }
         #endregion
 

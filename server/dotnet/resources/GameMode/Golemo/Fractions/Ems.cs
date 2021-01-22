@@ -385,7 +385,7 @@ namespace Golemo.Fractions
 
         public static void DeathConfirm(Player player, bool call)
         {
-            NAPI.Player.SpawnPlayer(player, player.Position);
+            NAPI.Player.SpawnPlayer(player, player.Position + new Vector3(0,0,1));
             NAPI.Entity.SetEntityDimension(player, 0);
 
             Main.OnAntiAnim(player);

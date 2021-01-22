@@ -99,32 +99,7 @@ namespace Golemo.Core
 
             GameLog.Admin(player.Name, $"givereds({amount})", target.Name);
         }
-        public static void stopServer(Player sender, string reason = "Сервер выключен.")
-        {
-            if (!Group.CanUseCmd(sender, "stop")) return;
-            IsServerStoping = true;
-            GameLog.Admin($"{sender.Name}", $"stopServer({reason})", "");
 
-            Log.Write("Force saving database...", nLog.Type.Warn);
-            BusinessManager.SavingBusiness();
-            Fractions.GangsCapture.SavingRegions();
-            Houses.HouseManager.SavingHouses();
-            Houses.FurnitureManager.Save();
-            nInventory.SaveAll();
-            Fractions.Stocks.saveStocksDic();
-            Weapons.SaveWeaponsDB();
-            Log.Write("All data has been saved!", nLog.Type.Success);
-
-            Log.Write("Force kicking players...", nLog.Type.Warn);
-            foreach (Player player in NAPI.Pools.GetAllPlayers())
-                NAPI.Player.KickPlayer(player, reason);
-            Log.Write("All players has kicked!", nLog.Type.Success);
-
-            NAPI.Task.Run(() =>
-            {
-                Environment.Exit(0);
-            }, 60000);
-        }
         public static void stopServer(string reason = "Сервер выключен.")
         {
             IsServerStoping = true;
@@ -150,12 +125,12 @@ namespace Golemo.Core
                 Environment.Exit(0);
             }, 60000);
         }
+
         public static void saveCoords(Player player, string msg)
         {
             if (!Group.CanUseCmd(player, "save")) return;
             Vector3 pos = NAPI.Entity.GetEntityPosition(player);
             pos.Z -= 1.12f;
-            //NAPI.Blip.CreateBlip(1, pos, 1, 69);
             Vector3 rot = NAPI.Entity.GetEntityRotation(player);
             if (NAPI.Player.IsPlayerInAnyVehicle(player))
             {
@@ -165,19 +140,16 @@ namespace Golemo.Core
             }
             try
             {
-
                 StreamWriter saveCoords = new StreamWriter("coords.txt", true, Encoding.UTF8);
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 saveCoords.Write($"{msg}   Coords: new Vector3({pos.X}, {pos.Y}, {pos.Z}),    JSON: {Newtonsoft.Json.JsonConvert.SerializeObject(pos)}      \r\n");
                 saveCoords.Write($"{msg}   Rotation: new Vector3({rot.X}, {rot.Y}, {rot.Z}),     JSON: {Newtonsoft.Json.JsonConvert.SerializeObject(rot)}    \r\n");
                 saveCoords.Close();
             }
-
             catch (Exception error)
             {
                 NAPI.Chat.SendChatMessageToPlayer(player, "Exeption: " + error);
             }
-
             finally
             {
                 NAPI.Chat.SendChatMessageToPlayer(player, "Coords: " + NAPI.Entity.GetEntityPosition(player));

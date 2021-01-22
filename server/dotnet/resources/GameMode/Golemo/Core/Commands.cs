@@ -2115,12 +2115,6 @@ namespace Golemo.Core
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"ACMD_setfracveh\":\n" + e.ToString(), nLog.Type.Error); }
         }
-
-        [Command("stop")] // Выключить сервер (8 лвл)
-        public static void CMD_stopServer(Player player, string text = null)
-        {
-            Admin.stopServer(player, text);
-        }
         
         [Command("payday")] // Выполнить PAYDAY (7 лвл)
         public static void payDay(Player player, string text = null)
@@ -2135,33 +2129,24 @@ namespace Golemo.Core
         {
             try
             {
-                if (!Group.CanUseCmd(player, "giveitem"))
-                {
-                    return;
-                }
-
+                if (!Group.CanUseCmd(player, "giveitem")) return;
                 var target = Main.GetPlayerByID(id);
-
                 if (target == null)
                 {
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок с таким ID не найден!", 3000);
                     return;
                 }
-
                 if (itemType == 12)
                 {
                     int parsedData = 0;
                     int.TryParse(data, out parsedData);
-
                     if (parsedData > 100)
                     {
                         Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Ты хочешь слишком многого", 3000);
-
                         return;
                     }
                 }
-
-                nInventory.Add(player, new nItem((ItemType)itemType, amount, data));  //                nInventory.Add(player, new nItem((ItemType)itemType, amount, data));
+                nInventory.Add(player, new nItem((ItemType)itemType, amount, data));
                 Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"У вас есть {amount} {nInventory.ItemsNames[itemType]} ", 3000);
             }
             catch { }
@@ -2517,57 +2502,6 @@ namespace Golemo.Core
                 GameLog.Admin($"{player.Name}", $"vehCreate({name})", $"");
             }
             catch { }
-        }
-        
-        [Command("pos")] // Отобразить текущие координаты (1 лвл)
-        public void HandlePos(Player c)
-        {
-            if (!Group.CanUseCmd(c, "a")) return;
-
-            Vector3 pos = c.Position;
-            Vector3 rot = c.Rotation;
-
-            //Console Anzeige der Positionen//
-            //Console.WriteLine("Diese Positionsdaten wurden von " + c.Name + " angefordert:");
-            //Console.WriteLine("Position");
-            //Console.WriteLine("Pos: " + pos.X + "| " + pos.Y + "| " + pos.Z);
-            //Console.WriteLine("Rotation");
-            //Console.WriteLine("Z: " + rot.Z);
-
-            //Console.WriteLine("---------------");
-            c.SendChatMessage("---------------");
-
-            c.SendChatMessage("Position");
-            c.SendChatMessage("Pos: " + pos.X + "| " + pos.Y + "| " + pos.Z);
-            c.SendChatMessage("Rotation");
-            c.SendChatMessage("Z: " + rot.Z);
-        }    
-        
-        [Command("restart")] // Перезагрузить сервер (8 лвл)
-        public void HandleShutDown(Player cc, int second)
-        {
-            if (!Group.CanUseCmd(cc, "restart")) return;
-
-            if (second < 5 || second > 900)
-            {
-                cc.SendNotification("Минимум 5 секунд и максимум 9 минут!");
-                return;
-            }
-
-            foreach (Player c in NAPI.Pools.GetAllPlayers())
-            {
-                // saveDatabase()
-            }
-
-
-            NAPI.Chat.SendChatMessageToAll("[~r~SERVER~w~]: Перезагрузка сервера через " + second + " Секунды. [ИСПРАВЛЕНИЕ ОШИБКИ] Пожалуйста, выйдите из системы заранее, чтобы ваши вещи были сохранены!");
-
-            Task.Run(() =>
-            {
-                Task.Delay(1000 * second * 1).Wait();
-
-                Environment.Exit(0);
-            });
         }
 
         [Command("veh")]
@@ -3588,13 +3522,11 @@ namespace Golemo.Core
                 if (!Group.CanUseCmd(player, "agm")) return;
                 if (!player.HasData("AGM") || !player.GetData<bool>("AGM"))
                 {
-                    player.SendChatMessage($"true");
                     Trigger.ClientEvent(player, "AGM", true);
                     player.SetData("AGM", true);
                 }
                 else
                 {
-                    player.SendChatMessage($"false");
                     Trigger.ClientEvent(player, "AGM", false);
                     player.SetData("AGM", false);
                 }
