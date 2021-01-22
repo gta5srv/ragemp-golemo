@@ -2851,8 +2851,10 @@ namespace Golemo
                     Fractions.Ems.HumanMedkitsLefts = 100;
                     Forbes.SyncMajors(); //forbes
 
-                    Jobs.FarmerJob.Market.UpdateMultiplier(); //farmer
+                    Fractions.Gangs.UpdateMultiplier(); //цена закупки наркоту для банд
+                    Jobs.FarmerJob.Market.UpdateMultiplier(); //коэффициент на маркете
                     Jobs.DrugFarm.UpdateMultiplier(); //drugfarm
+
                     var rndt = new Random();
                     pluscost = rndt.Next(10, 20);
 
@@ -2872,7 +2874,7 @@ namespace Golemo
                                 }
                             }
 
-                            if (Players[player].LastHourMin < 15)
+                            if (Players[player].LastHourMin < 15 && Players[player].AdminLVL <= 0)
                             {
                                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны наиграть хотя бы 15 минут, чтобы получить пейдей", 3000);
                                 continue;

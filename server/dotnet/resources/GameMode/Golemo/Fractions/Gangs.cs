@@ -32,7 +32,19 @@ namespace Golemo.Fractions
             new Vector3(8.621573, 3701.914, 39.51624),
             new Vector3(3804.169, 4444.753, 3.977164),
         };
-        private static int PricePerDrug = 60;
+
+        private static TextLabel _priceDrugLabel;
+        private static Random rnd = new Random();
+        private static int[] _currency = new int[] { 40, 120 };
+        private static int _pricePerDrug;
+
+        public static void UpdateMultiplier()
+        {
+            _pricePerDrug = rnd.Next(_currency[0], _currency[1] + 1);
+            if(_priceDrugLabel != null)
+                _priceDrugLabel.Text = $"~g~Купить наркоту ({_pricePerDrug}$/грамм)";
+            Log.Write($"Обновлена цена закупки наркоты: {_pricePerDrug}");
+        }
 
         [ServerEvent(Event.ResourceStart)]
         public void Event_OnResourceStart()
@@ -45,11 +57,13 @@ namespace Golemo.Fractions
                 NAPI.TextLabel.CreateTextLabel("~g~Riki Veronas", new Vector3(485.6168, -1529.195, 29.28829), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
                 NAPI.TextLabel.CreateTextLabel("~g~Santano Amorales", new Vector3(1408.224, -1486.415, 60.65733), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
 
+                UpdateMultiplier();
+
                 foreach (var pos in DrugPoints)
                 {
                     NAPI.Marker.CreateMarker(1, pos - new Vector3(0, 0, 1.12), new Vector3(), new Vector3(), 4, new Color(255, 0, 0), false, 0);
-                    NAPI.TextLabel.CreateTextLabel($"~g~Buy drugs ({PricePerDrug}$/g)", pos + new Vector3(0, 0, 0.7), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
-                    NAPI.Blip.CreateBlip(140, pos, 1f, 4, "Drugs", 255, 0, true, 0, 0);
+                    _priceDrugLabel = NAPI.TextLabel.CreateTextLabel($"~g~Купить наркоту ({_pricePerDrug}$/грамм)", pos + new Vector3(0, 0, 0.7), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
+                    NAPI.Blip.CreateBlip(140, pos, 1f, 4, "Закупка наркоты", 255, 0, true, 0, 0);
 
                     var col = NAPI.ColShape.CreateCylinderColShape(pos - new Vector3(0, 0, 1.12), 4, 5, 0);
                     col.OnEntityEnterColShape += (s, e) =>
@@ -151,14 +165,14 @@ namespace Golemo.Fractions
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно места в машине", 3000);
                 return;
             }
-            if (Fractions.Stocks.fracStocks[Main.Players[player].FractionID].Money < amount * PricePerDrug)
+            if (Fractions.Stocks.fracStocks[Main.Players[player].FractionID].Money < amount * _pricePerDrug)
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно средств на складе банды", 3000);
                 return;
             }
 
             VehicleInventory.Add(player.Vehicle, new nItem(ItemType.Drugs, amount));
-            Fractions.Stocks.fracStocks[Main.Players[player].FractionID].Money -= amount * PricePerDrug;
+            Fractions.Stocks.fracStocks[Main.Players[player].FractionID].Money -= amount * _pricePerDrug;
 
             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы закупили {amount}г наркотиков", 3000);
         }
