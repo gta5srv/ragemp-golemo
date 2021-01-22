@@ -4,6 +4,7 @@ var autopilotStart = !1,
 const autoPilotSpeed = 25;
 
 mp.keys.bind(0x58, false, function () { // X key
+    if (!loggedin || chatActive || editing || global.menuOpened || localplayer.getVariable('IS_DYING') || cuffed) return;
     const a = localplayer.vehicle;
     if(localplayer.vehicle.getPedInSeat(-1) !== localplayer.handle) return; //Проверка, водителю доступно другим нет
     if (autopilotStart)
