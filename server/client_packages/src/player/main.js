@@ -218,16 +218,13 @@ mp.keys.bind(Keys.VK_M, false, function () {
     
     if (global.phoneOpen)
     {
-
         mp.events.callRemote("closePlayerMenu");
-
         global.phoneOpen = 0;
     }
-    else
+    else if (!localplayer.getVariable('AntiAnimDown'))
     {
         mp.events.callRemote('openPlayerMenu');
         lastCheck = new Date().getTime();
-
         global.phoneOpen = 1;
     }
 });
