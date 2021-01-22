@@ -138,7 +138,7 @@ mp.events.add("fpsync.update", (playerH, camPitch, camHeading) => {
 });
 
 mp.keys.bind(0x42, true, () => {
-    if (!loggedin || chatActive || editing || global.menuOpened) return;
+    if (!loggedin || chatActive || editing || global.menuOpened || localplayer.getVariable('IS_DYING') || cuffed) return;
     if (mp.players.local.isTypingInTextChat) {
         return;
     }
@@ -146,7 +146,7 @@ mp.keys.bind(0x42, true, () => {
 });
 
 mp.keys.bind(0x42, false, () => {
-    if (!loggedin || chatActive || editing || global.menuOpened) return;
+    if (!loggedin || chatActive || editing || global.menuOpened || localplayer.getVariable('IS_DYING') || cuffed) return;
     if (mp.players.local.isTypingInTextChat) {
         return;
     }
