@@ -1571,6 +1571,7 @@ mp.events.add('clothes', (act, value) => {
             break;
     }
 });
+let lastpos = null; 
 mp.events.add('buyClothes', () => {
     mp.events.callRemote('buyClothes', clothes.type, clothes.style, clothes.color);
 })
@@ -1581,7 +1582,7 @@ mp.events.add('closeClothes', () => {
     global.menu.execute('clothes.active=0');
 
     mp.events.call('camMenu', false);
-
+	localplayer.position = lastpos;
     bodyCam.destroy();
     mp.game.cam.renderScriptCams(false, false, 500, true, false);
 
@@ -1589,7 +1590,8 @@ mp.events.add('closeClothes', () => {
 })
 mp.events.add('openClothes', (price) => {
     if (global.menuCheck()) return;
-
+	lastpos = localplayer.position;
+    localplayer.position = new mp.Vector3(-168.22101, -299.47488, 39.61329);
     bodyCamStart = localplayer.position;
     var camValues = { Angle: localplayer.getRotation(2).z + 90, Dist: 1.3, Height: 0.3 };
     var pos = getCameraOffset(new mp.Vector3(bodyCamStart.x, bodyCamStart.y, bodyCamStart.z + camValues.Height), camValues.Angle, camValues.Dist);
