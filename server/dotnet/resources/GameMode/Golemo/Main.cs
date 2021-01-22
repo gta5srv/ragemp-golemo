@@ -2147,6 +2147,12 @@ namespace Golemo
                     case 599:
                         VehicleHandlers.ChangerNumberPlate.Сhangeplate(player);
                         return;
+						case 228:
+                        Fractions.GiveLic.MedLic(player);
+                        return;
+                    case 229:
+                        Fractions.GiveLic.GunLic(player);
+                        return;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion
                     default:
