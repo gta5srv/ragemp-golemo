@@ -118,27 +118,21 @@ namespace Golemo
             if(colshape == FrankQuest1) return;
             if(colshape == BonyCS) {
                 player.SetData("INTERACTIONCHECK", 500);
-                Trigger.ClientEvent(player, "PressE", true); 
             }
             else if(colshape == EmmaCS) {
                 player.SetData("INTERACTIONCHECK", 501);
-                Trigger.ClientEvent(player, "PressE", true); 
             }
             else if(colshape == FrankCS) {
                 player.SetData("INTERACTIONCHECK", 503);
-                Trigger.ClientEvent(player, "PressE", true); 
             }
             else if(colshape == Zone0 || colshape == Zone1) {
                 player.SetData("INTERACTIONCHECK", 502);
-                Trigger.ClientEvent(player, "PressE", true); 
             }
             else if(colshape == FrankQuest0) {
                 player.SetData("INTERACTIONCHECK", 504);
-                Trigger.ClientEvent(player, "PressE", true); 
             }
             else if(colshape == FrankQuest1_1) {
                 player.SetData("INTERACTIONCHECK", 505);
-                Trigger.ClientEvent(player, "PressE", true); 
             }
         }
 
@@ -163,10 +157,8 @@ namespace Golemo
                 }
                 return;
             }
-            Trigger.ClientEvent(player, "PressE", false); 
             if(colshape == BonyCS || colshape == EmmaCS || colshape == Zone0 || colshape == Zone1 || colshape == FrankCS || colshape == FrankQuest0 || colshape == FrankQuest1_1) {
                 player.SetData("INTERACTIONCHECK", 0);
-                Trigger.ClientEvent(player, "PressE", false); 
             }
         }
 

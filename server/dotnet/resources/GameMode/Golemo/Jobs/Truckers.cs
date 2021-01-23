@@ -25,7 +25,7 @@ namespace Golemo.Jobs
                     cols[i].OnEntityExitColShape += onEntityExitGetProduct;
                     cols[i].SetData("PROD", i);
                     NAPI.Marker.CreateMarker(1, getProduct[i] - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1, new Color(0, 255, 255));
-                    NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E to take products"), new Vector3(getProduct[i].X, getProduct[i].Y, getProduct[i].Z + 0.7), 30f, 0.5f, 0, new Color(255, 255, 255));
+                    NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Взять трейлер с товаром"), new Vector3(getProduct[i].X, getProduct[i].Y, getProduct[i].Z + 0.7), 30f, 0.5f, 0, new Color(255, 255, 255));
                 }
             } catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }   
         }

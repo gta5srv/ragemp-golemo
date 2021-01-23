@@ -31,13 +31,12 @@ namespace Golemo.Fractions
                 markerMed = NAPI.Marker.CreateMarker(1, Med, new Vector3(), new Vector3(), 1f, new Color(66, 170, 255, 150), false, 0);
                 shapeMed = NAPI.ColShape.CreateCylinderColShape(Med + new Vector3(0, 0, 0.65), 1, 1, 0);
                 lableMed = NAPI.TextLabel.CreateTextLabel("~b~Получение мед.карты", Med + new Vector3(0, 0, 0.85), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
-                NAPI.TextLabel.CreateTextLabel("~w~Цена:12500$\n" + "~r~Нaжмите E", Med + new Vector3(0, 0, 0.65), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
+                NAPI.TextLabel.CreateTextLabel("~w~Цена:12500$", Med + new Vector3(0, 0, 0.65), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
                 shapeMed.OnEntityEnterColShape += (s, ent) =>
                 {
                     try
                     {
                         NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 228);
-                        Trigger.ClientEvent(ent, "Нажмите Е", true);
                     }
                     catch (Exception ex) { Console.WriteLine("shape.OnEntityEnterColShape: " + ex.Message); }
                 };
@@ -46,7 +45,6 @@ namespace Golemo.Fractions
                     try
                     {
                         NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 0);
-                        Trigger.ClientEvent(ent, "Нажмите Е", false);
                     }
                     catch (Exception ex) { Console.WriteLine("shape.OnEntityExitColShape: " + ex.Message); }
                 };
@@ -54,13 +52,12 @@ namespace Golemo.Fractions
                 markerGun = NAPI.Marker.CreateMarker(1, Gun, new Vector3(), new Vector3(), 1f, new Color(66, 170, 255, 150), false, 0);
                 shapeGun = NAPI.ColShape.CreateCylinderColShape(Gun + new Vector3(0, 0, 0.65), 1, 1, 0);
                 lableGun = NAPI.TextLabel.CreateTextLabel("~b~Получение лицензии на оружие", Gun + new Vector3(0, 0, 0.85), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
-                NAPI.TextLabel.CreateTextLabel("~w~Цена:12500$\n" + "~r~Нaжмите E", Gun + new Vector3(0, 0, 0.65), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
+                NAPI.TextLabel.CreateTextLabel("~w~Цена:12500$", Gun + new Vector3(0, 0, 0.65), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
                 shapeGun.OnEntityEnterColShape += (s, ent) =>
                 {
                     try
                     {
                         NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 229);
-                        Trigger.ClientEvent(ent, "Нажмите Е", true);
                     }
                     catch (Exception ex) { Console.WriteLine("shape.OnEntityEnterColShape: " + ex.Message); }
                 };
@@ -69,7 +66,6 @@ namespace Golemo.Fractions
                     try
                     {
                         NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 0);
-                        Trigger.ClientEvent(ent, "Нажмите Е", false);
                     }
                     catch (Exception ex) { Console.WriteLine("shape.OnEntityExitColShape: " + ex.Message); }
                 };

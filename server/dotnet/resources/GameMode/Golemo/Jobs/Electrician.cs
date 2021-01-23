@@ -102,7 +102,7 @@ namespace Golemo.Jobs
                     }
                     catch (Exception ex) { Log.Write("col.OnEntityExitColShape: " + ex.Message, nLog.Type.Error); }
                 };
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E to start/end job"), new Vector3(724.9625, 133.9959, 80.95643), 30f, 0.4f, 0, new Color(255, 255, 255), true, 0);
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Начать/Закончить работу"), new Vector3(724.9625, 133.9959, 80.95643), 30f, 0.4f, 0, new Color(255, 255, 255), true, 0);
                 NAPI.Marker.CreateMarker(1, new Vector3(724.9625, 133.9959, 79.83643) - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1, new Color(0, 255, 255));
 
                 int i = 0;

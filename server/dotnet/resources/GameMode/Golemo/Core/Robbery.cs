@@ -214,7 +214,7 @@ namespace Golemo.Core
                     NAPI.Entity.SetEntityDimension(flowBlip, 0);
                     flowBlip.ShortRange = true;
 
-                    NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"Нажмите Е\n~b~{moneyFlowers[b]}"), moneyFlowPoints[b] + new Vector3(0, 0, 1.125), 5F, 0.8F, 0, new Color(255, 255, 255));
+                    NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"~b~{moneyFlowers[b]}"), moneyFlowPoints[b] + new Vector3(0, 0, 1.125), 5F, 0.8F, 0, new Color(255, 255, 255));
                 }
 
                 var result = MySQL.QueryRead($"SELECT * FROM safes");

@@ -317,7 +317,7 @@ namespace Golemo.Core
             "Пицца",
             "Сим-карта",
             "Связка ключей",
-            "Рем.Комплект",
+            "Рем. Комплект",
         };
         private static List<string> BurgerProducts = new List<string>()
         {
@@ -6064,7 +6064,6 @@ namespace Golemo.Core
             if (Type == 1)
             {
                 text += $"~b~Цена за литр: {Products[0].Price}$\n";
-                text += "~b~Нажмите Е\n";
             }
             label.Text = Main.StringToU16(text);
 

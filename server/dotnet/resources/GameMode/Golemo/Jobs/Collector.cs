@@ -35,7 +35,7 @@ namespace Golemo.Jobs
                     catch (Exception ex) { Log.Write("col.OnEntityExitColShape: " + ex.Message, nLog.Type.Error); }
                 };
                 NAPI.Marker.CreateMarker(1, TakeMoneyPos - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1, new Color(0, 255, 255), false, 0);
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E to take money bags"), TakeMoneyPos + new Vector3(0, 0, 0.3), 30f, 0.4f, 0, new Color(255, 255, 255), true, 0);
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Взять мешки с деньгами"), TakeMoneyPos + new Vector3(0, 0, 0.3), 30f, 0.4f, 0, new Color(255, 255, 255), true, 0);
             }
             catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }
         }

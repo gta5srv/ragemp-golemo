@@ -20,13 +20,13 @@ namespace Golemo.Fractions
                 Cols[0].SetData("INTERACT", 34);
                 Cols[0].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[0].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E, to open gun menu"), new Vector3(ArmyCheckpoints[0].X, ArmyCheckpoints[0].Y, ArmyCheckpoints[0].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Оружейное меню"), new Vector3(ArmyCheckpoints[0].X, ArmyCheckpoints[0].Y, ArmyCheckpoints[0].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 Cols.Add(1, NAPI.ColShape.CreateCylinderColShape(ArmyCheckpoints[1], 1, 2, 0));
                 Cols[1].SetData("INTERACT", 35);
                 Cols[1].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[1].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E, to change clothes"), new Vector3(ArmyCheckpoints[1].X, ArmyCheckpoints[1].Y, ArmyCheckpoints[1].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Переодеться"), new Vector3(ArmyCheckpoints[1].X, ArmyCheckpoints[1].Y, ArmyCheckpoints[1].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 Cols.Add(2, NAPI.ColShape.CreateCylinderColShape(ArmyCheckpoints[2], 5, 6, 0));
                 Cols[2].SetData("INTERACT", 36);
@@ -37,19 +37,19 @@ namespace Golemo.Fractions
                 Cols[3].SetData("INTERACT", 25);
                 Cols[3].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[3].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Lift"), new Vector3(ArmyCheckpoints[3].X, ArmyCheckpoints[3].Y, ArmyCheckpoints[3].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Лифт"), new Vector3(ArmyCheckpoints[3].X, ArmyCheckpoints[3].Y, ArmyCheckpoints[3].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 Cols.Add(4, NAPI.ColShape.CreateCylinderColShape(ArmyCheckpoints[4], 1, 2, 0));
                 Cols[4].SetData("INTERACT", 25);
                 Cols[4].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[4].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Lift"), new Vector3(ArmyCheckpoints[4].X, ArmyCheckpoints[4].Y, ArmyCheckpoints[4].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Лифт"), new Vector3(ArmyCheckpoints[4].X, ArmyCheckpoints[4].Y, ArmyCheckpoints[4].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 Cols.Add(5, NAPI.ColShape.CreateCylinderColShape(ArmyCheckpoints[5], 1, 2, 0));
                 Cols[5].SetData("INTERACT", 60);
                 Cols[5].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[5].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Open gun stock"), new Vector3(ArmyCheckpoints[5].X, ArmyCheckpoints[5].Y, ArmyCheckpoints[5].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Открыть оружейный склад"), new Vector3(ArmyCheckpoints[5].X, ArmyCheckpoints[5].Y, ArmyCheckpoints[5].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 NAPI.Marker.CreateMarker(1, ArmyCheckpoints[0] - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1f, new Color(0, 255, 255));
                 NAPI.Marker.CreateMarker(1, ArmyCheckpoints[1] - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1f, new Color(0, 255, 255));
@@ -190,7 +190,6 @@ namespace Golemo.Fractions
                         Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"В машине максимальное кол-во материала", 3000);
                         return;
                     }
-                    //player.SetData("loadMatsTimer", Main.StartT(20000, 99999999, (o) => loadMaterialsTimer(player), "ALOADMATS_TIMER"));
                     player.SetData("loadMatsTimer", Timers.StartOnce(20000, () => loadMaterialsTimer(player)));
                     player.Vehicle.SetData("loaderMats", player);
                     Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Загрузка материалов началась (20 секунд)", 3000);

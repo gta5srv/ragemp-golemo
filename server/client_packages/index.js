@@ -131,7 +131,6 @@ var pedtimer = false;
 var friends = {};
 var personalLabels = [];
 
-var pressedraw = false;
 var accessRoding = false;
 var pentloaded = false;
 var emsloaded = false;
@@ -215,10 +214,6 @@ mp.events.add('setDoorLocked', function (model, x, y, z, locked, angle) {
 });
 mp.events.add('changeChatState', function (state) {
     chatActive = state;
-});
-
-mp.events.add('PressE', function (toggle) {
-    pressedraw = toggle;
 });
 
 mp.events.add('allowRoding', function (toggle) {

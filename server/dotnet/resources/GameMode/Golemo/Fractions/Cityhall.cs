@@ -26,13 +26,13 @@ namespace Golemo.Fractions
                 Cols[0].OnEntityEnterColShape += city_OnEntityEnterColShape;
                 Cols[0].OnEntityExitColShape += city_OnEntityExitColShape;
                 Cols[0].SetData("INTERACT", 9);
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E, to open gun menu"), new Vector3(CityhallChecksCoords[0].X, CityhallChecksCoords[0].Y, CityhallChecksCoords[0].Z + 0.7), 5F, 0.4F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Открыть меню оружия"), new Vector3(CityhallChecksCoords[0].X, CityhallChecksCoords[0].Y, CityhallChecksCoords[0].Z + 0.7), 5F, 0.4F, 0, new Color(255, 255, 255));
 
                 Cols.Add(1, NAPI.ColShape.CreateCylinderColShape(CityhallChecksCoords[1], 1f, 2, 0)); // Раздевалка
                 Cols[1].OnEntityEnterColShape += city_OnEntityEnterColShape;
                 Cols[1].OnEntityExitColShape += city_OnEntityExitColShape;
                 Cols[1].SetData("INTERACT", 1);
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E, to change clothes"), new Vector3(CityhallChecksCoords[1].X, CityhallChecksCoords[1].Y, CityhallChecksCoords[1].Z + 0.7), 5F, 0.4F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Переодеться"), new Vector3(CityhallChecksCoords[1].X, CityhallChecksCoords[1].Y, CityhallChecksCoords[1].Z + 0.7), 5F, 0.4F, 0, new Color(255, 255, 255));
 
                 for (int i = 2; i < 4; i++)
                 {
@@ -40,7 +40,6 @@ namespace Golemo.Fractions
                     Cols[i].OnEntityEnterColShape += city_OnEntityEnterColShape;
                     Cols[i].OnEntityExitColShape += city_OnEntityExitColShape;
                     Cols[i].SetData("INTERACT", 5);
-                    NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E"), new Vector3(CityhallChecksCoords[i].X, CityhallChecksCoords[i].Y, CityhallChecksCoords[i].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
                     NAPI.Marker.CreateMarker(21, CityhallChecksCoords[i] + new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 0.8f, new Color(255, 255, 255, 60));
                 }
                 /*int door = 0;
@@ -67,7 +66,7 @@ namespace Golemo.Fractions
                 Cols[7].OnEntityEnterColShape += city_OnEntityEnterColShape;
                 Cols[7].OnEntityExitColShape += city_OnEntityExitColShape;
                 Cols[7].SetData("INTERACT", 62);
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Press E, to open gun menu"), new Vector3(CityhallChecksCoords[6].X, CityhallChecksCoords[6].Y, CityhallChecksCoords[6].Z + 0.7), 5F, 0.4F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~g~Открыть оружейное меню"), new Vector3(CityhallChecksCoords[6].X, CityhallChecksCoords[6].Y, CityhallChecksCoords[6].Z + 0.7), 5F, 0.4F, 0, new Color(255, 255, 255));
 
                 NAPI.Object.CreateObject(0x4f97336b, new Vector3(260.651764, 203.230209, 106.432785), new Vector3(0, 0, 160.003571), 255, 0);
                 NAPI.Object.CreateObject(0x4f97336b, new Vector3(258.209259, 204.120041, 106.432785), new Vector3(0, 0, -20.0684872), 255, 0);

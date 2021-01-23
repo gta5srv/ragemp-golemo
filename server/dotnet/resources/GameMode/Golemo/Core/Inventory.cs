@@ -2032,11 +2032,11 @@ namespace Golemo.Core
                                 if (player != null && Main.Players.ContainsKey(player))
                                 {
                                     NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 1000);
-                                    vehicle.Repair();
-                                    VehicleStreaming.UpdateVehicleSyncData(vehicle, new VehicleStreaming.VehicleSyncData());
+                                    VehicleManager.RepairCar(vehicle);
                                     player.StopAnimation();
                                     Main.OffAntiAnim(player);
-                                    NAPI.Entity.SetEntityPosition(player, player.Position + new Vector3(0, 0, 0.2));
+                                    //NAPI.Entity.SetEntityPosition(player, player.Position + new Vector3(0, 0, 0.2));
+                                    player.Position += new Vector3(0, 0, 0.2);
                                     Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы успешно починили автомобиль", 3000);
                                 }
                             }

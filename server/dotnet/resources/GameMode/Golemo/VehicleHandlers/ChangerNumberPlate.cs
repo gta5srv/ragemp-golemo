@@ -27,13 +27,12 @@ namespace Golemo.VehicleHandlers
                 intmarker = NAPI.Marker.CreateMarker(1, Changenum, new Vector3(), new Vector3(), 2f, new Color(66, 170, 255, 150), false, 0);
                 shape = NAPI.ColShape.CreateCylinderColShape(Changenum, 1, 3, 0);
                 lable = NAPI.TextLabel.CreateTextLabel("~b~Смена номеров", Changenum + new Vector3(0, 0, 0.85), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
-                NAPI.TextLabel.CreateTextLabel("~w~Цена:12500$\n" + "~r~Нaжмите E", Changenum + new Vector3(0, 0, 0.65), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
+                NAPI.TextLabel.CreateTextLabel("~w~Цена:12500$", Changenum + new Vector3(0, 0, 0.65), 5f, 0.3f, 0, new Color(255, 255, 255), true, 0);
                 shape.OnEntityEnterColShape += (s, ent) =>
                 {
                     try
                     {
                         NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 599);
-                        Trigger.ClientEvent(ent, "Нажмите Е", true);
                     }
                     catch (Exception ex) { Console.WriteLine("shape.OnEntityEnterColShape: " + ex.Message); }
                 };
@@ -42,7 +41,6 @@ namespace Golemo.VehicleHandlers
                     try
                     {
                         NAPI.Data.SetEntityData(ent, "INTERACTIONCHECK", 0);
-                        Trigger.ClientEvent(ent, "Нажмите Е", false);
                     }
                     catch (Exception ex) { Console.WriteLine("shape.OnEntityExitColShape: " + ex.Message); }
                 };

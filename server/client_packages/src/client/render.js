@@ -148,14 +148,6 @@ mp.events.add('SetOrderTruck', (vehicle) => {
 mp.events.add('render', () => {
 	try {
         if (!loggedin) return;
-		if(pressedraw) {
-			mp.game.graphics.drawText(``, [0.10, 0.75], {
-				font: 0,
-				color: [255, 255, 255, 185],
-				scale: [0.35, 0.35],
-				outline: true
-			});
-		}
 		if(pedsaying != null) {
 			let pos = pedsaying.getBoneCoords(12844, 0.5, 0, 0);
 			mp.game.graphics.drawText(pedtext, [pos.x, pos.y, pos.z+0.1], {
@@ -242,7 +234,7 @@ mp.events.add('render', () => {
 		    mp.game.graphics.drawText("[F2]", [nearestObject.position.x, nearestObject.position.y, nearestObject.position.z], {
 			    font: 4,
 	            color: [255, 255, 255, 185],
-		        scale: [0.3, 0.3],
+		        scale: [0.35, 0.35],
 			    outline: true
 			});
 		}
@@ -251,7 +243,7 @@ mp.events.add('render', () => {
 				mp.game.graphics.drawText("[G]", [entity.position.x, entity.position.y, entity.position.z], {
 					font: 4,
 					color: [255, 255, 255, 185],
-					scale: [0.3, 0.3],
+					scale: [0.35, 0.35],
 					outline: true
 				});
 			} else if(entity == truckorderveh) {

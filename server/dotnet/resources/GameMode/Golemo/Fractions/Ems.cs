@@ -27,14 +27,12 @@ namespace Golemo.Fractions
                 col.SetData("INTERACT", 15);
                 col.OnEntityEnterColShape += emsShape_onEntityEnterColShape;
                 col.OnEntityExitColShape += emsShape_onEntityExitColShape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Нажмите Е"), new Vector3(emsCheckpoints[0].X, emsCheckpoints[0].Y, emsCheckpoints[0].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
                 NAPI.Marker.CreateMarker(21, emsCheckpoints[0] + new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 0.8f, new Color(255, 255, 255, 60));
 
                 col = NAPI.ColShape.CreateCylinderColShape(emsCheckpoints[1], 1, 2, 0); // exit ems
                 col.SetData("INTERACT", 16);
                 col.OnEntityEnterColShape += emsShape_onEntityEnterColShape;
                 col.OnEntityExitColShape += emsShape_onEntityExitColShape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Нажмите Е"), new Vector3(emsCheckpoints[1].X, emsCheckpoints[1].Y, emsCheckpoints[1].Z + 1), 5F, 0.3F, 0, new Color(255, 255, 255));
                 NAPI.Marker.CreateMarker(21, emsCheckpoints[1] + new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 0.8f, new Color(255, 255, 255, 60));
 
                 col = NAPI.ColShape.CreateCylinderColShape(emsCheckpoints[3], 1, 2, 0); // open hospital stock
@@ -47,13 +45,13 @@ namespace Golemo.Fractions
                 col.SetData("INTERACT", 18);
                 col.OnEntityEnterColShape += emsShape_onEntityEnterColShape;
                 col.OnEntityExitColShape += emsShape_onEntityExitColShape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Нажмите Е, чтобы переодеться"), new Vector3(emsCheckpoints[4].X, emsCheckpoints[4].Y, emsCheckpoints[4].Z + 0.3), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Переодеться"), new Vector3(emsCheckpoints[4].X, emsCheckpoints[4].Y, emsCheckpoints[4].Z + 0.3), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 col = NAPI.ColShape.CreateCylinderColShape(emsCheckpoints[5], 1, 2, 0); // start heal course
                 col.SetData("INTERACT", 19);
                 col.OnEntityEnterColShape += emsShape_onEntityEnterColShape;
                 col.OnEntityExitColShape += emsShape_onEntityExitColShape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Нажмите Е, чтобы начать лечение"), new Vector3(emsCheckpoints[5].X, emsCheckpoints[5].Y, emsCheckpoints[5].Z + 0.3), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Начать лечение"), new Vector3(emsCheckpoints[5].X, emsCheckpoints[5].Y, emsCheckpoints[5].Z + 0.3), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 col = NAPI.ColShape.CreateCylinderColShape(emsCheckpoints[6], 1, 2, 0); // tattoo delete
                 col.SetData("INTERACT", 51);

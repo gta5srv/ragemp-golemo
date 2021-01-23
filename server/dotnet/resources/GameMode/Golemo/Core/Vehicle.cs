@@ -840,11 +840,11 @@ namespace Golemo.Core
                         Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, $"Топливный бак пуст, невозможно завести машину", 3000);
                         return;
                     }
-            if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 800)
-            {
-                Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, "Машина не заводится, вам нужно починить ее", 3000);
-                return;
-            }
+                    if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 800)
+                    {
+                        Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, "Машина не заводится, вам нужно починить ее", 3000);
+                        return;
+                    }
             switch (NAPI.Data.GetEntityData(vehicle, "ACCESS"))
                     {
                         case "HOTEL":
