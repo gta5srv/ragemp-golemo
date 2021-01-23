@@ -317,6 +317,7 @@ namespace Golemo.Core
             "Пицца",
             "Сим-карта",
             "Связка ключей",
+            "Рем.Комплект",
         };
         private static List<string> BurgerProducts = new List<string>()
         {
@@ -3362,6 +3363,7 @@ namespace Golemo.Core
             { "Пицца", 50},
             { "Сим-карта", 50},
             { "Связка ключей", 50},
+            { "Рем. Комплект", 150},
             { "Бензин", 20000}, // petrol
             { "Одежда", 7000}, // clothes
             { "Маски", 100}, // masks
@@ -3505,6 +3507,7 @@ namespace Golemo.Core
             {"Пицца",100},
             {"Сим-карта",200},
             {"Связка ключей",200},
+            {"Рем. Комплект",700},
             {"Бензин",1},
             {"Одежда",50},
             {"Маски",2000},
@@ -3772,6 +3775,9 @@ namespace Golemo.Core
                     break;
                 case "Связка ключей":
                     type = (int)ItemType.KeyRing;
+                    break;
+                case "Рем. Комплект":
+                    type = (int)ItemType.RepairKit;
                     break;
                 case "Удочка":
                     type = (int)ItemType.Rod;

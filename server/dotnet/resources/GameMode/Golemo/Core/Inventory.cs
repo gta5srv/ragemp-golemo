@@ -49,6 +49,7 @@ namespace Golemo.Core
             {19, "Ключи от машины"},
             {40, "Подарок"},
             {41, "Связка ключей"},
+            {42, "Рем. Комплект"},
 
             {20, "«На корке лимона»"},
             {21, "«На бруснике»"},
@@ -181,6 +182,7 @@ namespace Golemo.Core
             { ItemType.Material, 3045218749 },
             { ItemType.Debug, 0000000 },
             { ItemType.HealthKit, 678958360 },
+            { ItemType.RepairKit, NAPI.Util.GetHashKey("prop_box_ammo07a") },
             { ItemType.GasCan, 786272259 },
             { ItemType.Сrisps, 2564432314 },
             { ItemType.Beer, 1940235411 },
@@ -330,6 +332,7 @@ namespace Golemo.Core
             { ItemType.Material, new Vector3(0, 0, -0.6) },
             { ItemType.Debug, new Vector3() },
             { ItemType.HealthKit, new Vector3(0, 0, -0.9) },
+            { ItemType.RepairKit, new Vector3(0, 0, -1) },
             { ItemType.GasCan, new Vector3(0, 0, -1) },
             { ItemType.Сrisps, new Vector3(0, 0, -1) },
             { ItemType.Beer, new Vector3(0, 0, -1) },
@@ -478,6 +481,7 @@ namespace Golemo.Core
             { ItemType.Material, new Vector3() },
             { ItemType.Debug, new Vector3() },
             { ItemType.HealthKit, new Vector3() },
+            { ItemType.RepairKit, new Vector3() },
             { ItemType.GasCan, new Vector3() },
             { ItemType.Сrisps, new Vector3(90, 90, 0) },
             { ItemType.Beer, new Vector3() },
@@ -615,6 +619,7 @@ namespace Golemo.Core
             { ItemType.BagWithDrill, 1 },
             { ItemType.Debug, 10000 },
             { ItemType.HealthKit, 5 },
+            { ItemType.RepairKit, 5 },
             { ItemType.GasCan, 2 },
             { ItemType.Сrisps, 4 },
             { ItemType.Beer, 5 },
@@ -2005,6 +2010,39 @@ namespace Golemo.Core
                             return;
                         }
                         break;
+                    case ItemType.RepairKit:
+                        var vehicle = VehicleManager.getNearestVehicle(player, 3);
+                        if (player.IsInVehicle)
+                        {
+                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вам нужно выйти из автомобиля", 3000);
+                            return;
+                        }
+                        if (vehicle == null)
+                        {
+                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы должны быть рядом с машиной", 3000);
+                            return;
+                        }
+                        nInventory.Remove(player, ItemType.RepairKit, 1);
+                        GUI.Dashboard.Close(player);
+                        Main.OnAntiAnim(player);
+                        player.PlayAnimation("amb@world_human_vehicle_mechanic@male@idle_a", "idle_a", 39);
+                        NAPI.Task.Run(() => {
+                            try
+                            {
+                                if (player != null && Main.Players.ContainsKey(player))
+                                {
+                                    NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 1000);
+                                    vehicle.Repair();
+                                    VehicleStreaming.UpdateVehicleSyncData(vehicle, new VehicleStreaming.VehicleSyncData());
+                                    player.StopAnimation();
+                                    Main.OffAntiAnim(player);
+                                    NAPI.Entity.SetEntityPosition(player, player.Position + new Vector3(0, 0, 0.2));
+                                    Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы успешно починили автомобиль", 3000);
+                                }
+                            }
+                            catch { }
+                        }, 20000);
+                        return;
                     case ItemType.Lockpick:
                         if (player.GetData<int>("INTERACTIONCHECK") != 3)
                         {

@@ -42,6 +42,7 @@ namespace GolemoSDK
         CarKey = 19,      // Ключи от личной машины
         Present = 40,     // Подарок
         KeyRing = 41,     // Связка ключей
+        RepairKit = 42,     // починка
 
         /* Drinks */
         RusDrink1 = 20,
