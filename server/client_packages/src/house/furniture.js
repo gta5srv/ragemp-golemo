@@ -70,10 +70,10 @@ function AddInstructionalEnd(type) {
     mp.game.graphics.pushScaleformMovieFunctionParameterInt(type);
     mp.game.graphics.popScaleformMovieFunctionVoid();
     mp.game.graphics.pushScaleformMovieFunction(sc, "SET_BACKGROUND_COLOUR");
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(192);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(57);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(43);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(65);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(100);
     mp.game.graphics.popScaleformMovieFunctionVoid();
 }
 
