@@ -147,6 +147,7 @@ namespace Golemo.Core
                 foreach (Vehicle veh in allVehicles)
                 {
                     object f = null;
+                    float h;
                     try
                     {
                         if (!veh.HasSharedData("PETROL")) continue;
@@ -159,8 +160,16 @@ namespace Golemo.Core
                         }*/
 
                         f = veh.GetSharedData<int>("PETROL");
+                        h = NAPI.Vehicle.GetVehicleEngineHealth(veh);
                         int fuel = (int)f;
-
+                        int hp = (int)h;
+                        if (hp == 800) continue;
+                        if (hp <= 800)
+                        {
+                            hp = 800;
+                            VehicleStreaming.SetEngineState(veh, false);
+                        }
+                        veh.Health = 800;
                         if (fuel == 0) continue;
                         if (fuel - PetrolRate[veh.Class] <= 0)
                         {
@@ -831,7 +840,12 @@ namespace Golemo.Core
                         Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, $"Топливный бак пуст, невозможно завести машину", 3000);
                         return;
                     }
-                    switch (NAPI.Data.GetEntityData(vehicle, "ACCESS"))
+            if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 800)
+            {
+                Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, "Машина не заводится, вам нужно починить ее", 3000);
+                return;
+            }
+            switch (NAPI.Data.GetEntityData(vehicle, "ACCESS"))
                     {
                         case "HOTEL":
                             if (NAPI.Data.GetEntityData(vehicle, "OWNER") != sender && Main.Players[sender].AdminLVL < 3)
