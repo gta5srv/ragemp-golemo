@@ -334,7 +334,7 @@ namespace Golemo.Fractions
             };
             shape.OnEntityExitColShape += (s, p) =>
             {
-                NAPI.Data.ResetEntityData(p, "INTERACTIONCHECK");
+                NAPI.Data.SetEntityData(p, "INTERACTIONCHECK", 0);
             };
         }
 
