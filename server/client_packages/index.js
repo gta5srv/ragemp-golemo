@@ -128,7 +128,6 @@ var pedtext = "";
 var pedtext2 = null;
 var pedtimer = false;
 
-var friends = {};
 var personalLabels = [];
 
 var accessRoding = false;
@@ -183,17 +182,6 @@ mp.events.add('chatconfig', function (a, b) {
 	else if(a == 2) mp.storage.data.chatcfg.fontstep = b;
 	else mp.storage.data.chatcfg.alpha = b;
 	mp.storage.flush();
-});
-
-mp.events.add('setFriendList', function (friendlist) {
-	friends = {};
-	friendlist.forEach(friend => {
-		friends[friend] = true;
-    });
-});
-
-mp.events.add('newFriend', function (friend) {
-    friends[friend] = true;
 });
 
 mp.events.add('setClientRotation', function (player, rots) {

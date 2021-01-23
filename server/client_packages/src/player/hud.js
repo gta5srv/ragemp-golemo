@@ -335,10 +335,17 @@ mp.events.add('setCruiseSpeed', function (speed) {
     cruiseSpeed = speed;
 });
 
-var passports = {};
+global.passports = {};
 mp.events.add('newPassport', function (player, pass) {
     if (player && mp.players.exists(player))
         passports[player.name] = pass;
+});
+
+mp.events.add('newFriend', function (player, pass) {
+    if (player && mp.players.exists(player)) {
+        mp.storage.data.friends[player.name] = true;
+        mp.storage.flush();
+    }
 });
 
 var showAltTabHint = false;
