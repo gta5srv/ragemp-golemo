@@ -144,6 +144,18 @@ namespace Golemo.Core
             var prod = biz.Products.FirstOrDefault(p => p.Name == vName);
             string vNumber = "none";
 
+            //Если нет лицензии на вождение автомобилем
+            if(Main.Players[player].Licenses[1] == false && biz.Type != 5)
+            {
+                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "У вас нет лицензии на управление транспорта категории [B]", 2500);
+                return vNumber;
+            }
+            //Если тип бизнеса мотосалон и нет лицензии на вождение мотоциклов
+            if(Main.Players[player].Licenses[0] == false && biz.Type == 5)
+            {
+                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "У вас нет лицензии на управление транспорта категории [A]", 2500);
+                return vNumber;
+            }
             if (biz.Type != 17)
             {
                 // Check products available
@@ -152,7 +164,6 @@ namespace Golemo.Core
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно средств", 3000);
                     return vNumber;
                 }
-
                 if (!BusinessManager.takeProd(biz.ID, 1, vName, prod.Price))
                 {
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Транспортного средства больше нет на складе", 3000);
