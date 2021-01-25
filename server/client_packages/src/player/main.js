@@ -171,7 +171,7 @@ mp.keys.bind(Keys.VK_L, false, function () { // L key
 mp.keys.bind(Keys.VK_LEFT, true, () => {
 	if(mp.gui.cursor.visible || !loggedin) return;
 	if(localplayer.vehicle) {
-		if(localplayer.vehicle.getPedInSeat(0) != localplayer.handle) return;
+		if(localplayer.vehicle.getPedInSeat(-1) != localplayer.handle) return;
 		if(new Date().getTime() - lastCheck > 500) {
 			lastCheck = new Date().getTime();
 			if(localplayer.vehicle.getVariable('leftlight') == true) mp.events.callRemote("VehStream_SetIndicatorLightsData", localplayer.vehicle, 0, 0);
@@ -183,7 +183,7 @@ mp.keys.bind(Keys.VK_LEFT, true, () => {
 mp.keys.bind(Keys.VK_RIGHT, true, () => {
 	if(mp.gui.cursor.visible || !loggedin) return;
 	if(localplayer.vehicle) {
-		if(localplayer.vehicle.getPedInSeat(0) != localplayer.handle) return;
+		if(localplayer.vehicle.getPedInSeat(-1) != localplayer.handle) return;
 		if(new Date().getTime() - lastCheck > 500) {
 			lastCheck = new Date().getTime();
 			if(localplayer.vehicle.getVariable('rightlight') == true) mp.events.callRemote("VehStream_SetIndicatorLightsData", localplayer.vehicle, 0, 0);
@@ -195,7 +195,7 @@ mp.keys.bind(Keys.VK_RIGHT, true, () => {
 mp.keys.bind(Keys.VK_DOWN, true, () => {
 	if(mp.gui.cursor.visible || !loggedin) return;
 	if(localplayer.vehicle) {
-		if(localplayer.vehicle.getPedInSeat(0) != localplayer.handle) return;
+		if(localplayer.vehicle.getPedInSeat(-1) != localplayer.handle) return;
 		if(new Date().getTime() - lastCheck > 500) {
 			lastCheck = new Date().getTime();
 			if(localplayer.vehicle.getVariable('leftlight') == true && localplayer.vehicle.getVariable('rightlight') == true) mp.events.callRemote("VehStream_SetIndicatorLightsData", localplayer.vehicle, 0, 0);
@@ -236,15 +236,15 @@ mp.keys.bind(0x77, true, function () {  //F8-Key
 });
 
 mp.keys.bind(Keys.VK_X, false, function () { // X key
-    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('fraction') == 0 || localplayer.vehicle) return;
+    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('fraction') == 0 || localplayer.vehicle || localplayer.getVariable('InDeath')) return;
     mp.events.callRemote('playerPressCuffBut');
     lastCheck = new Date().getTime();
 });
 
 mp.keys.bind(Keys.VK_Z, false, function () { // Z key
-    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened) return;
+    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('InDeath')) return;
 	if(localplayer.vehicle) {
-		if(localplayer.vehicle.getPedInSeat(0) != localplayer.handle) CheckMyWaypoint();
+		if(localplayer.vehicle.getPedInSeat(-1) != localplayer.handle) CheckMyWaypoint();
 		else {
 			if (localplayer.vehicle.getClass() == 18) mp.events.callRemote('syncSirenSound', localplayer.vehicle);
 		}
