@@ -307,7 +307,7 @@ namespace Golemo.Jobs
                 if (NAPI.Data.GetEntityData(player, "WORK") != null)
                 {
                     if (!target.IsInVehicle || player.Position.DistanceTo(target.Position) > 2) return;
-                    if (!NAPI.Player.IsPlayerInAnyVehicle(player) || player.VehicleSeat != 0 || player.Vehicle != player.GetData<Player>("WORK") || player.Vehicle != target.Vehicle) return;
+                    if (!NAPI.Player.IsPlayerInAnyVehicle(player) || player.VehicleSeat != 0 || player.Vehicle != player.GetData<Vehicle>("WORK") || player.Vehicle != target.Vehicle) return;
                     var vehicle = player.Vehicle;
                     if (NAPI.Data.GetEntityData(vehicle, "TYPE") == "TAXI")
                     {
@@ -329,7 +329,7 @@ namespace Golemo.Jobs
                         Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы предложили игроку ({target.Value}) оплатить поездку за {price}$", 3000);
                     }
                 }
-                else Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы не работает в данный момент", 3000);
+                else Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы не работаете в данный момент", 3000);
             }
             else Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы не работаете таксистом", 3000);
         }
