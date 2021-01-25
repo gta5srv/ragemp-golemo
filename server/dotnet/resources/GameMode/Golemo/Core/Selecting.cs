@@ -457,7 +457,7 @@ namespace Golemo.Core
                     case "Выписать штраф":
                         if (player.IsInVehicle) return;
                         player.SetData("TICKETTARGET", target);
-                        Trigger.ClientEvent(player, "openInput", "Выписать штраф (сумма)", "Сумма от 0 до 7000$", 4, "player_ticketsum");
+                        Trigger.ClientEvent(player, "openInput", "Выписать штраф (сумма)", "Сумма от 0 до 7000$", 9, "player_ticketsum");
                         return;
                 }
             }

@@ -274,7 +274,7 @@ namespace Golemo
                         switch (type)
                         {
                             case 0:
-                                Rentcar.CarInfos.Add(data);
+                                Rentcar.CarInfos.Add(data); //todo rentcar
                                 break;
                             case 3:
                                 Jobs.Taxi.CarInfos.Add(data);
@@ -297,7 +297,8 @@ namespace Golemo
                         }
                     }
 
-                    Rentcar.rentCarsSpawner();
+                    //Rentcar.rentCarsSpawner();
+                    //Rentcar.OnResourceStart();
                     Jobs.Bus.busCarsSpawner();
                     Jobs.Lawnmower.mowerCarsSpawner();
                     Jobs.Taxi.taxiCarsSpawner();
@@ -1475,7 +1476,7 @@ namespace Golemo
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Некорректные данные", 3000);
                             return;
                         }
-                        player.SetData("TICKETSUM", sum);
+                        player.SetData("TICKETSUM", Math.Abs(sum));
                         Trigger.ClientEvent(player, "openInput", "Выписать штраф (причина)", "Причина", 50, "player_ticketreason");
                         break;
                     case "player_ticketreason":
@@ -1818,7 +1819,7 @@ namespace Golemo
             catch (Exception e) { Log.Write("InteractSafe: " + e.Message, nLog.Type.Error); }
         }
 
-        [RemoteEvent("interactionPressed")]
+        [RemoteEvent("interactionPressed")] //todo click
         public void ClientEvent_interactionPressed(Player player, params object[] arguments)
         {
             int intid = -404;
