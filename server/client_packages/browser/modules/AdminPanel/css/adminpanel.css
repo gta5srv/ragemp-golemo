@@ -256,6 +256,17 @@ header .fa-times-circle-o:hover {color: #c73e3e;}
   color: #81838E;
   margin-bottom: 12px;
 }
+.infolist div p input {
+  font-size: .8em;
+  color: rgba(255, 255, 255, .65);
+  background: #18191D;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  width: auto;
+  text-align: center;
+}
 .infolist div p:last-child {margin-bottom: 0;}
 .infolist div p i {
   display: inline-block;
