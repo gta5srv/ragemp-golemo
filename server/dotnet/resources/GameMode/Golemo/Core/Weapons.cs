@@ -397,8 +397,6 @@ namespace Golemo.Core
                 if (ammoInClip > WeaponsClipsMax[wItemType]) ammoInClip = WeaponsClipsMax[wItemType];
                 var ammo = (ammoLefts < WeaponsClipsMax[wItemType] - ammoInClip) ? ammoLefts : WeaponsClipsMax[wItemType] - ammoInClip;
                 nInventory.Remove(player, wAmmoType, ammo);
-                Main.OnAntiAnim(player);
-                Timers.StartOnceTask(5000, () => { Main.OffAntiAnim(player); });
                 Trigger.ClientEvent(player, "wgive", hash, ammo, true, true);
             }
             catch (Exception e) { Log.Write("PlayeReloadWeapon: " + e.Message, nLog.Type.Error); }
