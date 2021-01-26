@@ -3889,6 +3889,29 @@ namespace Golemo.Core
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
         }
+        [Command("ghc")]
+        public static void CMD_teleportToMeCar(Player player, ushort vid)
+        {
+            try
+            {
+                List<Vehicle> all_vehicles = NAPI.Pools.GetAllVehicles();
+
+                foreach (var v in NAPI.Pools.GetAllVehicles())
+                {
+                    if (vid != null && vid == v.Value)
+                    {
+                        NAPI.Entity.SetEntityPosition(v, player.Position);
+                        NAPI.Entity.SetEntityRotation(v, player.Rotation);
+                        NAPI.Entity.SetEntityDimension(v, player.Dimension);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error);
+            }
+        }
+
         [Command("revive")]
         public static void CMD_revive(Player client, int id)
         {
