@@ -40,6 +40,7 @@ namespace Golemo.Core.Character
                         Jobs.WorkManager.load(player);
 
                         // Skin, Health, Armor, RemoteID
+                        IsAlive = true; //прочекнуть
                         player.SetSkin((Gender) ? PedHash.FreemodeMale01 : PedHash.FreemodeFemale01);
                         player.Health = (Health > 5) ? Health : 5;
                         player.Armor = Armor;
