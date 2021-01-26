@@ -189,7 +189,7 @@ namespace Golemo.Fractions
                 NAPI.Data.SetEntityData(target, "CUFFED", true);
                 Voice.Voice.PhoneHCommand(target);
 
-                Main.OnAntiAnim(player);
+                Main.OnAntiAnim(target);
                 NAPI.Player.PlayPlayerAnimation(target, 49, "mp_arresting", "idle");
                 // -0.02 0.063 0 75 0 76
                 BasicSync.AttachObjectToPlayer(target, NAPI.Util.GetHashKey("p_cs_cuffs_02_s"), 6286, new Vector3(-0.02f, 0.063f, 0.0f), new Vector3(75.0f, 0.0f, 76.0f));
@@ -881,13 +881,14 @@ namespace Golemo.Fractions
                 if (!Manager.canUseCommand(player, "pull")) return;
                 Vector3 posPlayer = NAPI.Entity.GetEntityPosition(player);
                 Vector3 posTarget = NAPI.Entity.GetEntityPosition(target);
-                if (player.Position.DistanceTo(target.Position) < 5)
+                if (player.Position.DistanceTo(target.Position) < 3)
                 {
                     if (NAPI.Player.IsPlayerInAnyVehicle(target))
                     {
                         Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы выкинули игрока ({target.Value}) из машины", 3000);
                         Notify.Send(target, NotifyType.Warning, NotifyPosition.BottomCenter, $"Игрок ({player.Value}) Выкинул Вас из машины", 3000);
                         VehicleManager.WarpPlayerOutOfVehicle(target);
+                        NAPI.Task.Run(() => { NAPI.Entity.SetEntityPosition(target, player.Position); }, 100);
                         Commands.RPChat("me", player, " открыл дверь и вытащил {name} из машины", target);
                     }
                     else Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок не в машине", 3000);
