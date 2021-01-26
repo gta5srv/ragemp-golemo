@@ -86,7 +86,7 @@ namespace Golemo
 
         public static Random rnd = new Random();
 
-        public static List<string> LicWords = new List<string>()
+        public static List<string> LicWords = new List<string>() //todo Licences Names
         {
             "A",
             "B",
@@ -2242,7 +2242,7 @@ namespace Golemo
                         case "BUY_CAR":
                             {
                                 Houses.House house = Houses.HouseManager.GetHouse(player, true);
-                                if (house == null && VehicleManager.getAllPlayerVehicles(player.Name.ToString()).Count > 1)
+                                if (house == null && VehicleManager.getAllPlayerVehicles(player.Name.ToString()).Count >= 1)
                                 {
                                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас нет личного дома", 3000);
                                     break;
@@ -2255,11 +2255,14 @@ namespace Golemo
                                         break;
                                     }
                                 }
-                                Houses.Garage garage = Houses.GarageManager.Garages[house.GarageID];
-                                if (VehicleManager.getAllPlayerVehicles(player.Name).Count >= Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
+                                if(house != null)
                                 {
-                                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас максимальное кол-во машин", 3000);
-                                    break;
+                                    Houses.Garage garage = Houses.GarageManager.Garages[house.GarageID];
+                                    if (VehicleManager.getAllPlayerVehicles(player.Name).Count >= Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
+                                    {
+                                        Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас максимальное кол-во машин", 3000);
+                                        break;
+                                    }
                                 }
 
                                 Player seller = player.GetData<Player>("CAR_SELLER");
@@ -2294,7 +2297,7 @@ namespace Golemo
                                 }
                                 VehicleManager.VehicleData vData = VehicleManager.Vehicles[number];
                                 VehicleManager.Vehicles[number].Holder = player.Name;
-                                MySQL.Query($"UPDATE vehicles SET holder='{player.Name}' ''{number}'");
+                                MySQL.Query($"UPDATE vehicles SET holder='{player.Name}' WHERE number='{number}'");
                                 MoneySystem.Wallet.Change(seller, price);
                                 GameLog.Money($"player({Players[player].UUID})", $"player({Players[seller].UUID})", price, $"buyCar({number})");
 
