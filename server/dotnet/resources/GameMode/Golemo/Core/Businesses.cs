@@ -2202,9 +2202,9 @@ namespace Golemo.Core
                 }},
             }},
 
-            { "F620", new Dictionary<int, List<Tuple<int, string, int>>>() {
+            { "F620", new Dictionary<int, List<Tuple<int, string, int>>>() { }},
 
-            }},
+            { "deluxo", new Dictionary<int, List<Tuple<int, string, int>>>() { }},
 
             { "Schwarzer", new Dictionary<int, List<Tuple<int, string, int>>>() {
                     { 0, new List<Tuple<int, string, int>>() {
@@ -3460,6 +3460,9 @@ namespace Golemo.Core
             { "Mammatus", 10 },
             { "Luxor2", 10 },
 
+
+            { "deluxo", 10 },//donate avto
+
             { "Pistol", 20}, // gun shop
             { "CombatPistol", 20},
             { "Revolver", 20},
@@ -3603,6 +3606,8 @@ namespace Golemo.Core
             { "Buzzard2", 1800000 },
             { "Mammatus", 3000000 },
             { "Luxor2", 7500000 },
+
+            { "deluxo", 300 },//donate avto
 
             {"Pistol",720},
             {"CombatPistol",900},
