@@ -165,6 +165,7 @@ namespace Golemo.Core
             }
             Main.Players[target].AdminLVL = 1;
             target.SetSharedData("IS_ADMIN", true);
+            target.SetSharedData("ALVL", 1);
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы Выдали админ. права игроку {target.Name}", 3000);
             Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"{player.Name} Выдал Вам админ. права", 3000);
             GameLog.Admin($"{player.Name}", $"setAdmin", $"{target.Name}");
@@ -189,6 +190,7 @@ namespace Golemo.Core
             }
             Main.Players[target].AdminLVL = 0;
             target.ResetSharedData("IS_ADMIN");
+            target.ResetSharedData("ALVL");
 
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы забрали права у администратора {target.Name}", 3000);
             Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"{player.Name} забрал у Вас админ. права", 3000);
