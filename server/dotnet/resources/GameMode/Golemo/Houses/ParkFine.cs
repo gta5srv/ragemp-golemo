@@ -40,7 +40,7 @@ namespace Golemo.Houses
         public static Dictionary<string, string> ModelList = new Dictionary<string, string>()
         {	
            
-              {"rmode63s", "MB E63S BRABUS" },
+              {"deluxo", "Golemo-Mode model" }, // пример
               //modelname  //Realname
         };
 

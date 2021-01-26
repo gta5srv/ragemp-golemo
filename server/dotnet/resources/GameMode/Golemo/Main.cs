@@ -982,9 +982,9 @@ namespace Golemo
                         }
 
                         string vName = VehicleManager.Vehicles[number].Model;
-                        Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы предложили {target.Name} купить Ваш {vName} ({number}) за {price}$", 3000);
+                        Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы предложили {target.Name} купить Ваш {ParkManager.GetNormalName(vName)} ({number}) за {price}$", 3000);
 
-                        Trigger.ClientEvent(target, "openDialog", "BUY_CAR", $"{player.Name} предложил Вам купить {vName} ({number}) за ${price}");
+                        Trigger.ClientEvent(target, "openDialog", "BUY_CAR", $"{player.Name} предложил Вам купить {ParkManager.GetNormalName(vName)} ({number}) за ${price}");
                         target.SetData("SELLDATE", DateTime.Now);
                         target.SetData("CAR_SELLER", player);
                         target.SetData("CAR_NUMBER", number);
@@ -2310,8 +2310,8 @@ namespace Golemo
                                     Garage.SpawnCar(number);
                                 }
 
-                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы купили {vData.Model} ({number}) за {price}$ у {seller.Name}", 3000);
-                                Notify.Send(seller, NotifyType.Success, NotifyPosition.BottomCenter, $"{player.Name} купил у Вас {vData.Model} ({number}) за {price}$", 3000);
+                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы купили {ParkManager.GetNormalName(vData.Model)} ({number}) за {price}$ у {seller.Name}", 3000);
+                                Notify.Send(seller, NotifyType.Success, NotifyPosition.BottomCenter, $"{player.Name} купил у Вас {ParkManager.GetNormalName(vData.Model)} ({number}) за {price}$", 3000);
                                 break;
                             }
                         case "INVITED":
