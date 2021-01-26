@@ -10,7 +10,7 @@ mp.events.add('playerInteractionCheck', function (state){
     global.INTERACTIONCHECK = state;
 });
 mp.events.add('render', () => {
-    if (global.INTERACTIONCHECK === true) {
+    if (global.INTERACTIONCHECK === true && !global.menuOpened) {
         mp.game.ui.setTextComponentFormat('STRING');
         mp.game.ui.addTextComponentSubstringPlayerName("~h~Нажмите ~g~ ~INPUT_CONTEXT~ ~s~ для взаимодействия");
         mp.game.ui.displayHelpTextFromStringLabel((0), false, true, -1);
