@@ -605,7 +605,7 @@ namespace Golemo.Jobs
                 return;
             }
 
-            if (driver.Vehicle.GetSharedData<object>("FUELTANK") < fuel)
+            if (driver.Vehicle.GetSharedData<int>("FUELTANK") < fuel)
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У механика недостаточно топлива, чтобы заправить Вас", 3000);
                 return;
@@ -618,9 +618,9 @@ namespace Golemo.Jobs
             Notify.Send(driver, NotifyType.Info, NotifyPosition.BottomCenter, $"Игрок ({player.Value}) оплатил заправку транспорта", 3000);
             Commands.RPChat("me", driver, $"заправил транспортное средство");
 
-            var carFuel = (player.Vehicle.GetSharedData<object>("PETROL") + fuel > player.Vehicle.GetSharedData<object>("MAXPETROL")) ? player.Vehicle.GetSharedData<object>("MAXPETROL") : player.Vehicle.GetSharedData<object>("PETROL") + fuel;
+            var carFuel = (player.Vehicle.GetSharedData<int>("PETROL") + fuel > player.Vehicle.GetSharedData<int>("MAXPETROL")) ? player.Vehicle.GetSharedData<int>("MAXPETROL") : player.Vehicle.GetSharedData<int>("PETROL") + fuel;
             player.Vehicle.SetSharedData("PETROL", carFuel);
-            driver.Vehicle.SetSharedData("FUELTANK", driver.Vehicle.GetSharedData<object>("FUELTANK") - fuel);
+            driver.Vehicle.SetSharedData("FUELTANK", driver.Vehicle.GetSharedData<int>("FUELTANK") - fuel);
             player.ResetData("MECHANIC_DRIVER");
             driver.ResetData("MECHANIC_CLIENT");
             try
