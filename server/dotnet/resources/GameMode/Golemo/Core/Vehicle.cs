@@ -220,7 +220,7 @@ namespace Golemo.Core
 
                 if (player.VehicleSeat == 0)
                 {
-                    if (VehicleHandlers.AutoPilot.accessVehicle.Contains(player.Vehicle.DisplayName.ToLower()))
+                    if (VehicleHandlers.AutoPilot.HasAccessToAutopilot((VehicleHash)player.Vehicle.Model))
                     {
                         player.SetSharedData("isAutouPilot", true);
                     }
@@ -1019,6 +1019,8 @@ namespace Golemo.Core
                     vehicle = getNearestVehicle(sender, 10);
                     if (vehicle != null)
                         ChangeVehicleDoors(sender, vehicle);
+                    if (vehicle != null) 
+                        vehicle.Locked = !vehicle.Locked;
                     #endregion
                     break;
             }
