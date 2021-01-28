@@ -221,7 +221,7 @@ mp.keys.bind(Keys.VK_M, false, function () {
         mp.events.callRemote("closePlayerMenu");
         global.phoneOpen = 0;
     }
-    else if (!localplayer.getVariable('AntiAnimDown'))
+    else if (!localplayer.getVariable('AntiAnimDown') && !localplayer.isInWater() && !localplayer.isInAir())
     {
         mp.events.callRemote('openPlayerMenu');
         lastCheck = new Date().getTime();
