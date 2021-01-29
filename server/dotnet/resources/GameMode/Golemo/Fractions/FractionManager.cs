@@ -351,6 +351,7 @@ namespace Golemo.Fractions
                 Members.Remove(player);
                 Trigger.ClientEvent(player, "fractionChange", 0);
                 player.SetSharedData("fraction", 0);
+                player.ResetSharedData("fractionRankName");
                 Trigger.ClientEvent(player, "closePc");
                 player.SetData("ON_DUTY", false);
                 MenuManager.Close(player);

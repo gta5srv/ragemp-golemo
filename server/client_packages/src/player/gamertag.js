@@ -81,7 +81,7 @@ mp.events.add('render', function (nametags) {
                             }
                             var localFraction = global.localplayer.getVariable('fraction');
                             var playerFraction = _player.getVariable('fraction');
-                            if (localFraction != null && playerFraction != null && localFraction === playerFraction) 
+                            if (localFraction != null && playerFraction != null && localFraction === playerFraction && localFraction != 0 && playerFraction != 0)
 								//text = _playerName + ' (' + _player.remoteId + passportText + ')';
 							text = `[${_player.getVariable('fractionRankName')}] ${_playerName} (${_player.getVariable('REMOTE_ID')}${passportText}) `;
 
