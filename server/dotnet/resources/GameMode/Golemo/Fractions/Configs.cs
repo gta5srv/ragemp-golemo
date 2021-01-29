@@ -174,7 +174,6 @@ namespace Golemo.Fractions
         [RemoteEvent("callbackCarSpawner")]
         public static void CallBackCarSpawner(Player player, string vnumber, int type)
         {
-            player.SendChatMessage($"{vnumber} - {type}");
             switch (type)
             {
                 case 0:

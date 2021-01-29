@@ -13,10 +13,7 @@ namespace Golemo.Houses
     {
        
         private static Dictionary<int, ColShape> Cols = new Dictionary<int, ColShape>();
-        private static List<Vector3> svalkaCheckpoints = new List<Vector3>()
-        {
-            new Vector3(1512.705, -2097.8896, 75.6941),
-        };
+        private static Vector3 svalkaCheckpoints = new Vector3(1512.705, -2097.8896, 75.6941);
         private static nLog Log = new nLog("SVALKA");
 
         [ServerEvent(Event.ResourceStart)]
@@ -24,17 +21,13 @@ namespace Golemo.Houses
         {
             try
             {
-                foreach (Vector3 vec in svalkaCheckpoints)
-                {
-                    NAPI.Marker.CreateMarker(1, svalkaCheckpoints[0] - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 3, new Color(0, 255, 255));
-
-                    Cols.Add(0, NAPI.ColShape.CreateCylinderColShape(svalkaCheckpoints[0], 1, 3, 0)); // Svalka
-                    Cols[0].SetData("INTERACT", 101);
-                    Cols[0].OnEntityEnterColShape += svalkaShape_onEntityEnterColShape;
-                    Cols[0].OnEntityExitColShape += svalkaShape_onEntityExitColShape;
-                    NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Свалка \n ~r~Нажмите E"), new Vector3(svalkaCheckpoints[0].X, svalkaCheckpoints[0].Y, svalkaCheckpoints[0].Z + 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
-
-                }
+                NAPI.Marker.CreateMarker(1, svalkaCheckpoints - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 3, new Color(0, 255, 255));
+                NAPI.Blip.CreateBlip(527, svalkaCheckpoints, 1f, 84, "Свалка", 255, 0, true, 0, 0);
+                Cols.Add(0, NAPI.ColShape.CreateCylinderColShape(svalkaCheckpoints, 1, 3, 0));
+                Cols[0].SetData("INTERACT", 101);
+                Cols[0].OnEntityEnterColShape += svalkaShape_onEntityEnterColShape;
+                Cols[0].OnEntityExitColShape += svalkaShape_onEntityExitColShape;
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Свалка"), svalkaCheckpoints + new Vector3(0, 0, 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
             }
             catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }
         }

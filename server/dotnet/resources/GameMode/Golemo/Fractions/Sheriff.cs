@@ -37,9 +37,9 @@ namespace Golemo.Fractions
             {
                 NAPI.World.DeleteWorldProp(NAPI.Util.GetHashKey("v_ilev_arm_secdoor"), new Vector3(453.0793, -983.1894, 30.83926), 30f);
 
-                NAPI.TextLabel.CreateTextLabel("~r~Bot Koltr", new Vector3(-455.9738, 6014.119, 32.59654), 5f, 0.4f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension); // Режим ЧП
-                NAPI.TextLabel.CreateTextLabel("~q~Kira", new Vector3(-449.8658, 6012.458, 32.59655), 5f, 0.4f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension); // в здании за стойков на входе
-                NAPI.TextLabel.CreateTextLabel("~p~Стёпа БДСМ", new Vector3(-429.0482, 5997.3, 32.59655), 5f, 0.4f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension); // Оружейный склад
+                NAPI.TextLabel.CreateTextLabel("~r~Sheriff's Officer", new Vector3(-455.9738, 6014.119, 32.59654), 5f, 0.4f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension); // Режим ЧП
+                NAPI.TextLabel.CreateTextLabel("~q~Sheriff's Secretary", new Vector3(-449.8658, 6012.458, 32.59655), 5f, 0.4f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension); // в здании за стойков на входе
+                NAPI.TextLabel.CreateTextLabel("~p~Sheriff's Officer", new Vector3(-429.0482, 5997.3, 32.59655), 5f, 0.4f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension); // Оружейный склад
 
                 Cols.Add(0, NAPI.ColShape.CreateCylinderColShape(sheriffCheckpoints[0], 6, 3, 0));
                 Cols[0].OnEntityEnterColShape += arrestShape_onEntityEnterColShape;
@@ -49,19 +49,19 @@ namespace Golemo.Fractions
                 Cols[1].SetData("INTERACT", 100);
                 Cols[1].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[1].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~o~Нажмите E чтобы открыть меню"), new Vector3(sheriffCheckpoints[1].X, sheriffCheckpoints[1].Y, sheriffCheckpoints[1].Z + 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~o~Открыть меню"), new Vector3(sheriffCheckpoints[1].X, sheriffCheckpoints[1].Y, sheriffCheckpoints[1].Z + 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 Cols.Add(2, NAPI.ColShape.CreateCylinderColShape(sheriffCheckpoints[2], 1, 2, 0));
                 Cols[2].SetData("INTERACT", 110);
                 Cols[2].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[2].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~o~Нажмите E чтобы переодется"), new Vector3(sheriffCheckpoints[2].X, sheriffCheckpoints[2].Y, sheriffCheckpoints[2].Z + 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~o~Переодется"), new Vector3(sheriffCheckpoints[2].X, sheriffCheckpoints[2].Y, sheriffCheckpoints[2].Z + 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 Cols.Add(3, NAPI.ColShape.CreateCylinderColShape(sheriffCheckpoints[3], 1, 2, 0));
                 Cols[3].SetData("INTERACT", 120);
                 Cols[3].OnEntityEnterColShape += onEntityEnterColshape;
                 Cols[3].OnEntityExitColShape += onEntityExitColshape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~o~Нажмите E чтобы открыть ES меню"), new Vector3(sheriffCheckpoints[3].X, sheriffCheckpoints[3].Y, sheriffCheckpoints[3].Z + 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~o~Открыть ES меню"), new Vector3(sheriffCheckpoints[3].X, sheriffCheckpoints[3].Y, sheriffCheckpoints[3].Z + 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
 
                 Cols.Add(5, NAPI.ColShape.CreateCylinderColShape(sheriffCheckpoints[7], 1, 2, 0));
                 Cols[5].SetData("INTERACT", 420);

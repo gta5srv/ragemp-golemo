@@ -953,7 +953,11 @@ namespace Golemo.Core
         {
             if (!Group.CanUseCmd(admin, "demorgan")) return;
             if (!Main.Players.ContainsKey(target)) return;
-            if (admin == target) return;
+            if (admin == target)
+            {
+                Notify.Send(admin, NotifyType.Error, NotifyPosition.BottomCenter, "Команда не может быть использована на себе", 2500);
+                return;
+            }
             int firstTime = time * 60;
             string deTimeMsg = "м";
             if (time > 60)
