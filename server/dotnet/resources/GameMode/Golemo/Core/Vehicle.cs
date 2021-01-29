@@ -335,7 +335,7 @@ namespace Golemo.Core
             {
                 if (vehicle.GetData<List<Player>>("OCCUPANTS").Contains(player)) vehicle.GetData<List<Player>>("OCCUPANTS").Remove(player);
             }
-            Trigger.ClientEvent(player, "PLAYER::CLEAR_TASKS");
+            Trigger.ClientEvent(player, "PLAYER::TASK_LEAVE_ON_VEHICLE");
             //player.WarpOutOfVehicle();
         }
 
