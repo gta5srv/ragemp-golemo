@@ -83,19 +83,9 @@ namespace Golemo.Houses
 
             #region Creating Blip
             blip = NAPI.Blip.CreateBlip(Position);
-            if (string.IsNullOrEmpty(Owner))
-            {
-                blip.Sprite = 40;
-                blip.Color = 2;
-            }
-            else
-            {
-                blip.Sprite = 40;
-                blip.Color = 49;
-            }
-
             blip.Scale = 0.6f;
             blip.ShortRange = true;
+            UpdateBlip();
             #endregion
 
             #region Creating Marker & Colshape
@@ -134,7 +124,6 @@ namespace Golemo.Houses
                 if (GarageID != 0) text += $"~w~Гаражных мест: ~b~{GarageManager.GarageTypes[GarageManager.Garages[GarageID].Type].MaxCars}\n";
                 text += (Locked) ? "~b~Закрыт\n" : "~b~Открыт\n";
                 label.Text = Main.StringToU16(text);
-
             }
             catch (Exception e)
             {
@@ -204,12 +193,14 @@ namespace Golemo.Houses
             if (string.IsNullOrEmpty(Owner))
             {
                 blip.Sprite = 40;
-                blip.Color = 5;
+                blip.Color = 2;
+                blip.Name = "Продается";
             }
             else
             {
                 blip.Sprite = 40;
                 blip.Color = 49;
+                blip.Name = "Дом";
             }
         }
         public void Create()
