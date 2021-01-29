@@ -26,9 +26,8 @@ namespace Golemo.Fractions
                 }
                 if (NAPI.Data.HasEntityData(player, "FOLLOWER"))
                 {
-                    VehicleManager.WarpPlayerOutOfVehicle(player);
-                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Отпустите человека", 3000);
-                    return;
+                    Player target = player.GetData<Player>("FOLLOWER");
+                    playerInCar(player, target);
                 }
             }
             catch (Exception e) { Log.Write("PlayerEnterVehicle: " + e.Message, nLog.Type.Error); }
@@ -846,9 +845,9 @@ namespace Golemo.Fractions
 
             var emptySlots = new List<int>
             {
-                2,
                 1,
-                0
+                2,
+                0 //если бы сажали без таска, он бы сел за руль
             };
 
             var players = NAPI.Pools.GetAllPlayers();
@@ -863,8 +862,8 @@ namespace Golemo.Fractions
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"В машине нет места", 3000);
                 return;
             }
-
-            NAPI.Player.SetPlayerIntoVehicle(target, vehicle, emptySlots[0]);
+            Trigger.ClientEvent(target, "PLAYER::TASK_ENTER_IN_VEHICLE", vehicle, 8000, emptySlots[0], 1, 1);
+            //NAPI.Player.SetPlayerIntoVehicle(target, vehicle, emptySlots[0]);
 
             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы запихали игрока ({target.Value}) в машину", 3000);
             Notify.Send(target, NotifyType.Warning, NotifyPosition.BottomCenter, $"Игрок ({player.Value}) запихал Вас в машину", 3000);
