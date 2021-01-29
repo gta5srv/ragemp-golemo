@@ -5,10 +5,7 @@ using System.Data;
 using System.Linq;
 using GTANetworkAPI;
 using Golemo.GUI;
-using Golemo.Core.Character;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Threading;
 
 namespace Golemo.Fractions
 {
@@ -883,12 +880,16 @@ namespace Golemo.Fractions
                 Vector3 posTarget = NAPI.Entity.GetEntityPosition(target);
                 if (player.Position.DistanceTo(target.Position) < 3)
                 {
+                    if (NAPI.Player.IsPlayerInAnyVehicle(player))
+                    {
+                        Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы не должны быть в машине", 2500);
+                        return;
+                    }
                     if (NAPI.Player.IsPlayerInAnyVehicle(target))
                     {
                         Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы выкинули игрока ({target.Value}) из машины", 3000);
                         Notify.Send(target, NotifyType.Warning, NotifyPosition.BottomCenter, $"Игрок ({player.Value}) Выкинул Вас из машины", 3000);
                         VehicleManager.WarpPlayerOutOfVehicle(target);
-                        NAPI.Task.Run(() => { NAPI.Entity.SetEntityPosition(target, player.Position); }, 100);
                         Commands.RPChat("me", player, " открыл дверь и вытащил {name} из машины", target);
                     }
                     else Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок не в машине", 3000);
