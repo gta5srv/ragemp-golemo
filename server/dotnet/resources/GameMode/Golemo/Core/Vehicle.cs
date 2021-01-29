@@ -326,7 +326,6 @@ namespace Golemo.Core
         {
             Vehicle vehicle = player.Vehicle;
             if (vehicle == null) return;
-
             if (!vehicle.HasData("OCCUPANTS"))
             {
                 List<Player> occupantsList = new List<Player>();
@@ -336,7 +335,8 @@ namespace Golemo.Core
             {
                 if (vehicle.GetData<List<Player>>("OCCUPANTS").Contains(player)) vehicle.GetData<List<Player>>("OCCUPANTS").Remove(player);
             }
-            player.WarpOutOfVehicle();
+            Trigger.ClientEvent(player, "PLAYER::CLEAR_TASKS");
+            //player.WarpOutOfVehicle();
         }
 
         public static List<Player> GetVehicleOccupants(Vehicle vehicle)
