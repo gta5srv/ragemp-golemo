@@ -421,7 +421,8 @@ namespace Golemo.Core
                             switch (number)
                             {
                                 case 0:
-                                    Rentcar.rentCarsSpawner();
+                                    //Rentcar.rentCarsSpawner();
+                                    Log.Write("Я должен был зареспавнить машины для раенды");
                                     break;
                                 case 3:
                                     Jobs.Taxi.taxiCarsSpawner();
@@ -3889,16 +3890,15 @@ namespace Golemo.Core
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
         }
+
         [Command("ghc")]
         public static void CMD_teleportToMeCar(Player player, ushort vid)
         {
             try
             {
-                List<Vehicle> all_vehicles = NAPI.Pools.GetAllVehicles();
-
                 foreach (var v in NAPI.Pools.GetAllVehicles())
                 {
-                    if (vid != null && vid == v.Value)
+                    if (vid == v.Value)
                     {
                         NAPI.Entity.SetEntityPosition(v, player.Position);
                         NAPI.Entity.SetEntityRotation(v, player.Rotation);
@@ -4012,9 +4012,9 @@ namespace Golemo.Core
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок с таким ID не найден", 3000);
                     return;
                 }
-                if (!player.IsInVehicle || player.VehicleSeat != -1)
+                if (!player.IsInVehicle || player.VehicleSeat != 0)
                 {
-                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы не находитесь в машине или не на пассажирском месте", 3000);
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы не находитесь в машине или не на водительском месте", 3000);
                     return;
                 }
                 if (!target.IsInVehicle || player.Vehicle != target.Vehicle) return;
