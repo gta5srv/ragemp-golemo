@@ -171,12 +171,18 @@ namespace Golemo.Core
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Машина находится далеко от Вас", 3000);
                     return;
                 }
+                Vector3 BonePos = new Vector3((float)arguments[2], (float)arguments[3], (float)arguments[4]);
                 switch (index)
                 {
                     case 0:
                         if (player.IsInVehicle)
                         {
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы не можете открыть/закрыть капот, находясь в машине", 3000);
+                            return;
+                        }
+                        if (player.Position.DistanceTo(BonePos) > 2)
+                        {
+                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы слишком далеко от капота", 3000);
                             return;
                         }
                         if (VehicleStreaming.GetDoorState(vehicle, DoorID.DoorHood) == DoorState.DoorClosed)
@@ -194,6 +200,11 @@ namespace Golemo.Core
                         if (player.IsInVehicle)
                         {
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы не можете открыть/закрыть багажник, находясь в машине", 3000);
+                            return;
+                        }
+                        if (player.Position.DistanceTo(BonePos) > 2)
+                        {
+                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы слишком далеко от багажника", 3000);
                             return;
                         }
                         if (VehicleStreaming.GetDoorState(vehicle, DoorID.DoorTrunk) == DoorState.DoorOpen)
@@ -225,6 +236,11 @@ namespace Golemo.Core
                                     return;
                                 }
                             }
+                            if (player.Position.DistanceTo(BonePos) > 2)
+                            {
+                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы слишком далеко от багажника", 3000);
+                                return;
+                            }
                             VehicleStreaming.SetDoorState(vehicle, DoorID.DoorTrunk, DoorState.DoorOpen);
                             Commands.RPChat("me", player, $"открыл(а) багажник");
                         }
@@ -241,6 +257,11 @@ namespace Golemo.Core
                         if (NAPI.Data.GetEntityData(vehicle, "ACCESS") == "WORK" || vehicle.Class == 13 || vehicle.Class == 8)
                         {
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Эта транспортное средство не поддерживает инвентарь", 3000);
+                            return;
+                        }
+                        if (player.Position.DistanceTo(BonePos) > 2)
+                        {
+                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы слишком далеко от багажника", 3000);
                             return;
                         }
                         if (Main.Players[player].AdminLVL == 0 && VehicleStreaming.GetDoorState(vehicle, DoorID.DoorTrunk) == DoorState.DoorClosed)

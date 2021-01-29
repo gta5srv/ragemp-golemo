@@ -29,8 +29,24 @@ mp.events.add('circleCallback', (index) => {
                     case 2:
                     case 3:
                         if (entity == null) return;
-                        mp.events.callRemote('vehicleSelected', entity, index);
-                        return;
+                        if (index == 1 || index == 3) {
+                            const boneID = entity.getBoneIndexByName("boot");
+                            var trunkpos = entity.getWorldPositionOfBone(boneID);
+                            mp.events.callRemote('vehicleSelected', entity, index, trunkpos.x, trunkpos.y, trunkpos.z);
+                            return;
+                        }
+                        else if (index == 0) {
+                            const boneID = entity.getBoneIndexByName("bonnet");
+                            var bonnetpos = entity.getWorldPositionOfBone(boneID);
+                            mp.events.callRemote('vehicleSelected', entity, index, bonnetpos.x, bonnetpos.y, bonnetpos.z);
+                            return;
+                        }
+                        else {
+                            const boneID = entity.getBoneIndexByName("bodyshell");
+                            var bodyshell = entity.getWorldPositionOfBone(boneID);
+                            mp.events.callRemote('vehicleSelected', entity, index, bodyshell.x, bodyshell.y, bodyshell.z);
+                            return;
+                        }
                 }
                 return;
             case "Игрок":
