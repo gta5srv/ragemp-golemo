@@ -4127,6 +4127,15 @@ namespace Golemo.Core
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
         }
+        [Command("fb", GreedyArg = true)]
+        public static void CMD_fracOcChat(Player player, string msg)
+        {
+            try
+            {
+                Fractions.Manager.fractionOcChat(player, msg);
+            }
+            catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
+        }
 
         [Command("arrest")]
         public static void CMD_arrest(Player player, int id)

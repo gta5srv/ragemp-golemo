@@ -240,6 +240,32 @@ namespace Golemo.Fractions
             }
             catch (Exception e) { Log.Write($"FractionChat:\n {e.ToString()}", nLog.Type.Error); }
         }
+        public static void fractionOcChat(Player sender, string message)
+        {
+            try
+            {
+                if (sender == null || !Main.Players.ContainsKey(sender)) return;
+                if (Main.Players[sender].FractionID == 0) return;
+
+                if (Main.Players[sender].Unmute > 0)
+                {
+                    Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы замучены еще на {Main.Players[sender].Unmute / 60} минут", 3000);
+                    return;
+                }
+
+                int Fraction = Main.Players[sender].FractionID;
+                if (!Members.ContainsKey(sender)) return;
+                string msgSender = $"~b~[Рация ООС] {Members[sender].inFracName} " + sender.Name + " (" + sender.Value + "): " + " (( " + message + " )) ";
+                var fracid = Main.Players[sender].FractionID;
+                foreach (var p in NAPI.Pools.GetAllPlayers())
+                {
+                    if (p == null || !Main.Players.ContainsKey(p)) continue;
+                    if (Main.Players[p].FractionID == fracid)
+                        NAPI.Chat.SendChatMessageToPlayer(p, msgSender);
+                }
+            }
+            catch (Exception e) { Log.Write($"FractionChat:\n {e.ToString()}", nLog.Type.Error); }
+        }
 
         public static Dictionary<int, int> GovIds = new Dictionary<int, int>
         {
@@ -304,7 +330,6 @@ namespace Golemo.Fractions
                 setSkin(player, fractionID, fractionLVL);
                 player.SetData("ON_DUTY", true);
             }
-
             var index = AllMembers.FindIndex(d => d.Name == player.Name);
             if (index == -1) AllMembers.Add(data);
             else
@@ -315,9 +340,8 @@ namespace Golemo.Fractions
             }
             Trigger.ClientEvent(player, "fractionChange", fractionID);
             player.SetSharedData("fraction", fractionID);
-            Character acc = Main.Players[player];
-            player.SetSharedData("fractionRankName", Manager.getNickname(acc.FractionID, acc.FractionLVL));
-            Log.Write($"Member {player.Name.ToString()} loaded. ", nLog.Type.Success);
+            player.SetSharedData("fractionRankName", getNickname(fractionID, fractionLVL));
+            Log.Write($"Member {player.Name} loaded. ", nLog.Type.Success);
         }
         public static void UNLoad(Player player)
         {
@@ -343,7 +367,7 @@ namespace Golemo.Fractions
                             Customization.CustomPlayerData[Main.Players[player].UUID].Clothes.Accessory = new ComponentItem(0, 0);
                             player.SetClothes(7, 0, 0);
                         }
-                        // nInventory.Remove(player, item);
+                        nInventory.Remove(player, item); //сомневаюсь в этом, пересмотреть
                     }
                 }
                 Log.Write($"Member {player.Name.ToString()} unloaded.", nLog.Type.Success);
