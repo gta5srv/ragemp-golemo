@@ -92,6 +92,7 @@ mp.events.add('render', function (nametags) {
                         var label = tagLabelPool[_player.remoteId];
                         if (label !== undefined) {
                             drawPlayerTag(_player, x, y, label.text, label.color);
+							drawPlayerTag(_player, x, y, '\n #' + _player.getVariable('PERSON_ID'), [200,200,200,200]);
                             drawPlayerVoiceIcon(_player, x, y);
 							if (_player.getVariable('IS_DYING'))
 							{

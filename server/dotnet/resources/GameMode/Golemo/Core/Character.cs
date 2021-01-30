@@ -46,6 +46,7 @@ namespace Golemo.Core.Character
                         player.Armor = Armor;
 
                         player.SetSharedData("REMOTE_ID", player.Value);
+                        player.SetSharedData("PERSON_ID", PersonID);
 
                         Voice.Voice.PlayerJoin(player);
 
@@ -156,6 +157,8 @@ namespace Golemo.Core.Character
                     foreach (DataRow Row in result.Rows)
                     {
                         UUID = Convert.ToInt32(Row["uuid"]);
+                        PersonID = Convert.ToString(Row["personid"]);
+                        if (PersonID == null || PersonID == "") PersonID = GeneratePersonID(uuid, true);
                         FirstName = Convert.ToString(Row["firstname"]);
                         LastName = Convert.ToString(Row["lastname"]);
                         Gender = Convert.ToBoolean(Row["gender"]);
@@ -311,7 +314,7 @@ namespace Golemo.Core.Character
                     $"`wanted`='{JsonConvert.SerializeObject(WantedLVL)}',`biz`='{JsonConvert.SerializeObject(BizIDs)}',`adminlvl`={AdminLVL}," +
                     $"`licenses`='{JsonConvert.SerializeObject(Licenses)}',`unwarn`='{MySQL.ConvertTime(Unwarn)}',`unmute`='{Unmute}'," +
                     $"`warns`={Warns},`hotel`={HotelID},`hotelleft`={HotelLeft},`lastveh`='{LastVeh}',`onduty`={OnDuty},`lasthour`={LastHourMin}," +
-                    $"`demorgan`={DemorganTime},`contacts`='{JsonConvert.SerializeObject(Contacts)}',`achiev`='{JsonConvert.SerializeObject(Achievements)}',`sim`={Sim},`PetName`='{PetName}',`eat`='{Eat}',`water`='{Water}' WHERE `uuid`={UUID}");
+                    $"`demorgan`={DemorganTime},`contacts`='{JsonConvert.SerializeObject(Contacts)}',`achiev`='{JsonConvert.SerializeObject(Achievements)}',`sim`={Sim},`PetName`='{PetName}',`personid`='{PersonID}',`eat`='{Eat}',`water`='{Water}' WHERE `uuid`={UUID}");
 
                 MoneySystem.Bank.Save(Bank);
                 await Log.DebugAsync($"Player [{FirstName}:{LastName}] was saved.");
@@ -346,6 +349,7 @@ namespace Golemo.Core.Character
                 }
 
                 UUID = GenerateUUID();
+                PersonID = GeneratePersonID();
 
                 FirstName = firstName;
                 LastName = lastName;
@@ -366,9 +370,9 @@ namespace Golemo.Core.Character
                 Main.PlayerUUIDs.Add($"{firstName}_{lastName}", UUID);
                 Main.PlayerNames.Add(UUID, $"{firstName}_{lastName}");
 
-                await MySQL.QueryAsync($"INSERT INTO `characters`(`uuid`,`firstname`,`lastname`,`gender`,`health`,`armor`,`lvl`,`exp`,`money`,`bank`,`work`,`fraction`,`fractionlvl`,`arrest`,`demorgan`,`wanted`," +
+                await MySQL.QueryAsync($"INSERT INTO `characters`(`uuid`,`personid`,`firstname`,`lastname`,`gender`,`health`,`armor`,`lvl`,`exp`,`money`,`bank`,`work`,`fraction`,`fractionlvl`,`arrest`,`demorgan`,`wanted`," +
                     $"`biz`,`adminlvl`,`licenses`,`unwarn`,`unmute`,`warns`,`lastveh`,`onduty`,`lasthour`,`hotel`,`hotelleft`,`contacts`,`achiev`,`sim`,`pos`,`createdate`,`eat`,`water`) " +
-                    $"VALUES({UUID},'{FirstName}','{LastName}',{Gender},{Health},{Armor},{LVL},{EXP},{Money},{Bank},{WorkID},{FractionID},{FractionLVL},{ArrestTime},{DemorganTime}," +
+                    $"VALUES({UUID},'{PersonID}','{FirstName}','{LastName}',{Gender},{Health},{Armor},{LVL},{EXP},{Money},{Bank},{WorkID},{FractionID},{FractionLVL},{ArrestTime},{DemorganTime}," +
                     $"'{JsonConvert.SerializeObject(WantedLVL)}','{JsonConvert.SerializeObject(BizIDs)}',{AdminLVL},'{JsonConvert.SerializeObject(Licenses)}','{MySQL.ConvertTime(Unwarn)}'," +
                     $"'{Unmute}',{Warns},'{LastVeh}',{OnDuty},{LastHourMin},{HotelID},{HotelLeft},'{JsonConvert.SerializeObject(Contacts)}','{JsonConvert.SerializeObject(Achievements)}',{Sim}," +
                     $"'{JsonConvert.SerializeObject(SpawnPos)}','{MySQL.ConvertTime(CreateDate)}','{Eat}','{Water}')");
@@ -394,7 +398,25 @@ namespace Golemo.Core.Character
             Main.UUIDs.Add(result);
             return result;
         }
-        
+
+        private string GeneratePersonID(int uuid = -1, bool save = false)
+        {
+            string result = "";
+            while (Main.PersonIDs.Contains(result))
+            {
+                result += (char)Rnd.Next(0x0030, 0x0039);
+                result += (char)Rnd.Next(0x0041, 0x005A);
+                result += (char)Rnd.Next(0x0030, 0x0039);
+                result += (char)Rnd.Next(0x0041, 0x005A);
+            }
+            Main.PersonIDs.Add(result);
+            if (save)
+            {
+                MySQL.Query($"UPDATE `characters` SET `personid`='{result}' WHERE `uuid`={uuid}");
+            }
+            return result;
+        }
+
         public static Dictionary<string, string> toChange = new Dictionary<string, string>();
         private static MySqlCommand nameCommand;
 

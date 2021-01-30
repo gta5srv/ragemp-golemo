@@ -84,7 +84,13 @@
 		position: relative;
 		left: -120%;
 		opacity: 0.5;
-		top: 14%;
+		top: 15%;
+	}
+	.inGameHud .header_hud .pid{
+		position: relative;
+		left: -205%;
+		opacity: 0.5;
+		top: 15%;
 	}
 	.inGameHud .header_hud .user{
 		width: 51%;

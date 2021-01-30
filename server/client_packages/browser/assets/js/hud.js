@@ -12,6 +12,7 @@
         crossingRoad: "Groups",
         server: 0,
         playerId : 0,
+		personId: 0,
         eat: 0,
         water: 0,
         online: 0,
