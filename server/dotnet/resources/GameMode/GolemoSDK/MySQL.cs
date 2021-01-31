@@ -17,9 +17,9 @@ namespace GolemoSDK
         public static bool Debug = false;
 
         #region Settings
-        private static string _dbHost = "95.181.155.72";
+        private static string _dbHost = "localhost";
         private static string _dbUser = "root";
-        private static string _dbPassword = "maxmaxmax";
+        private static string _dbPassword = "";
         private static string _dbName = "golemo";
         private static string _dbSslMode = "None";
         #endregion
