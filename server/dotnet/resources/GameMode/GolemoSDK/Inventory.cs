@@ -160,6 +160,8 @@ namespace GolemoSDK
         //Farmer Jobs Items
         Hay = 219,
         Seed = 220,
+
+        GiveBox = 199,
     }
 
     public class nItem
