@@ -243,6 +243,10 @@ mp.events.add('blip_color', function (name, color) {
     BlipHelper.colorBlip(name, color);
 });
 
+mp.events.add('UpdateLastBonus', function (temp) {
+    mp.gui.execute(`HUD.lastbonus="${temp}"`);
+});
+
 mp.keys.bind(Keys.VK_F5, false, function () { // F5 key
     if (global.menuOpened) {
         global.menuClose();

@@ -112,6 +112,55 @@ namespace Golemo.Core
 
         #region AdminCommands
 
+        [Command("getlastbonus")] //todo lastbonus
+        public static void GetLastBonus(Player player, int id)
+        {
+            if (!Group.CanUseCmd(player, "getlastbonus")) return;
+
+            var target = Main.GetPlayerByID(id);
+            if (target == null)
+            {
+                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок с таким ID не найден", 3000);
+                return;
+            }
+            DateTime date = new DateTime((new DateTime().AddMinutes(Main.Players[target].LastBonus)).Ticks);
+            var hour = date.Hour;
+            var min = date.Minute;
+            Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"LastBonus игрока({id}): {hour} часов и {min} минут ({Main.Players[target].LastBonus})", 3000);
+        }
+        [Command("lastbonus")] //todo lastbonus
+        public static void LastBonus(Player player)
+        {
+            if (!Group.CanUseCmd(player, "lastbonus")) return;
+            DateTime date = new DateTime((new DateTime().AddMinutes(Main.oldconfig.LastBonusMin)).Ticks);
+            var hour = date.Hour;
+            var min = date.Minute;
+            Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"LastBonus составляет: {hour} часов и {min} минут", 2500);
+        }
+        [Command("setlastbonus")] //todo lastbonus
+        public static void SetLastBonus(Player player, int id, int count)
+        {
+            if (!Group.CanUseCmd(player, "setlastbonus")) return;
+
+            var target = Main.GetPlayerByID(id);
+            if (target == null)
+            {
+                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок с таким ID не найден", 3000);
+                return;
+            }
+            count = Convert.ToInt32(Math.Abs(count));
+            if (count > Main.oldconfig.LastBonusMin)
+            {
+                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Введенное число превышает значение конфига. Максимум: {Main.oldconfig.LastBonusMin}", 3000);
+                return;
+            }
+            Main.Players[target].LastBonus = count;
+            DateTime date = new DateTime((new DateTime().AddMinutes(Main.Players[target].LastBonus)).Ticks);
+            var hour = date.Hour;
+            var min = date.Minute;
+            Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"LastBonus для игрока({id}) установлен на {hour} часов и {min} минут ({Main.Players[target].LastBonus})", 3000);
+        }
+
         [Command("delfveh")]
         public static void CMD_deletefveh(Player client, string number)
         {

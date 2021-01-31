@@ -2,6 +2,8 @@
     el: ".inGameHud",
     data: {
         show: false,
+		bonusblock: false,
+		lastbonus: null,
         ammo: 0,
         money: "117 000 000",
         bank: 0,
@@ -30,6 +32,9 @@
             this.time = time;
             this.date = date;
         }, 
+		showBonus(){
+			this.bonusblock = !this.bonusblock;
+		},
 	updateSpeed(currentspeed, maxspeed = 200)
         {
             this.speed = currentspeed;

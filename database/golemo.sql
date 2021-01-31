@@ -281,6 +281,8 @@ CREATE TABLE `characters` (
   `pos` text NOT NULL,
   `work` int(255) NOT NULL,
   `personid` text DEFAULT NULL,
+  `lastbonus` int(11) DEFAULT 0,
+  `isbonused` tinyint(1) DEFAULT 0,
   `idkey` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`idkey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

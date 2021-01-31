@@ -1391,6 +1391,76 @@ namespace Golemo.Core
                 switch (item.Type)
                 {
                     #region Clothes
+                    case ItemType.GiveBox:
+                        {
+
+                            if (nInventory.isFull(UUID))
+                            {
+                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно места в инвентаре", 3000);
+                                return;
+                            }
+                            int gift = new Random().Next(1, 101); // рандом от 0 до 100
+                            if (gift <= 90) // шанс на выпадение денег
+                            {
+                                int pay = 721 * gift;
+                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы получили   {pay}$ из новогоднего подарка!", 3000);
+                                MoneySystem.Wallet.Change(player, pay);
+                            }
+                            else if (gift <= 94) // шанс на выпадение предмета
+                            {
+                                var tryAdd = nInventory.TryAdd(player, new nItem(ItemType.Musket));
+                                if (tryAdd == -1 || tryAdd > 0)
+                                {
+                                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно места, вам выдана компенсация 80.000$", 3000);
+                                    MoneySystem.Wallet.Change(player, 50000);
+                                    return;
+                                }
+                                Weapons.GiveWeapon(player, ItemType.Musket, "112233445");
+                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили уникальное оружие - Мушкет", 3000);
+                            }
+                            else if (gift <= 96) // шанс на выпадение предмета
+                            {
+                                Main.Accounts[player].RedBucks += 500;
+                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили 500 RedBucks из новогоднего подарка!", 3000);
+                            }
+                            else if (gift <= 98) // шанс на выпадение предмета
+                            {
+                                Customization.AddClothes(player, ItemType.Undershit, 0, 0);
+                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили эксклюзивную футболку из новогоднего подарка!", 3000);
+                            }
+                            else
+                            {
+                                if (VehicleManager.getAllPlayerVehicles(player.Name).Count >= 10)
+                                {
+                                    MoneySystem.Wallet.Change(player, 120000); // сумма компенсации
+                                    Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили компенсацию в размере 120.000$ так как у вас максимальное количество авто", 3000);
+                                }
+                                else
+                                {
+                                    var vNumber = VehicleManager.Create(player.Name, "deluxo", new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)); // название машины менять тут
+                                    var house = Houses.HouseManager.GetHouse(player, false);
+                                    if (house != null)
+                                    {
+                                        if (house.GarageID != 0)
+                                        {
+                                            var garage = Houses.GarageManager.Garages[house.GarageID];
+                                            if (VehicleManager.getAllPlayerVehicles(player.Name).Count < Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
+                                            {
+                                                garage.SpawnCar(vNumber);
+                                            }
+                                        }
+                                    }
+                                    Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили уникальный автомобиль Toyota Mark 2", 3000);
+                                }
+                            }
+
+
+
+                            nInventory.Remove(player, ItemType.GiveBox, 1);
+                            GUI.Dashboard.sendItems(player);
+
+                            return;
+                        }
                     case ItemType.Glasses:
                         {
                             if (item.IsActive)
@@ -2094,74 +2164,6 @@ namespace Golemo.Core
                             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"У Вас получилось завести машину", 3000);
                         }
                         break;
-
-                    case ItemType.GiveBox:
-                        {
-                            var house = Houses.HouseManager.GetHouse(player, false);
-                            var garage = Houses.GarageManager.Garages[house.GarageID];
-                            if (nInventory.isFull(UUID))
-                            {
-                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно места в инвентаре", 3000);
-                                return;
-                            }
-                            int gift = new Random().Next(1, 101);
-                            if (gift <= 90)
-                            {
-                                int pay = 721 * gift;
-                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы получили {pay}$ из новогоднего подарка!", 3000);
-                                MoneySystem.Wallet.Change(player, pay);
-                            }
-                            else if (gift <= 94)
-                            {
-                                var tryAdd = nInventory.TryAdd(player, new nItem(ItemType.Musket));
-                                if (tryAdd == -1 || tryAdd > 0)
-                                {
-                                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно места, вам выдана компенсация 80.000$", 3000);
-                                    MoneySystem.Wallet.Change(player, 50000);
-                                    return;
-                                }
-                                Weapons.GiveWeapon(player, ItemType.Musket, "112233445");
-                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили уникальное оружие - Мушкет", 3000);
-                            }
-                            else if (gift <= 96)
-                            {
-                                Main.Accounts[player].RedBucks += 500;
-                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили 500 RedBucks из новогоднего подарка!", 3000);
-                            }
-                            else if (gift <= 98)
-                            {
-                                Customization.AddClothes(player, ItemType.Undershit, 0, 0);
-                                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили эксклюзивную футболку из новогоднего подарка!", 3000);
-                            }
-                            else
-                            {
-                                if (VehicleManager.getAllPlayerVehicles(player.Name).Count >= Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
-                                {
-                                    MoneySystem.Wallet.Change(player, 120000);
-                                    Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили компенсацию в размере 120.000$ так как у вас максимальное количество авто", 3000);
-                                }
-                                else
-                                {
-                                    var vNumber = VehicleManager.Create(player.Name, "deluxo", new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0));
-                                    if (house != null)
-                                    {
-                                        if (house.GarageID != 0)
-                                        {
-                                            if (VehicleManager.getAllPlayerVehicles(player.Name).Count < Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
-                                            {
-                                                garage.SpawnCar(vNumber);
-                                            }
-                                        }
-                                    }
-                                    Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы получили уникальный автомобиль Deluxo", 3000);
-                                }
-                            }
-                            nInventory.Remove(player, ItemType.GiveBox, 1);
-                            GUI.Dashboard.sendItems(player);
-                            Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы использовали {nInventory.ItemsNames[item.ID]}", 3000);
-                            GameLog.Items($"player({Main.Players[player].UUID})", "use", Convert.ToInt32(item.Type), 1, $"{item.Data}");
-                            return;
-                        }
                     case ItemType.Present:
                         player.Health = (player.Health + 10 > 100) ? 100 : player.Health + 10;
                         Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы открыли подарок, в нём были:", 3000);

@@ -23,6 +23,23 @@
 			
 			<div class="money">{{money}}<img src="./assets/images/hud/dollar.png" class="ico"></div>
 			
+			<div class="bonus">
+				<div class="bonus-bar" v-if="!bonusblock">
+					<i @click="showBonus()" class="fa fa-gift" aria-hidden="true"></i>
+				</div>
+				<div class="bonus-block" v-else>
+					<header>
+						<span>Вы получите бонус через:</span>
+						<i @click="showBonus()" aria-hidden="true" class="fa fa-times"></i>
+					</header>
+					<div class="main">
+						<p>
+							{{lastbonus}}
+						</p>
+					</div>
+				</div>
+			</div>
+			
 			<div class="stars">
                 <img 
                 src="./assets/images/hud/star.png" 
