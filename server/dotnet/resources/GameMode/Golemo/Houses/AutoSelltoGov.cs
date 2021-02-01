@@ -67,7 +67,7 @@ namespace Golemo.Houses
                 var vData = VehicleManager.Vehicles[v];
                 var price = (BusinessManager.ProductsOrderPrice.ContainsKey(vData.Model)) ? Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.5) : 0;
                 menuItem = new Menu.Item(v, Menu.MenuItem.Button);
-                menuItem.Text = $"{vData.Model} - {v} ({price}$)";
+                menuItem.Text = $"{ParkManager.GetNormalName(vData.Model)} - {v} ({price}$)";
                 menu.Add(menuItem);
             }
 
