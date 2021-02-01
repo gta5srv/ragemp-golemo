@@ -17,6 +17,7 @@ namespace Golemo.Core
                 try
                 {
                     Trigger.ClientEvent(player, "safeZone", true);
+                    player.SendNotification("~g~Вы вошли в зеленую зону", false);
                 }
                 catch (Exception e) { Log.Write($"SafeZoneEnter: {e.Message}", nLog.Type.Error); }
 
@@ -26,6 +27,7 @@ namespace Golemo.Core
                 try
                 {
                     Trigger.ClientEvent(player, "safeZone", false);
+                    player.SendNotification("~r~Вы покинули зеленую зону", false);
                 }
                 catch (Exception e) { Log.Write($"SafeZoneExit: {e.Message}", nLog.Type.Error); }
             };
@@ -34,9 +36,12 @@ namespace Golemo.Core
         [ServerEvent(Event.ResourceStart)]
         public void Event_onResourceStart()
         {
-            CreateSafeZone(new Vector3(445.07443, -983.2143, 29.569595), 70, 70); // полиция
-            CreateSafeZone(new Vector3(240.7599, -1379.576, 32.74176), 70, 70); // ems safe zone
-            //CreateSafeZone(new Vector3(-712.2147, -1298.926, 4.101922), 70, 70); // driving school safe zone
+            CreateSafeZone(new Vector3(301.5305, -596.4332, 42.16399), 100, 1000); //ems
+            CreateSafeZone(new Vector3(-561.2012, -194.0378, 37.10239), 150, 150); //major
+            CreateSafeZone(new Vector3(113.6499, -752.8422, 44.63474), 85, 85); //fib
+            CreateSafeZone(new Vector3(-371.19, -236.16, 35.90), 50, 50); // spawn
+            CreateSafeZone(new Vector3(-570.4495, -394.9133, 33.9366), 50, 50);
+            CreateSafeZone(new Vector3(1216.343, -2989.767, 4.769878), 200, 200);//container
         }
 
         [ServerEvent(Event.PlayerEnterColshape)]
