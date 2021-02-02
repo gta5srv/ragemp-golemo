@@ -137,23 +137,35 @@ mp.events.add("fpsync.update", (playerH, camPitch, camHeading) => {
     }
 });
 
+const checkConditions = () => {
+    return (
+		!loggedin || 
+		chatActive || 
+		editing || 
+		global.menuOpened || 
+		cuffed || 
+		global.phoneOpen ||
+		localplayer.getVariable('AntiAnimDown') ||
+		localplayer.getVariable('IS_DYING') ||
+		localplayer.isSwimming() || 
+		localplayer.isSwimmingUnderWater() || 
+		localplayer.isInAir() || 
+		localplayer.isRunningRagdollTask() || 
+		localplayer.isRagdoll() ||
+		localplayer.isJumping() || 
+		localplayer.isShooting() || 
+		localplayer.isReloading() ||
+		localplayer.isFalling()
+    );
+}
+
 mp.keys.bind(0x42, true, () => {
-    if (!loggedin || chatActive || editing || global.menuOpened || cuffed || global.phoneOpen ||
-        localplayer.getVariable('IS_DYING') || localplayer.getVariable('AntiAnimDown') ||
-        localplayer.isReloading() || localplayer.isAiming) return;
-    if (mp.players.local.isTypingInTextChat) {
-        return;
-    }
+	if(checkConditions()) return;
     pointing.start();
 });
 
 mp.keys.bind(0x42, false, () => {
-    if (!loggedin || chatActive || editing || global.menuOpened || cuffed || global.phoneOpen ||
-        localplayer.getVariable('IS_DYING') || localplayer.getVariable('AntiAnimDown') ||
-        localplayer.isReloading() || localplayer.isAiming) return;
-    if (mp.players.local.isTypingInTextChat) {
-        return;
-    }
+	if(checkConditions()) return;
     pointing.stop();
 });
 
