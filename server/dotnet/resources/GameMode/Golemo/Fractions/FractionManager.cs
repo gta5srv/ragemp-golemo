@@ -355,7 +355,8 @@ namespace Golemo.Fractions
                 Trigger.ClientEvent(player, "closePc");
                 player.SetData("ON_DUTY", false);
                 MenuManager.Close(player);
-                Trigger.ClientEvent(player, "deleteFracBlips");
+                Trigger.ClientEvent(player, "unloadCaptureBlips");
+
 
                 if (Main.Players[player].FractionID == 9)
                 {
