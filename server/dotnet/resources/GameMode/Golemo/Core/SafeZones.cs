@@ -36,7 +36,7 @@ namespace Golemo.Core
         [ServerEvent(Event.ResourceStart)]
         public void Event_onResourceStart()
         {
-            CreateSafeZone(new Vector3(301.5305, -596.4332, 42.16399), 100, 1000); //ems
+            CreateSafeZone(new Vector3(301.5305, -596.4332, 42.16399), 100, 100); //ems
             CreateSafeZone(new Vector3(-561.2012, -194.0378, 37.10239), 150, 150); //major
             CreateSafeZone(new Vector3(113.6499, -752.8422, 44.63474), 85, 85); //fib
             CreateSafeZone(new Vector3(-371.19, -236.16, 35.90), 50, 50); // spawn

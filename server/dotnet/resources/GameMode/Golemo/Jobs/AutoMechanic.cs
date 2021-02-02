@@ -17,7 +17,7 @@ namespace Golemo.Jobs
         {
             new Vector3(499.41925, -1335.4012, 29.323275),
             new Vector3(470.56805, -1023.6964, 27.06632),
-            new Vector3(-357.53308, -115.3788, 37.575314),
+            new Vector3(-357.53308, -115.3788, 37.575314)
         };
         [ServerEvent(Event.ResourceStart)]
         public void onResourceStart()
@@ -26,12 +26,11 @@ namespace Golemo.Jobs
             {
                 for (int i = 0; i < Coords.Count; i++)
                 {
-                    Cols.Add(i, NAPI.ColShape.CreateCylinderColShape(Coords[i], 1, 2, 0)); 
+                    Cols.Add(i, NAPI.ColShape.CreateCylinderColShape(Coords[i], 2, 2, 0));
                     Cols[i].OnEntityEnterColShape += auto_onEntityEnterColshape;
-                    Cols[i].OnEntityExitColShape += auto_onEntityEnterColshape;
-                    Cols[i].SetData("INTERACT", 135);
+                    Cols[i].OnEntityExitColShape += auto_onEntityExitColshape;
                     NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"~b~Починка авто. \n ~r~Стоимость: {price}$"), Coords[i] + new Vector3(0, 0, 1.3), 10F, 0.6F, 0, new Color(0, 180, 0));
-                    NAPI.Marker.CreateMarker(1, Coords[i] - new Vector3(0, 0, 5.9), new Vector3(), new Vector3(), 4, new Color(255, 0, 0, 220));
+                    NAPI.Marker.CreateMarker(1, Coords[i] - new Vector3(0, 0, 2), new Vector3(), new Vector3(), 4, new Color(255, 0, 0, 120));
                     NAPI.Blip.CreateBlip(544, Coords[i], 1, 2, Main.StringToU16("Починка авто"), 255, 0, true, 0, 0);
                 }
 
@@ -61,27 +60,11 @@ namespace Golemo.Jobs
         private static int price = 250; // цену на починку редактировать тут
         private static Dictionary<Player, ColShape> orderCols = new Dictionary<Player, ColShape>();
 
-        private void OnEntityEnterColShape(ColShape shape, Player entity)
-        {
-            try
-            {
-                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", shape.GetData<int>("INTERACT"));
-            }
-            catch (Exception ex) { Log.Write("onEntityEnterColshape: " + ex.Message, nLog.Type.Error); }
-        }
-        private void OnEntityExitColShape(ColShape shape, Player entity)
-        {
-            try
-            {
-                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", 0);
-            }
-            catch (Exception ex) { Log.Write("onEntityExitColshape: " + ex.Message, nLog.Type.Error); }
-        }
         private void auto_onEntityEnterColshape(ColShape shape, Player entity)
         {
             try
             {
-                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", shape.GetData<int>("INTERACT"));
+                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", 135);
             }
             catch (Exception ex) { Log.Write("onEntityEnterColshape: " + ex.Message, nLog.Type.Error); }
         }
@@ -125,11 +108,11 @@ namespace Golemo.Jobs
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока недостаточно денег", 3000);
                 return;
             }
-            
+
             target.SetData("MECHANIC", player);
             target.SetData("MECHANIC_PRICE", price);
             Trigger.ClientEvent(target, "openDialog", "REPAIR_CAR", $"Игрок ({player.Value}) предложил отремонтировать Ваш транспорт за ${price}");
-            
+
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы предложили игроку ({target.Value}) отремонтировать транспорт за {price}$", 3000);
         }
 
@@ -361,7 +344,8 @@ namespace Golemo.Jobs
         {
             NAPI.Task.Run(() =>
             {
-                try {
+                try
+                {
                     if (!player.HasData("WORK_CAR_EXIT_TIMER")) return;
                     if (NAPI.Data.GetEntityData(player, "IN_WORK_CAR"))
                     {
@@ -397,7 +381,8 @@ namespace Golemo.Jobs
                     }
                     NAPI.Data.SetEntityData(player, "CAR_EXIT_TIMER_COUNT", NAPI.Data.GetEntityData(player, "CAR_EXIT_TIMER_COUNT") + 1);
 
-                } catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     Log.Write("Timer_PlayerExitWorkVehicle:\n" + e.ToString(), nLog.Type.Error);
                 }
@@ -572,12 +557,12 @@ namespace Golemo.Jobs
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока недостаточно денег", 3000);
                 return;
             }
-            
+
             target.SetData("MECHANIC", player);
             target.SetData("MECHANIC_PRICE", pricePerLitr);
             target.SetData("MECHANIC_FEUL", fuel);
             Trigger.ClientEvent(target, "openDialog", "FUEL_CAR", $"Игрок ({player.Value}) предложил заправить Ваш транспорт на {fuel}л за ${fuel * pricePerLitr}");
-            
+
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы предложили игроку ({target.Value}) заправить транспорт на {fuel}л за {fuel * pricePerLitr}$.", 3000);
         }
 
