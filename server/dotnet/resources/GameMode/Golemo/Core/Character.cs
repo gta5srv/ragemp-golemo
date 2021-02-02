@@ -416,7 +416,7 @@ namespace Golemo.Core.Character
 
         private string GeneratePersonID(int uuid = -1, bool save = false)
         {
-            string result = "";
+            string result = "0A0A";
             while (Main.PersonIDs.Contains(result))
             {
                 result += (char)Rnd.Next(0x0030, 0x0039);
