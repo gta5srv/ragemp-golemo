@@ -5,7 +5,6 @@ global.lastCheck = 0;
 global.chatLastCheck = 0;
 global.pocketEnabled = false;
 
-//var emscol = mp.colshapes.newSphere(264.5199, -1352.684, 23.446, 50, 0);
 
 var Peds = [
     { Hash: -39239064, Pos: new mp.Vector3(1395.184, 3613.144, 34.9892), Angle: 270.0 }, // Caleb Baker
@@ -46,12 +45,6 @@ var Peds = [
 		{ Hash: 0xE0FA2554, Pos: new mp.Vector3(437.86456, -996.4604, 30.769586), Angle: 5.5682 }, // мусор
 	{ Hash: 0xAB594AB6, Pos: new mp.Vector3(265.57745, -1358.1559, 24.61779), Angle: -42.67254 }, // медик
 ];
-
-/*mp.colshapes.forEach( 
-	(colshape) => {
-		if(colshape == emscol) mp.gui.chat.push("You are near EMS");
-	}
-);*/
 
 setTimeout(function () {
     Peds.forEach(ped => {
@@ -213,21 +206,36 @@ mp.keys.bind(Keys.VK_B, false, function () { // 2 key
 });
 
 mp.keys.bind(Keys.VK_M, false, function () {
-
-    if (!loggedin || chatActive || editing || global.menuCheck() || cuffed || localplayer.getVariable('InDeath') == true || new Date().getTime() - lastCheck < 400) return;
     
+    if (!loggedin || chatActive || editing || global.menuCheck() || cuffed || localplayer.getVariable('InDeath') == true || new Date().getTime() - lastCheck < 400) return;
+
     if (global.phoneOpen)
     {
         mp.events.callRemote("closePlayerMenu");
         global.phoneOpen = 0;
     }
-    else if (!localplayer.getVariable('AntiAnimDown') && !localplayer.isInWater() && !localplayer.isInAir() && !localplayer.isRunningRagdollTask())
+    else if (!checkConditions())
     {
         mp.events.callRemote('openPlayerMenu');
         lastCheck = new Date().getTime();
         global.phoneOpen = 1;
     }
 });
+
+const checkConditions = () => {
+    return (	
+		localplayer.getVariable('AntiAnimDown') || 
+		localplayer.isSwimming() || 
+		localplayer.isSwimmingUnderWater() || 
+		localplayer.isInAir() || 
+		localplayer.isRunningRagdollTask() || 
+		localplayer.isRagdoll() ||
+		localplayer.isJumping() || 
+        localplayer.isShooting() ||
+        localplayer.isReloading() ||
+		localplayer.isFalling()
+    );
+}
 
 mp.keys.bind(0x77, true, function () {  //F8-Key
     var date = new Date();
