@@ -1,0 +1,18 @@
+{
+  "profiles": {
+    "Golemo": {
+      "commandName": "Executable",
+      "executablePath": ".\\ragemp-server.exe",
+      "workingDirectory": "..\\..\\..\\..\\..\\server",
+      "console": "externalTerminal",
+      "type": "coreclr",
+      "cwd": "..\\..\\..\\..\\..\\server/",
+      "preLaunchTask": "compile",
+      "name": "RAGE-MP Launch (build)",
+      "stopAtEntry": false,
+      "request": "launch",
+      "internalConsoleOptions": "neverOpen",
+      "program": "ragemp-server.exe"
+    }
+  }
+}
