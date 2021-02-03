@@ -419,6 +419,7 @@ namespace Golemo.Core.Character
             string result = "0A0A";
             while (Main.PersonIDs.Contains(result))
             {
+                result = "";
                 result += (char)Rnd.Next(0x0030, 0x0039);
                 result += (char)Rnd.Next(0x0041, 0x005A);
                 result += (char)Rnd.Next(0x0030, 0x0039);
