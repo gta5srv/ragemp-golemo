@@ -2144,7 +2144,7 @@ namespace Golemo.Core
                         Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы начали взламывать дверь", 3000);
                         break;
                     case ItemType.ArmyLockpick:
-                        if (!player.IsInVehicle || player.Vehicle.DisplayName != "Barracks")
+                        if (!player.IsInVehicle || player.Vehicle.DisplayName != "BARRACKS")
                         {
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны находиться в военном перевозчике материалов", 3000);
                             return;
@@ -2154,9 +2154,9 @@ namespace Golemo.Core
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Машину уже заведена", 3000);
                             return;
                         }
-                        var lucky = new Random().Next(0, 5);
+                        var lucky = new Random().Next(0, 6);
                         Log.Debug(lucky.ToString());
-                        if (lucky == 5)
+                        if (lucky == 5 || lucky == 1)
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас не получилось завести машину. Попробуйте ещё раз", 3000);
                         else
                         {
