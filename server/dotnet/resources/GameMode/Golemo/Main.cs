@@ -433,6 +433,8 @@ namespace Golemo
                         Jobs.Truckers.onPlayerDissconnectedHandler(player, type, reason);
                         Jobs.Collector.Event_PlayerDisconnected(player, type, reason);
                         Jobs.AutoMechanic.onPlayerDissconnectedHandler(player, type, reason);
+						
+						if (player.HasData("job_farmer")) Jobs.FarmerJob.Farmer.StartWork(player, false); //todo farmer
                     }
                     catch (Exception e) { Log.Write("EXCEPTION AT \"UnLoad:Unloading Neptune.jobs\":\n" + e.ToString()); }
                     Log.Debug("STAGE 5 (JOBS)");
@@ -525,15 +527,6 @@ namespace Golemo
         #endregion Player
 
         #region ClientEvents
-        [RemoteEvent("kickclient")]
-        public void ClientEvent_Kick(Player player)
-        {
-            try
-            {
-                player.Kick();
-            }
-            catch (Exception e) { Log.Write("kickclient: " + e.Message, nLog.Type.Error); }
-        }
         [RemoteEvent("deletearmor")]
         public void ClientEvent_DeleteArmor(Player player)
         {
@@ -2466,7 +2459,6 @@ namespace Golemo
             try
             {
                 Fractions.FractionCommands.playerPressCuffBut(player);
-                return;
             }
             catch (Exception e) { Log.Write("playerPressCuffBut: " + e.Message, nLog.Type.Error); }
         }
@@ -2477,7 +2469,6 @@ namespace Golemo
             try
             {
                 NAPI.Player.PlayPlayerAnimation(player, 49, "mp_arresting", "idle");
-                return;
             }
             catch (Exception e) { Log.Write("cuffUpdate: " + e.Message, nLog.Type.Error); }
         }
@@ -2890,12 +2881,12 @@ namespace Golemo
                                 p.IsBonused = false;
                             }
 
-                            DataTable result = MySQL.QueryRead($"SELECT * FROM `characters` WHERE `isbonused`=1");
+                            DataTable result = MySQL.QueryRead($"SELECT * FROM `characters`");
                             if (result == null || result.Rows.Count == 0) return;
 
                             foreach (var item in result.Rows)
                             {
-                                MySQL.Query($"UPDATE `characters` SET  `lastbonus`=0, `isbonused`=0  WHERE `isbonused`=1");
+                                MySQL.Query($"UPDATE `characters` SET  `lastbonus`=0, `isbonused`=0");
                             }
 
                             Log.Write($"Reset all players lastBonus", nLog.Type.Info);
@@ -2905,6 +2896,9 @@ namespace Golemo
                             Log.Write($"PayDay Trigger: Exception with LastBonus: {e.Message}", nLog.Type.Error);
                         }
                     }
+                    //часы в сутки, когда контейнеры должны респавниться
+                    List<int> containersRespawnHours = new List<int>() { 15, 18, 21 };
+                    if (containersRespawnHours.Contains(DateTime.Now.Hour)) ContainerSystem.ChangeStateContainers();
 
                     Fractions.Gangs.UpdateMultiplier(); //цена закупки наркоту для банд
                     Jobs.FarmerJob.Market.UpdateMultiplier(); //коэффициент на маркете

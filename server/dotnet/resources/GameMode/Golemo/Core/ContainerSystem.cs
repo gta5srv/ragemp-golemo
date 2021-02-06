@@ -55,9 +55,12 @@ namespace Golemo.Core
         }
 
         [Command("statebox")]
-        public void ChangeStateContainers(Player player, bool state)
+        public static void ChangeStateContainers(Player player = null, bool state = true)
         {
-            if (!Core.Group.CanUseCmd(player, "statebox")) return;
+            if (player != null)
+            {
+                if (!Core.Group.CanUseCmd(player, "statebox")) return;
+            }
             foreach (var item in containers)
             {
                 item.Visible(state);
