@@ -281,6 +281,7 @@ require('./src/modules/island/heistisland');
 //player========================
 require('./src/player/crouch');
 require('./src/player/fingerpoints');
+require('./src/player/playertasks');
 //==============================
 
 //utils=========================
