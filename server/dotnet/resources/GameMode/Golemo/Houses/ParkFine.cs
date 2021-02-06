@@ -116,16 +116,11 @@ namespace Golemo.Houses
             }
             return vehicle;
         }
-        public static void interactionPressed(Player player, int id)
+        public static void interactionPressed(Player player)
         {
             try
             {
-                switch (id)
-                {
-                    case 556:
-                        BuyParkPlace(player);
-                        break;
-                }
+                BuyParkPlace(player);
             }
             catch (Exception e)
             {
@@ -135,7 +130,7 @@ namespace Golemo.Houses
         public static void SetCarInFreeParkPlace(Player player, string number)
         {
             var rnd = new Random();
-            var id = rnd.Next(1, ParkList.Count);
+            var id = rnd.Next(0, ParkList.Count);
             var vehdata = VehicleManager.Vehicles[number];
             var veh = NAPI.Vehicle.CreateVehicle((VehicleHash)NAPI.Util.GetHashKey(vehdata.Model), ParkList[id], new Vector3(0, 0, 309.6527), 0, 0);
 
@@ -160,15 +155,13 @@ namespace Golemo.Houses
             [JsonIgnore]
             private ColShape shape = null;
             [JsonIgnore]
-            private TextLabel label = null;
-            [JsonIgnore]
             private Marker marker = null;
 
             public ParkBuy(Vector3 pos)
             {
                 Position = pos;
                 blip = NAPI.Blip.CreateBlip(50, pos, 1, 47, "Парковка", 255, 0, true);
-                shape = NAPI.ColShape.CreateCylinderColShape(pos, 2f, 47, 0);
+                shape = NAPI.ColShape.CreateCylinderColShape(pos, 2f, 2, 0);
                 shape.OnEntityEnterColShape += (s, entity) =>
                 {
                     try
@@ -185,18 +178,16 @@ namespace Golemo.Houses
                     }
                     catch (Exception e) { Console.WriteLine("shape.OnEntityEnterColshape: " + e.Message); }
                 };
-                label = NAPI.TextLabel.CreateTextLabel("~o~Парковка", new Vector3(pos.X, pos.Y, pos.Z), 20F, 0.5F, 0, new Color(255, 255, 255), true, 0);
                 marker = NAPI.Marker.CreateMarker(1, pos - new Vector3(0, 0, 1f), new Vector3(), new Vector3(), 1f, new Color(0, 175, 250, 220), false, 0);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #1", new Vector3(-1183.132, -679.4572, 25.98754), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #2", new Vector3(-1186.957, -675.3882, 25.9874), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #3", new Vector3(-1191.759, -669.8932, 25.98754), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #4", new Vector3(-1199.971, -659.928, 25.98724), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #5", new Vector3(-1204.201, -654.2341, 25.988), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #6", new Vector3(-1217.204, -688.3877, 25.98716), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #7", new Vector3(-1220.613, -684.1316, 25.98973), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~b~Место #8", new Vector3(-1227.106, -676.4997, 25.98831), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~w~Парковщик", new Vector3(-1167.388, -700.1123, 23.0), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                label = NAPI.TextLabel.CreateTextLabel("~w~Заказать авто", new Vector3(-928.6824, -2037.048, 9.3), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #1", new Vector3(-1183.132, -679.4572, 25.98754), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #2", new Vector3(-1186.957, -675.3882, 25.9874), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #3", new Vector3(-1191.759, -669.8932, 25.98754), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #4", new Vector3(-1199.971, -659.928, 25.98724), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #5", new Vector3(-1204.201, -654.2341, 25.988), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #6", new Vector3(-1217.204, -688.3877, 25.98716), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #7", new Vector3(-1220.613, -684.1316, 25.98973), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~b~Место #8", new Vector3(-1227.106, -676.4997, 25.98831), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                NAPI.TextLabel.CreateTextLabel("~w~Парковщик", new Vector3(-1167.388, -700.1123, 23.0), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
             }
         }
 

@@ -2123,7 +2123,7 @@ namespace Golemo
                         Fractions.CarSpawner.OpenMenuSpawner(player);
                         break;
                     case 556:
-                        Houses.ParkManager.interactionPressed(player, id);
+                        Houses.ParkManager.interactionPressed(player);
                         return;
                     case 381:
                     case 382:
