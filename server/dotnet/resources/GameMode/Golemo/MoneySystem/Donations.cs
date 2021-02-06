@@ -32,10 +32,10 @@ namespace Golemo.MoneySystem
         public static void LoadDonations()
         {
             Connection =
-                $"Host=185.71.65.109" +
-                $"User=donations" +
-                $"Password=Z6NfNpQyEcyFECB7" +
-                $"Database=payments" +
+                $"Host=127.0.0.1;" +
+                $"User=root;" +
+                $"Password=pass;" +
+                $"Database=golemo;" +
                 $"SslMode=None;";
 
             SYNCSTR = string.Format("select * from completed where srv={0}", Main.oldconfig.ServerNumber);
