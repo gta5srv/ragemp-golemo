@@ -1467,6 +1467,30 @@ namespace Golemo
                             Fractions.LSNews.AddAdvert(player, text, adPrice);
                         }
                         break;
+                    case "enter_promocode":
+                        {
+                            text = text.ToLower();
+                            if (string.IsNullOrEmpty(text))
+                            {
+                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Введите корректные данные", 3000);
+                                return;
+                            }
+                            if (Accounts[player].PromoCodes[0] != "noref")
+                            {
+                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы уже активировали промокод", 3000);
+                                return;
+                            }
+                            if (!Main.PromoCodes.ContainsKey(text))
+                            {
+                                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Такого промокода не существует", 3000);
+                                return;
+                            }
+                            Accounts[player].PromoCodes[0] = text;
+                            MySQL.Query($"UPDATE promocodes SET count=count+1 WHERE name='{text}'");
+                            MySQL.Query($"UPDATE accounts SET promocodes='{text}' WHERE login='{Accounts[player].Login}'");
+                            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы успешно ввели промокод {text}, награда будет выдана при достижении 1lvl.", 3000);
+                        }
+                        break;
                     case "player_ticketsum":
                         int sum = 0;
                         if (!Int32.TryParse(text, out sum))
@@ -3607,7 +3631,7 @@ namespace Golemo
                 menu.Add(menuItem);
             }
 
-            if (Main.Players[player].LVL < 1)
+            if (Main.Players[player].LVL < 1  && Accounts[player].PromoCodes[0] == "noref")
             {
                 menuItem = new Menu.Item("promo", Menu.MenuItem.promoBtn);
                 menuItem.Column = 2;
