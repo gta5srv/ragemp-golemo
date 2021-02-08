@@ -1,79 +1,107 @@
 ﻿.dialog p {
-    margin: 0;
+  margin: 0;
 }
 
 .dialog {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin: -200px 0 0 -230px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 535px;
-    height: 240px;
-    border-bottom-left-radius: 30px;
-    border-top-right-radius: 30px;
-    background-color: rgba(41,41,41,0.9);
-    box-shadow: 1px 1px 50px rgba(122,122,122,0.5);
+  position: absolute;
+  top: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 330px;
+  height: auto;
+  border-bottom-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background-color: rgba(41, 41, 41, 0.9);
+  border-radius: 10px;
+  padding: 40px 60px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
-    .dialog .field_ques {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 535px;
-        height: 170px;
-        border-top-right-radius: inherit;
-    }
+.dialog .field_ques {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  background: rgba(0,0,0, .7);
+  border-radius: 10px;
+  box-shadow: 0 0 5px black;
+  padding: 25px 0;
+  text-align: center;
+}
 
-    .dialog .question {
-        display: flex;
-        max-width: 400px;
-        height: auto;
-        border-left: solid 8px yellow;
-    }
+.dialog .question {
+  display: block;
+  max-width: 400px;
+  height: auto;
+}
 
-        .dialog .question p {
-            margin-top: 8px;
-            margin-bottom: 8px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            margin-left: 4%;
-            color: #fff;
-        }
+.dialog .question p {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
 
-    .dialog .buttons {
-        justify-content: space-around;
-        align-items: center;
-        display: flex;
-        width: 535px;
-        height: 70px;
-        background-color: rgb(255,255,255);
-        border-bottom-left-radius: inherit;
-    }
+.dialog .buttons {
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+  height: auto;
+  width: auto;
+  margin-top: 20px;
+}
 
 .dialog button {
-    width: 125px;
-    height: 37px;
-    border-style: none;
-    border-radius: 5px;
+  width: 125px;
+  height: 37px;
+  font-size: 1.3em;
+  border-style: none;
+  outline: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px black;
 }
 
-    .dialog .yes {
-        background-color: #00bd00;
-        color: #fff;
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 300;
-    }
+.dialog .yes:hover {
+  background: rgb(2, 164, 2);
+  color: #fff;
+}
 
-    .dialog .no {
-        background-color: #f24841;
-        color: #fff;
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        font-weight: 300;
-    }
+.dialog .no:hover {
+  background: rgb(182, 0, 0);
+  color: #fff;
+}
+
+.dialog .yes {
+  font-family: 'Roboto', sans-serif;
+  color: rgb(130, 130, 130);
+  width: 130px;
+  height: 50px;
+  border-radius: 5px;
+  background: #000;
+  padding: 0 25px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.dialog .no {
+  font-family: 'Roboto', sans-serif;
+  color: rgb(130, 130, 130);
+  width: 130px;
+  height: 50px;
+  border-radius: 5px;
+  background: #000;
+  padding: 0 25px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}

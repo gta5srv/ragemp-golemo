@@ -15,7 +15,6 @@ var input = new Vue({
             this.input = ""
         },
         send : function(){
-            //console.log('input:'+this.input)
             mp.trigger('input',this.input)
         }
     }

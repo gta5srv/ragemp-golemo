@@ -2,14 +2,14 @@
     el: '.dialog',
     data: {
         active: false,
-        title: "¿De verdad quieres tener una barba?",
+        title: "",
     },
     methods: {
         yes: function () {
-            mp.trigger('dialogCallback',true)
+            mp.trigger('dialogCallback', true);
         },
         no: function () {
-            mp.trigger('dialogCallback',false)
+            mp.trigger('dialogCallback', false);
         }
     }
 })

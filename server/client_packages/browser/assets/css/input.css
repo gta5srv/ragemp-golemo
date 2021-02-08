@@ -1,55 +1,88 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,700');
-.input {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin: -200px 0 0 -230px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 535px;
-    height: 165px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    background: linear-gradient(to bottom, rgba(39,39,39,0.9), rgba(39,39,39,0.9));
-    box-shadow: -0px -3px #e7120a;
-    flex-direction: column;
+.input
+{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  position: absolute;
+  top: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 360px !important;
+  min-width: 360px !important;
+  height: auto;
+  background-color: rgba(41, 41, 41, 0.9);
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
 }
-.input p{
-    display: block;
-    width: 410px;
-    height: auto;
-    margin: 0px 0px 20px 0px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: #fff;
+.input .question
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  background: rgba(0,0,0, .7);
+  border-radius: 10px;
+  box-shadow: 0 0 5px black;
+  text-align: center;
+  margin-bottom: 2em;
 }
-.input input{
-    padding-left: 5px;
-    height: 40px;
-    width: 265px;
-    border-radius: 5px;
-    border-style: none;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    font-weight: 300;
-    color: #000;
-    z-index: 1;
+.input .question p {
+  font-size: 1.2em;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
 }
-.input button{
-    height: 42px;
-    width: 131px;
-    border-radius: 5px;
-    border-style: solid;
-    border-color: #f24841;
-    margin-left: 10px;
-    color: #fff;
-    background: none;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    font-weight: 300;
+.input .buttons
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-.input button:hover{
-    background: #f24841;
+.input .buttons input
+{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2em;
+  max-width: 300px !important;
+  min-width: 300px !important;
+  height: 40px;
+  padding: 0 0.5em;
+  border-radius: 8px;
+  background: white;
+  -webkit-box-shadow: 0px 0px 81px -2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 81px -2px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 81px -2px rgba(0,0,0,0.75);
+  border: none;
+  outline: none;
+}
+.input .buttons button
+{
+  width: 200px;
+  color: rgba(255,255,255, 1);
+  font-size: 1.3em;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background: #000;
+  border-radius: 8px;
+  box-shadow: 0 0 5px black;
+  padding: 15px;
+  border: none;
+  outline: none;
+  transition: color .4s, background-color .4s;
+}
+
+.input .buttons button:hover{
+  color: rgba(0,0,0);
+  background: rgba(255,255,255,0.8);
 }

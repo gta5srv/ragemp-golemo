@@ -116,8 +116,10 @@
         </div>
     </div>
     <div class="input" v-if="active">
-        <p>{{title}}</p>
-        <div>
+      <div class="question">
+          <p>{{title}}</p>
+      </div>
+        <div class="buttons">
             <input :placeholder="plholder" :maxlength="len" v-model="input">
             <button @click="send">Подтвердить</button>
         </div>
