@@ -25,12 +25,11 @@ function updateObject() {
     var pitch = object.getPitch();
     object.destroy();
     object = mp.objects.new(model, position,
-        {
-            rotation: new mp.Vector3(0, 0, 0),
-            alpha: 255,
-            dimension: global.localplayer.dimension
-        });
-    object.setRotation(pitch, rot.y, rot.z, 2, true);
+    {
+        rotation: new mp.Vector3(pitch, rot.y, rot.z),
+        alpha: 255,
+        dimension: global.localplayer.dimension
+    });
 }
 
 let sc = mp.game.graphics.requestScaleformMovie("instructional_buttons");
@@ -84,7 +83,6 @@ mp.events.add('endEditing', function () {
 });
 
 mp.keys.bind(0x26, false, function () { // UP Arrow
-    //mp.gui.chat.push("Old rot: " + new mp.Vector3(object.getRotation(2).x, object.getRotation(2).y, object.getRotation(2).z));
     if (global.chatActive || !editing) return;
     switch (editing_type_idx) {
         // pos x
@@ -121,7 +119,6 @@ mp.keys.bind(0x26, false, function () { // UP Arrow
             object.setRotation(pitch, rot.y, rot.z + moving_speeds[moving_speed_idx], 2, true);
             break;
     }
-    //mp.gui.chat.push("New rot Fixes: " + new mp.Vector3(object.getRotation(2).x.toFixed(2), object.getRotation(2).y.toFixed(2), object.getRotation(2).z.toFixed(2)));
     updateObject();
 });
 
