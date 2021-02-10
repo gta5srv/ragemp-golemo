@@ -114,6 +114,21 @@ namespace Golemo.Houses
             label = NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"House {id}"), position + new Vector3(0, 0, 1.5), 5f, 0.4f, 4, new Color(255, 255, 255), false, 0);
             UpdateLabel();
         }
+        public void UpdateBlip()
+        {
+            if (string.IsNullOrEmpty(Owner))
+            {
+                blip.Sprite = 40;
+                blip.Color = 2;
+                blip.Name = "Продается";
+            }
+            else
+            {
+                blip.Sprite = 40;
+                blip.Color = 49;
+                blip.Name = "Дом";
+            }
+        }
         public void UpdateLabel()
         {
             try
@@ -186,22 +201,6 @@ namespace Golemo.Houses
                 }
                 catch { }
             });
-        }
-
-        public void UpdateBlip()
-        {
-            if (string.IsNullOrEmpty(Owner))
-            {
-                blip.Sprite = 40;
-                blip.Color = 2;
-                blip.Name = "Продается";
-            }
-            else
-            {
-                blip.Sprite = 40;
-                blip.Color = 49;
-                blip.Name = "Дом";
-            }
         }
         public void Create()
         {
@@ -907,7 +906,7 @@ namespace Golemo.Houses
                 var vData = VehicleManager.Vehicles[v];
                 var price = (BusinessManager.ProductsOrderPrice.ContainsKey(vData.Model)) ? Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.5) : 0;
                 menuItem = new Menu.Item(v, Menu.MenuItem.Button);
-                menuItem.Text = $"{ParkManager.GetNormalName(vData.Model)} - {v} ({price}$)";
+                menuItem.Text = $"{VehicleHandlers.VehiclesName.GetRealVehicleName(vData.Model)} - {v} ({price}$)";
                 menu.Add(menuItem);
             }
 
@@ -928,7 +927,7 @@ namespace Golemo.Houses
             var price = (BusinessManager.ProductsOrderPrice.ContainsKey(vData.Model)) ? Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.5) : 0;
             MoneySystem.Wallet.Change(player, price);
             GameLog.Money($"server", $"player({Main.Players[player].UUID})", price, $"carSell({vData.Model})");
-            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы продали {ParkManager.GetNormalName(vData.Model)} ({item.ID}) за {price}$", 3000);
+            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы продали {VehicleHandlers.VehiclesName.GetRealVehicleName(vData.Model)} ({item.ID}) за {price}$", 3000);
             VehicleManager.Remove(item.ID);
             MenuManager.Close(player);
         }
@@ -1294,7 +1293,7 @@ namespace Golemo.Houses
             foreach (var v in VehicleManager.getAllPlayerVehicles(player.Name))
             {
                 menuItem = new Menu.Item(v, Menu.MenuItem.Button);
-                menuItem.Text = $"{ParkManager.GetNormalName(VehicleManager.Vehicles[v].Model)} - {v}";
+                menuItem.Text = $"{VehicleHandlers.VehiclesName.GetRealVehicleName(VehicleManager.Vehicles[v].Model)} - {v}";
                 menu.Add(menuItem);
             }
 
@@ -1335,7 +1334,7 @@ namespace Golemo.Houses
             menu.Add(menuItem);
 
             menuItem = new Menu.Item("model", Menu.MenuItem.Card);
-            menuItem.Text = ParkManager.GetNormalName(vData.Model);
+            menuItem.Text = VehicleHandlers.VehiclesName.GetRealVehicleName(vData.Model);
             menu.Add(menuItem);
 
             var vClass = NAPI.Vehicle.GetVehicleClass(NAPI.Util.VehicleNameToModel(vData.Model));
@@ -1434,7 +1433,7 @@ namespace Golemo.Houses
                                 break;
                         }
                     }
-                    Trigger.ClientEvent(player, "openDialog", "CAR_SELL_TOGOV", $"Вы действительно хотите продать государству {ParkManager.GetNormalName(vData.Model)} ({menu.Items[0].Text}) за ${price}?");
+                    Trigger.ClientEvent(player, "openDialog", "CAR_SELL_TOGOV", $"Вы действительно хотите продать государству {VehicleHandlers.VehiclesName.GetRealVehicleName(vData.Model)} ({menu.Items[0].Text}) за ${price}?");
                     MenuManager.Close(player);
                     return;
                 case "repair":
@@ -1456,7 +1455,7 @@ namespace Golemo.Houses
                     vData.Health = 1000;
                     var garage = GarageManager.Garages[GetHouse(player).GarageID];
                     garage.SendVehicleIntoGarage(menu.Items[0].Text);
-                    Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы восстановили {ParkManager.GetNormalName(vData.Model)} ({menu.Items[0].Text})", 3000);
+                    Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы восстановили {VehicleHandlers.VehiclesName.GetRealVehicleName(vData.Model)} ({menu.Items[0].Text})", 3000);
                     return;
                 case "evac":
                     if (!Main.Players.ContainsKey(player)) return;
