@@ -51,6 +51,7 @@ const __eventAdd__ = (eventName, eventFunction, name) => {
                 }
             } catch(e) {
                 mp.game.graphics.notify(`${eventName}:error:1`);
+                mp.gui.chat.push(e.toString());
             }
         }
     });
