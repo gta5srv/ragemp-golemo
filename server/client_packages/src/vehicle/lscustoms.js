@@ -47,7 +47,7 @@ mp.events.add('tpage', (id) => {
             setTimeout(function () { 
                 lsc.execute(`disable(${JSON.stringify(toDisable)});`);
                 lsc.execute(`show(${true});`);
-            }, 150);
+            }, 200);
             localplayer.vehicle.setHeading(148.9986);
 
             var camFrom = tunCam;
