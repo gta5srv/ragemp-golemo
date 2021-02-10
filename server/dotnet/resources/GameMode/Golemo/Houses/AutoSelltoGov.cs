@@ -1,9 +1,7 @@
 using GTANetworkAPI;
 using System;
 using Golemo.GUI;
-using Golemo.Houses;
 using System.Collections.Generic;
-using System.Linq;
 using GolemoSDK;
 using Golemo.Core;
 
@@ -11,9 +9,8 @@ namespace Golemo.Houses
 {
     class AutoSelltoGov : Script
     {
-       
-        private static Dictionary<int, ColShape> Cols = new Dictionary<int, ColShape>();
-        private static Vector3 svalkaCheckpoints = new Vector3(1512.705, -2097.8896, 75.6941);
+        private static ColShape _shape;
+        private static Vector3 _position = new Vector3(1512.705, -2097.8896, 75.6941);
         private static nLog Log = new nLog("SVALKA");
 
         [ServerEvent(Event.ResourceStart)]
@@ -21,13 +18,12 @@ namespace Golemo.Houses
         {
             try
             {
-                NAPI.Marker.CreateMarker(1, svalkaCheckpoints - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 3, new Color(0, 255, 255));
-                NAPI.Blip.CreateBlip(527, svalkaCheckpoints, 1f, 84, "Свалка", 255, 0, true, 0, 0);
-                Cols.Add(0, NAPI.ColShape.CreateCylinderColShape(svalkaCheckpoints, 1, 3, 0));
-                Cols[0].SetData("INTERACT", 101);
-                Cols[0].OnEntityEnterColShape += svalkaShape_onEntityEnterColShape;
-                Cols[0].OnEntityExitColShape += svalkaShape_onEntityExitColShape;
-                NAPI.TextLabel.CreateTextLabel(Main.StringToU16("~b~Свалка"), svalkaCheckpoints + new Vector3(0, 0, 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.Marker.CreateMarker(1, _position - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 3, new Color(0, 255, 255));
+                NAPI.Blip.CreateBlip(527, _position, 1f, 84, "Свалка", 255, 0, true, 0, 0);
+                _shape = NAPI.ColShape.CreateCylinderColShape(_position, 1, 3, 0);
+                _shape.OnEntityEnterColShape += svalkaShape_onEntityEnterColShape;
+                _shape.OnEntityExitColShape += svalkaShape_onEntityExitColShape;
+                NAPI.TextLabel.CreateTextLabel("~b~Свалка", _position + new Vector3(0, 0, 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
             }
             catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }
         }
@@ -36,7 +32,7 @@ namespace Golemo.Houses
         {
             try
             {
-                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", shape.GetData<int>("INTERACT"));
+                NAPI.Data.SetEntityData(entity, "INTERACTIONCHECK", 101);
             }
             catch (Exception ex) { Log.Write("svalkaShape_onEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
         }
@@ -67,7 +63,7 @@ namespace Golemo.Houses
                 var vData = VehicleManager.Vehicles[v];
                 var price = (BusinessManager.ProductsOrderPrice.ContainsKey(vData.Model)) ? Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.5) : 0;
                 menuItem = new Menu.Item(v, Menu.MenuItem.Button);
-                menuItem.Text = $"{ParkManager.GetNormalName(vData.Model)} - {v} ({price}$)";
+                menuItem.Text = $"{VehicleHandlers.VehiclesName.GetRealVehicleName(vData.Model)} - {v} ({price}$)";
                 menu.Add(menuItem);
             }
 
