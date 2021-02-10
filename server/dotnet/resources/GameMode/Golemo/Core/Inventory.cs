@@ -1215,6 +1215,7 @@ namespace Golemo.Core
     {
         private static nLog Log = new nLog("Items");
 
+        private static Random rnd = new Random();
         public static List<int> ItemsDropped = new List<int>();
         public static List<int> InProcessering = new List<int>();
         [ServerEvent(Event.EntityDeleted)]
@@ -1399,7 +1400,7 @@ namespace Golemo.Core
                                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно места в инвентаре", 3000);
                                 return;
                             }
-                            int gift = new Random().Next(1, 101); // рандом от 0 до 100
+                            int gift = rnd.Next(1, 101); // рандом от 0 до 100
                             if (gift <= 90) // шанс на выпадение денег
                             {
                                 int pay = 721 * gift;
@@ -2154,7 +2155,7 @@ namespace Golemo.Core
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Машину уже заведена", 3000);
                             return;
                         }
-                        var lucky = new Random().Next(0, 6);
+                        var lucky = rnd.Next(0, 6);
                         Log.Debug(lucky.ToString());
                         if (lucky == 5 || lucky == 1)
                             Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас не получилось завести машину. Попробуйте ещё раз", 3000);
@@ -2232,7 +2233,6 @@ namespace Golemo.Core
         {
             try
             {
-                var rnd = new Random();
                 if (data != null && (int)data != 1)
                     Commands.RPChat("me", player, $"выбросил(а) {nInventory.ItemsNames[(int)item.Type]}");
 
