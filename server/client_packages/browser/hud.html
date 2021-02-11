@@ -53,7 +53,12 @@
 				<div class="speedcount" v-if="speed < 100"><a class="count">{{speed}}</a><p>км/ч</p></div>
 				<div class="speedcount" v-else-if="speed < 200"><a class="count" style="color:#eda123">{{speed}}</a><p>км/ч</p></div>
 				<div class="speedcount" v-else="speed < 300"><a class="count" style="color:red">{{speed}}</a><p>км/ч</p></div>
-				<div class="fuel"><a>{{fuel}} л.</a><img src="./assets/images/hud/fuel.svg" style="opacity:0.2" class="fuel_ico"></div>
+				<div class="fuel">
+                    <a>{{fuel}} л.</a>
+                    <img src="./assets/images/hud/fuel.svg" style="opacity:0.2" class="fuel_ico">
+                    <br>
+                    <a>{{hp}}/100 hp.</a>
+                </div>
 				
 				<div class="help_car">
 				<div v-if="engine" class="helps"><img src="./assets/images/hud/engine.png" class="icon_help"><p>B</p></div>

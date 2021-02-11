@@ -495,7 +495,7 @@ mp.events.add('render', (nametags) => {
 				}
 			}
 
-			var hp = veh.getHealth() / 10;
+			var hp = veh.getEngineHealth() / 10; //getHealth
 			hp = hp.toFixed();
 			if (hp !== hudstatus.health) {
 				mp.gui.execute(`HUD.hp=${hp}`);
