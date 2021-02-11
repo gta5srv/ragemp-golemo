@@ -349,17 +349,17 @@ namespace Golemo.Fractions
                 { 5, new Vector3(881.6645, -2168.2346, 31.151388)}, //Bloods
                 { 6, new Vector3(-560.6294, -174.94687, 36.978725)}, //CityHall
                 { 7, new Vector3(421.32764, -990.5731, 29.583729)}, //Police
-                { 8, new Vector3(0,0,0)}, //EMS
-                { 9, new Vector3(0,0,0)}, //FIB
-                { 10, new Vector3(0,0,0)}, //La Cosa Nostra
-                { 11, new Vector3(0,0,0)}, //Russian Mafia
-                { 12, new Vector3(0,0,0)}, //Yakuza Mafia
-                { 13, new Vector3(0,0,0)}, //Armenian Mafia
-                { 14, new Vector3(0,0,0)}, //Army
-                { 15, new Vector3(0,0,0)}, //News
+                { 8, new Vector3(349.5916, -550.88995, 27.62378)}, //EMS
+                { 9, new Vector3(139.51517, -702.72986, 32.0049)}, //FIB
+                { 10, new Vector3(1390.9471, 1156.9696, 113.32328)}, //La Cosa Nostra
+                { 11, new Vector3(-114.58606, 988.9835, 234.63089)}, //Russian Mafia
+                { 12, new Vector3(-1552.8608, -87.15276, 53.21184)}, //Yakuza Mafia
+                { 13, new Vector3(-1811.5052, 450.76276, 127.39384)}, //Armenian Mafia
+                { 14, new Vector3(-2336.9888, 3314.033, 31.70962)}, //Army
+                { 15, new Vector3(-1040.6895, -225.95102, 37.893054)}, //News
                 { 16, new Vector3(0,0,0)}, //The Lost
                 { 17, new Vector3(0,0,0)}, //Merryweather Security
-                { 18, new Vector3(0,0,0)}, //Sheriff
+                { 18, new Vector3(-459.43457, 6031.523, 30.220525)}, //Sheriff
             };
 
             foreach (var item in FractionsCarSpawnerCoords)
