@@ -1486,8 +1486,9 @@ namespace Golemo
                                 return;
                             }
                             Accounts[player].PromoCodes[0] = text;
+                            string json = Newtonsoft.Json.JsonConvert.SerializeObject(Accounts[player].PromoCodes);
                             MySQL.Query($"UPDATE promocodes SET count=count+1 WHERE name='{text}'");
-                            MySQL.Query($"UPDATE accounts SET promocodes='{text}' WHERE login='{Accounts[player].Login}'");
+                            MySQL.Query($"UPDATE accounts SET promocodes='{json}' WHERE login='{Accounts[player].Login}'");
                             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы успешно ввели промокод {text}, награда будет выдана при достижении 1lvl.", 3000);
                         }
                         break;
