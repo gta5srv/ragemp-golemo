@@ -19,15 +19,15 @@ namespace Golemo.Fractions
         public static List<Vector3> policeCheckpoints = new List<Vector3>()
         {
             new Vector3(463.2361, -998.3675, 23.91487), // shape, where player can arrest suspect       0
-            new Vector3(452.4479, -980.1406, 29.68958), // guns     1
-            new Vector3(457.2408, -988.3513, 29.68959), // dressing room     2
-            new Vector3(452.2765, -993.3061, 29.68959), // special checkpoint     3
-            new Vector3(459.188, -997.7607, 23.91485), // prison room      4 
-            new Vector3(428.478, -979.8452, 30.71022), // place of release from prison     5
-            new Vector3(441.9336, -981.5965, 29.6896), // buy gun licence     6
-            new Vector3(439.8187, -981.6356, 29.5696), // surrender bags with drill and money     7
-            new Vector3(461.0604, -981.0191, 29.56959),  // open stock     8
-            new Vector3(452.1674, -1024.298, 27.40882),  // vehicle boost       9
+            new Vector3(452.4479, -980.1406, 29.68958), // guns                                         1
+            new Vector3(457.2408, -988.3513, 29.68959), // dressing room                                2
+            new Vector3(452.2765, -993.3061, 29.68959), // special checkpoint                           3
+            new Vector3(459.188, -997.7607, 23.91485), // prison room                                   4 
+            new Vector3(428.478, -979.8452, 30.71022), // place of release from prison                  5
+            new Vector3(441.9336, -981.5965, 29.6896), // buy gun licence                               6
+            new Vector3(439.8187, -981.6356, 29.5696), // surrender bags with drill and money           7
+            new Vector3(461.0604, -981.0191, 29.56959),  // open stock                                  8
+            new Vector3(452.1674, -1024.298, 27.40882),  // vehicle boost                               9
         };
 
         [ServerEvent(Event.ResourceStart)]
@@ -549,7 +549,7 @@ namespace Golemo.Fractions
         {
             try
             {
-                NAPI.Data.SetEntityData(entity, "IS_IN_ARREST_AREA", true);
+                NAPI.Data.SetEntityData(entity, "IS_IN_ARREST_AREA", "lspd");
             }
             catch (Exception ex) { Log.Write("arrestShape_onEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
         }
@@ -559,7 +559,7 @@ namespace Golemo.Fractions
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                NAPI.Data.SetEntityData(player, "IS_IN_ARREST_AREA", false);
+                NAPI.Data.ResetEntityData(player, "IS_IN_ARREST_AREA");
                 if (Main.Players[player].ArrestTime != 0)
                 {
                     NAPI.Entity.SetEntityPosition(player, Police.policeCheckpoints[4]);
@@ -586,6 +586,13 @@ namespace Golemo.Fractions
             catch (Exception ex) { Log.Write("onEntityExitColshape: " + ex.Message, nLog.Type.Error); }
         }
         #endregion
+
+        public static bool isPlayerThePoliceJail(Player player)
+        {
+            if (!Main.Players.ContainsKey(player)) return false;
+            if (Cols[0].IsPointWithin(player.Position)) return true;
+            else return false;
+        }
 
         public static void onPlayerDisconnectedhandler(Player player, DisconnectionType type, string reason)
         {

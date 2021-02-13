@@ -18,12 +18,12 @@ namespace Golemo.Fractions
         private static Dictionary<int, ColShape> Cols = new Dictionary<int, ColShape>();
         public static List<Vector3> sheriffCheckpoints = new List<Vector3>()
         {
-            new Vector3(463.2361, -998.3675, 23.91487), // место посадки игрока 0
+            new Vector3(-437.9659, 5989.496, 31.716532), // место посадки игрока 0
             new Vector3(-430.7331, 5999.503, 30.59653), // Оружейный склад ( на против стоит пед) 1
             new Vector3(-433.6318, 5990.971, 30.59653), // Начать рабочий день Шерифа ( без педа) (взять одежду) 2
             new Vector3(-455.9738, 6014.119, 30.59654), // Чек поинт режима ЧП ( + Пед Alonzo) 3
-            new Vector3(-441.9835, 5987.603, 30.59653), // Точка в тюрьме куда сажают игрока за решоткой. 4
-            new Vector3(-436.764, 6020.909, 30.37011), // Место спавна во фракции Шерифа (перед зданием можно) 5
+            new Vector3(-441.9835, 5987.603, 32), // Точка в тюрьме куда сажают игрока за решоткой. 4
+            new Vector3(-436.764, 6020.909, 31.2), // Место спавна во фракции Шерифа (перед зданием можно) 5
             new Vector3(441.9336, -981.5965, 29.6896), // Покупка лицензии  6
             new Vector3(-448.1254, 6014.227, 30.59655), // Место куда сдают мешок с деньгами 7
             new Vector3(-426.0116, 5998.237, 30.59653),  // Склад оружия     8
@@ -549,7 +549,7 @@ namespace Golemo.Fractions
         {
             try
             {
-                NAPI.Data.SetEntityData(entity, "IS_IN_ARREST_AREA", true);
+                NAPI.Data.SetEntityData(entity, "IS_IN_ARREST_AREA", "sheriff");
             }
             catch (Exception ex) { Log.Write("arrestShape_onEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
         }
@@ -559,13 +559,20 @@ namespace Golemo.Fractions
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                NAPI.Data.SetEntityData(player, "IS_IN_ARREST_AREA", false);
+                NAPI.Data.ResetEntityData(player, "IS_IN_ARREST_AREA");
                 if (Main.Players[player].ArrestTime != 0)
                 {
                     NAPI.Entity.SetEntityPosition(player, Sheriff.sheriffCheckpoints[4]);
                 }
             }
             catch (Exception ex) { Log.Write("arrestShape_onEntityExitColShape: " + ex.Message, nLog.Type.Error); }
+        }
+
+        public static bool isPlayerTheSheriffJail(Player player)
+        {
+            if (!Main.Players.ContainsKey(player)) return false;
+            if (Cols[0].IsPointWithin(player.Position)) return true;
+            else return false;
         }
 
         private void onEntityEnterColshape(ColShape shape, Player entity)

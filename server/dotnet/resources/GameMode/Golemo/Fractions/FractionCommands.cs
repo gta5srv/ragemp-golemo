@@ -534,7 +534,7 @@ namespace Golemo.Fractions
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок слишком далеко", 3000);
                 return;
             }
-            if (!NAPI.Data.GetEntityData(player, "IS_IN_ARREST_AREA"))
+            if (!NAPI.Data.HasEntityData(player, "IS_IN_ARREST_AREA"))
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны быть возле камеры", 3000);
                 return;
@@ -567,7 +567,7 @@ namespace Golemo.Fractions
             Manager.sendFractionMessage(9, $"{player.Name} посадил в КПЗ {target.Name} ({Main.Players[target].WantedLVL.Reason})", true);
             Main.Players[target].ArrestTime = Main.Players[target].WantedLVL.Level * 20 * 60;
             GameLog.Arrest(Main.Players[player].UUID, Main.Players[target].UUID, Main.Players[target].WantedLVL.Reason, Main.Players[target].WantedLVL.Level, player.Name, target.Name);
-            arrestPlayer(target);
+            arrestPlayer(target, player.GetData<string>("IS_IN_ARREST_AREA"));
         }
 
         public static void releasePlayerFromPrison(Player player, Player target)
@@ -588,7 +588,7 @@ namespace Golemo.Fractions
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Игрок слишком далеко", 3000);
                 return;
             }
-            if (!NAPI.Data.GetEntityData(player, "IS_IN_ARREST_AREA"))
+            if (!NAPI.Data.HasEntityData(player, "IS_IN_ARREST_AREA"))
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны быть возле камеры", 3000);
                 return;
@@ -633,8 +633,9 @@ namespace Golemo.Fractions
                     Timers.Stop(NAPI.Data.GetEntityData(player, "ARREST_TIMER")); // still not fixed
                     NAPI.Data.ResetEntityData(player, "ARREST_TIMER");
                     Police.setPlayerWantedLevel(player, null);
-                    NAPI.Entity.SetEntityPosition(player, Police.policeCheckpoints[5]);
-                    NAPI.Entity.SetEntityPosition(player, Sheriff.sheriffCheckpoints[5]);
+                    if (Police.isPlayerThePoliceJail(player)) NAPI.Entity.SetEntityPosition(player, Police.policeCheckpoints[5]);
+                    else if (Sheriff.isPlayerTheSheriffJail(player)) NAPI.Entity.SetEntityPosition(player, Sheriff.sheriffCheckpoints[5]);
+                    else NAPI.Entity.SetEntityPosition(player, Police.policeCheckpoints[5]);
                     NAPI.Entity.SetEntityDimension(player, 0);
                     Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, $"Вы были освобождены из тюрьмы", 3000);
                 }
@@ -642,14 +643,12 @@ namespace Golemo.Fractions
             });
         }
 
-        public static void arrestPlayer(Player target)
+        public static void arrestPlayer(Player target, string arrestArea = "lspd")
         {
-            NAPI.Entity.SetEntityPosition(target, Police.policeCheckpoints[4]);
-            Police.setPlayerWantedLevel(target, null);
-            //NAPI.Data.SetEntityData(target, "ARREST_TIMER", Main.StartT(1000, 1000, (o) => arrestTimer(target), "ARREST_TIMER"));
-            NAPI.Entity.SetEntityPosition(target, Sheriff.sheriffCheckpoints[4]);
-            Sheriff.setPlayerWantedLevel(target, null);
+            if(arrestArea == "lspd") NAPI.Entity.SetEntityPosition(target, Police.policeCheckpoints[4]);
+            else if (arrestArea == "sheriff") NAPI.Entity.SetEntityPosition(target, Sheriff.sheriffCheckpoints[4]);
             NAPI.Data.SetEntityData(target, "ARREST_TIMER", Timers.Start(1000, () => arrestTimer(target)));
+            Police.setPlayerWantedLevel(target, null);
             Weapons.RemoveAll(target, true);
         }
 
@@ -799,7 +798,6 @@ namespace Golemo.Fractions
                     var oldStars = (Main.Players[target].WantedLVL == null) ? 0 : Main.Players[target].WantedLVL.Level;
                     var wantedLevel = new WantedLevel(oldStars + stars, player.Name, DateTime.Now, reason);
                     Police.setPlayerWantedLevel(target, wantedLevel);
-                    Sheriff.setPlayerWantedLevel(target, wantedLevel);
                     return;
                 }
                 else Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы не можете выдать такое кол-во звёзд", 3000);
