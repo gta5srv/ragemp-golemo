@@ -191,7 +191,7 @@ namespace Golemo.Core
             }
             Main.Players[target].AdminLVL = 0;
             target.ResetSharedData("IS_ADMIN");
-            target.ResetSharedData("ALVL");
+            target.SetSharedData("ALVL", 0);
             Fractions.GangsCapture.UnLoadBlips(target);
 
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы забрали права у администратора {target.Name}", 3000);
