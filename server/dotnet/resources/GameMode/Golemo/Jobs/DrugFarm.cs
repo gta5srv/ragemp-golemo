@@ -10,9 +10,11 @@ namespace Golemo.Jobs
     class DrugFarm : Script
     {
         private static nLog Log = new nLog("DrugFarm");
-        private static Dictionary<int, ColShape> Cols = new Dictionary<int, ColShape>();
-        public static int drugsmultiplier;
         private static Random rnd = new Random();
+
+        private static Dictionary<int, ColShape> Cols = new Dictionary<int, ColShape>();
+        private static int _drugsPayment = 60;  //статичная цена
+        private static int _drugsMultiplier;    //коэффициент, который умножается на _drugsPayment
         private static int _minMultiplier = 15; // минимальный коеффициент
         private static int _maxMultiplier = 51; // максимальный коеффициеннт
 
@@ -71,14 +73,14 @@ namespace Golemo.Jobs
 
         public void UpdateLabel()
         {
-            string text = $"~w~Курс {60 * drugsmultiplier} за 1 травку"; // если надо, тут меняем цену в TextLable
+            string text = $"~w~Курс {_drugsPayment * _drugsMultiplier} за 1 травку"; // если надо, тут меняем цену в TextLable
             label.Text = Main.StringToU16(text);
 
         }
         public static void UpdateMultiplier()
         {
-            drugsmultiplier = rnd.Next(_minMultiplier, _maxMultiplier);
-            Log.Write($"Обновлен коэффициент на: {drugsmultiplier}");
+            _drugsMultiplier = rnd.Next(_minMultiplier, _maxMultiplier);
+            Log.Write($"Обновлен коэффициент на: {_drugsMultiplier}");
             
         }
         public static void StartWorkDay(Player player)
@@ -102,11 +104,9 @@ namespace Golemo.Jobs
                     }
                     nInventory.Remove(player, drugs.Type, drugs.Count);
                     GUI.Dashboard.sendItems(player);
-                    int payment = (int)(drugs.Count * 60 * drugsmultiplier); // количество * fix-price * коеффициент
+                    int payment = Convert.ToInt32((drugs.Count * _drugsPayment * _drugsMultiplier)); // количество * fix-price * коеффициент
                     MoneySystem.Wallet.Change(player, payment);
                     Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы продали {drugs.Count} травы  за {payment}$", 3000);
-                    
-
                 }
 
                 Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы закончили рабочий день", 3000);
@@ -173,7 +173,7 @@ namespace Golemo.Jobs
                         }
                         nInventory.Remove(client, drugs.Type, drugs.Count);
                         GUI.Dashboard.sendItems(client);
-                        int payment = (int)(drugs.Count * 60 * drugsmultiplier); // количество * fix-price * коеффициент
+                        int payment = Convert.ToInt32((drugs.Count * _drugsPayment * _drugsMultiplier)); // количество * fix-price * коеффициент
                         MoneySystem.Wallet.Change(client, payment);
                         Notify.Send(client, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы продали {drugs.Count} травы  за {payment}$", 3000);
 
