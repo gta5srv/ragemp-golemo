@@ -233,7 +233,8 @@ const checkConditions = () => {
 		localplayer.isJumping() || 
         localplayer.isShooting() ||
         localplayer.isReloading() ||
-		localplayer.isFalling()
+		localplayer.isFalling() ||
+        localplayer.getVehicleIsTryingToEnter()
     );
 }
 
