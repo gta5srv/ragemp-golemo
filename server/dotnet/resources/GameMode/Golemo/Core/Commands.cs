@@ -1306,7 +1306,17 @@ namespace Golemo.Core
             {
                 if (!Group.CanUseCmd(client, "setproductbyindex")) return;
 
+                if (!BusinessManager.BizList.ContainsKey(id))
+                {
+                    Notify.Error(client, "Указанный ID бизнеса не найден", 2000);
+                    return;
+                }
                 var biz = BusinessManager.BizList[id];
+                if(index >= biz.Products.Count)
+                {
+                    Notify.Error(client, "Указанный ID товара не найден", 2000);
+                    return;
+                }
                 biz.Products[index].Lefts = product;
             }
             catch (Exception e)
@@ -1322,6 +1332,11 @@ namespace Golemo.Core
             {
                 if (!Group.CanUseCmd(client, "deleteproducts")) return;
 
+                if (!BusinessManager.BizList.ContainsKey(id))
+                {
+                    Notify.Error(client, "Указанный ID бизнеса не найден", 2000);
+                    return;
+                }
                 var biz = BusinessManager.BizList[id];
                 foreach (var p in biz.Products)
                     p.Lefts = 0;
@@ -2560,9 +2575,8 @@ namespace Golemo.Core
             try
             {
                 if (player == null || !Main.Players.ContainsKey(player)) return;
-                if (!Group.CanUseCmd(player, "vehc")) return;
+                if (!Group.CanUseCmd(player, "veh")) return;
                 VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(name);
-                player.SendChatMessage("vh " + vh);
                 if (vh == 0)
                 {
                     player.SendChatMessage("vh return");
@@ -2700,7 +2714,36 @@ namespace Golemo.Core
             }
             catch { }
         }
-        
+        [Command("vehcustomscolor")] // Кастомная покраска на авто ??? (8 лвл)
+        public static void CMD_ApplyCustomSColor(Player client, int r, int g, int b, int mod = -1)
+        {
+            try
+            {
+                if (!Main.Players.ContainsKey(client)) return;
+                if (!Group.CanUseCmd(client, "vehcustomscolor")) return;
+                Color color = new Color(r, g, b);
+
+                var number = client.Vehicle.NumberPlate;
+
+                VehicleManager.Vehicles[number].Components.SecColor = color;
+                VehicleManager.Vehicles[number].Components.SecModColor = mod;
+
+                VehicleManager.ApplyCustomization(client.Vehicle);
+
+            }
+            catch { }
+        }
+        [Command("vehsetcolor")]
+        public static void CMD_SetColorToVehicle(Player player, int a, int b)
+        {
+            if (!Main.Players.ContainsKey(player)) return;
+            if (!Group.CanUseCmd(player, "vehsetcolor")) return;
+            var veh = player.Vehicle;
+            if (veh == null) return;
+            veh.PrimaryColor = a;
+            veh.SecondaryColor = b;
+        }
+
         [Command("aclear")] // Очистить аккаунт игрока (8 лвл)
         public static void ACMD_aclear(Player player, string target)
         {
@@ -2813,26 +2856,6 @@ namespace Golemo.Core
                 GameLog.Admin($"{player.Name}", $"aClear", $"{target}");
             }
             catch (Exception e) { Log.Write("EXCEPTION AT aclear\n" + e.ToString(), nLog.Type.Error); }
-        }
-        
-        [Command("vehcustomscolor")] // Кастомная покраска на авто ??? (8 лвл)
-        public static void CMD_ApplyCustomSColor(Player client, int r, int g, int b, int mod = -1)
-        {
-            try
-            {
-                if (!Main.Players.ContainsKey(client)) return;
-                if (!Group.CanUseCmd(client, "vehcustomscolor")) return;
-                Color color = new Color(r, g, b);
-
-                var number = client.Vehicle.NumberPlate;
-
-                VehicleManager.Vehicles[number].Components.SecColor = color;
-                VehicleManager.Vehicles[number].Components.SecModColor = mod;
-
-                VehicleManager.ApplyCustomization(client.Vehicle);
-
-            }
-            catch { }
         }
 
         [Command("findbyveh")] // Найти авто по номеру (8 лвл)
@@ -3868,14 +3891,10 @@ namespace Golemo.Core
                     Fractions.Police.callPolice(player, msg);
                 else if (number == 911)
                     Fractions.Ems.callEms(player);
+                else
+                    player.SendChatMessage("Неправильный номер.");
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
-        }
-
-        [Command("q")]
-        public static void CMD_disconnect(Player player)
-        {
-            Trigger.ClientEvent(player, "quitcmd");
         }
 
         [Command("report", GreedyArg = true)]
