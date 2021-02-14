@@ -234,7 +234,8 @@ const checkConditions = () => {
         localplayer.isShooting() ||
         localplayer.isReloading() ||
 		localplayer.isFalling() ||
-        localplayer.getVehicleIsTryingToEnter()
+        localplayer.getIsTaskActive(160) ||
+        localplayer.getIsTaskActive(2)
     );
 }
 
