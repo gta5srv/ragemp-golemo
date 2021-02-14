@@ -338,6 +338,7 @@ namespace Golemo.Fractions
                 AllMembers[index].FractionLVL = data.FractionLVL;
                 AllMembers[index].inFracName = data.inFracName;
             }
+            GangsCapture.LoadBlips(player);
             Trigger.ClientEvent(player, "fractionChange", fractionID);
             player.SetSharedData("fraction", fractionID);
             player.SetSharedData("fractionRankName", getNickname(fractionID, fractionLVL));
@@ -355,7 +356,7 @@ namespace Golemo.Fractions
                 Trigger.ClientEvent(player, "closePc");
                 player.SetData("ON_DUTY", false);
                 MenuManager.Close(player);
-                Trigger.ClientEvent(player, "unloadCaptureBlips");
+                GangsCapture.UnLoadBlips(player);
 
 
                 if (Main.Players[player].FractionID == 9)

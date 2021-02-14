@@ -469,6 +469,7 @@ namespace Golemo.Fractions
 
         public static void LoadBlips(Player player)
         {
+            if (Manager.FractionTypes[Main.Players[player].FractionID] != 1 && Main.Players[player].AdminLVL <= 0) return;
             var colors = new List<int>();
             foreach (var g in gangPoints.Values)
                 colors.Add(gangPointsColor[g.GangOwner]);
@@ -476,6 +477,11 @@ namespace Golemo.Fractions
             Trigger.ClientEvent(player, "loadCaptureBlips", Newtonsoft.Json.JsonConvert.SerializeObject(colors));
 
             if (captureIsGoing || captureStarting) Trigger.ClientEvent(player, "setZoneFlash", gangPoints.FirstOrDefault(g => g.Value.IsCapture == true).Value.ID, true);
+        }
+        public static void UnLoadBlips(Player player)
+        {
+            if (Main.Players[player].AdminLVL > 0 || Manager.FractionTypes[Main.Players[player].FractionID] == 1) return;
+            Trigger.ClientEvent(player, "unloadCaptureBlips");
         }
 
         [ServerEvent(Event.ResourceStop)]

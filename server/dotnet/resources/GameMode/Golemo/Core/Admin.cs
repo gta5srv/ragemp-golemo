@@ -166,6 +166,7 @@ namespace Golemo.Core
             Main.Players[target].AdminLVL = 1;
             target.SetSharedData("IS_ADMIN", true);
             target.SetSharedData("ALVL", 1);
+            Fractions.GangsCapture.LoadBlips(target);
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы Выдали админ. права игроку {target.Name}", 3000);
             Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"{player.Name} Выдал Вам админ. права", 3000);
             GameLog.Admin($"{player.Name}", $"setAdmin", $"{target.Name}");
@@ -191,6 +192,7 @@ namespace Golemo.Core
             Main.Players[target].AdminLVL = 0;
             target.ResetSharedData("IS_ADMIN");
             target.ResetSharedData("ALVL");
+            Fractions.GangsCapture.UnLoadBlips(target);
 
             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы забрали права у администратора {target.Name}", 3000);
             Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"{player.Name} забрал у Вас админ. права", 3000);
@@ -243,7 +245,7 @@ namespace Golemo.Core
         public static void setFracLeader(Player sender, Player target, int fracid)
         {
             if (!Group.CanUseCmd(sender, "setleader")) return;
-            if (fracid != 0 && fracid <= 18)
+            if (fracid != 0 && fracid <= Fractions.Configs.FractionTypes.Count)
             {
                 Fractions.Manager.UNLoad(target);
                 int index = Fractions.Manager.AllMembers.FindIndex(m => m.Name == target.Name);

@@ -2353,7 +2353,6 @@ namespace Golemo
                                 Players[player].WorkID = 0;
 
                                 Fractions.Manager.Load(player, Players[player].FractionID, Players[player].FractionLVL);
-                                if (Fractions.Manager.FractionTypes[fracid] == 1) Fractions.GangsCapture.LoadBlips(player);
                                 if(fracid == 15) {
                                     Trigger.ClientEvent(player, "enableadvert", true);
                                     Fractions.LSNews.onLSNPlayerLoad(player); // Загрузка всех объявлений в F7
