@@ -386,6 +386,17 @@ namespace Golemo.Core
                     Houses.Garage garage = Houses.GarageManager.Garages[house.GarageID];
                     garage.DeleteCar(Number);
                 }
+                else
+                {
+                    foreach (var item in NAPI.Pools.GetAllVehicles())
+                    {
+                        if(item.NumberPlate == Number)
+                        {
+                            NAPI.Task.Run(() => { NAPI.Entity.DeleteEntity(item); });
+                            break;
+                        }
+                    }
+                }
             }
             catch { }
             Vehicles.Remove(Number);
