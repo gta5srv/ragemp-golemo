@@ -188,11 +188,10 @@ namespace Golemo.Jobs
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
+                if (player.IsInVehicle) return; //если игрок в машине
                 if (!player.GetData<bool>("ON_WORK") || shape.GetData<int>("NUMBER") != player.GetData<int>("WORKCHECK")) return;
 
-                if (Checkpoints[(int)shape.GetData<int>("NUMBER")].Position.DistanceTo(player.Position) > 3) return;
-
-
+                if (Checkpoints[shape.GetData<int>("NUMBER")].Position.DistanceTo(player.Position) > 3) return;
 
                 NAPI.Entity.SetEntityPosition(player, Checkpoints[shape.GetData<int>("NUMBER")].Position + new Vector3(0, 0, 1.2));
                 NAPI.Entity.SetEntityRotation(player, new Vector3(0, 0, Checkpoints[shape.GetData<int>("NUMBER")].Heading));
