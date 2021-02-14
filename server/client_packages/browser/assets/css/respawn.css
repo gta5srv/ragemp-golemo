@@ -15,8 +15,6 @@ body {
     margin: 0;
     line-height: 1; 
     font-family: 'Montserrat', sans-serif;
-    background-image: url(../images/respawn/main-bg.jpg);
-    background-size: cover;
 }
 
 .bold {
@@ -203,7 +201,6 @@ body {
 .button-block {
     position: absolute;
     bottom: 30%;
-    width: 100%;
     text-align: center;
 }
 
