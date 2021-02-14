@@ -205,8 +205,6 @@ namespace Golemo.Fractions
             unCuffPlayer(target);
             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, uncuffmesp, 3000);
             Notify.Send(target, NotifyType.Warning, NotifyPosition.BottomCenter, uncuffmest, 3000);
-            NAPI.Data.SetEntityData(target, "CUFFED_BY_COP", false);
-            NAPI.Data.SetEntityData(target, "CUFFED_BY_MAFIA", false);
             Commands.RPChat("me", player, uncuffme, target);
             return;
         }
@@ -656,6 +654,8 @@ namespace Golemo.Fractions
         {
             Trigger.ClientEvent(player, "CUFFED", false);
             NAPI.Data.SetEntityData(player, "CUFFED", false);
+            NAPI.Data.SetEntityData(player, "CUFFED_BY_COP", false);
+            NAPI.Data.SetEntityData(player, "CUFFED_BY_MAFIA", false);
             NAPI.Player.StopPlayerAnimation(player);
             BasicSync.DetachObject(player);
             Trigger.ClientEvent(player, "blockMove", false);
