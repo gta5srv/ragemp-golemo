@@ -144,10 +144,10 @@ namespace Golemo.Core.Character
                     Trigger.ClientEvent(player, "enableadvert", true);
                     Fractions.LSNews.onLSNPlayerLoad(player);
                 }
-                if(AdminLVL > 0)
-                {
-                    ReportSys.onAdminLoad(player);
-                }
+                //if (AdminLVL > 0)
+                //{
+                //    NAPI.Task.Run(() => { ReportSys.onAdminLoad(player); }, 5000);
+                //}
             }
             catch (Exception e)
             {

@@ -1837,7 +1837,7 @@ var report = mp.browsers.new('package://browser/ticket.html');
 var reportactive = false;
 mp.events.add('addreport', (id_, author_, authorId_, quest_) => {
     report.execute(`addReport(${id_},'${author_}','${authorId_}','${quest_}', false, '')`);
-    mp.events.call('notify', 0, 2, "Пришел новый репорт!", 3000);
+    mp.events.call('notify', 0, 2, "Пришел новый репорт!", 1500);
 })
 mp.events.add('setreport', (id, name) => {
     report.execute(`setStatus(${id}, '${name}')`);

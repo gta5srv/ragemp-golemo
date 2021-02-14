@@ -555,6 +555,7 @@ namespace Golemo
             }
         }
 
+        //spawn player
         [RemoteEvent("spawn")]
         public void ClientEvent_Spawn(Player player, int id)
         {
@@ -580,7 +581,7 @@ namespace Golemo
                     {
                         player.SetData("ARREST_TIMER", Timers.StartTask(1000, () => Fractions.FractionCommands.arrestTimer(player)));
                         NAPI.Entity.SetEntityPosition(player, Fractions.Police.policeCheckpoints[4]);
-                        NAPI.Entity.SetEntityPosition(player, Fractions.Sheriff.sheriffCheckpoints[4]);
+                        //NAPI.Entity.SetEntityPosition(player, Fractions.Sheriff.sheriffCheckpoints[4]); //todo вернуться
                     } else Log.Write($"ClientSpawn ArrestTime (KPZ) worked avoid", nLog.Type.Warn);
                 }
                 else if (Players[player].DemorganTime != 0)
@@ -677,7 +678,10 @@ namespace Golemo
 
                 player.SetData("spmode", false);
                 player.SetSharedData("InDeath", false);
-
+                if (Players[player].AdminLVL > 0)
+                {
+                    NAPI.Task.Run(() => { ReportSys.onAdminLoad(player); }, 5000);
+                }
             } catch (Exception e) { Log.Write($"ClientEvent_Spawn/{where}: " + e.Message, nLog.Type.Error); }
         }
 
@@ -2884,7 +2888,6 @@ namespace Golemo
         private static Random rndf = new Random();
 
         public static int pluscost = rndf.Next(10, 20);
-
         public static void payDayTrigger()
         {
             NAPI.Task.Run(() =>
