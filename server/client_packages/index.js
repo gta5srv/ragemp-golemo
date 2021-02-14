@@ -51,7 +51,8 @@ const __eventAdd__ = (eventName, eventFunction, name) => {
                 }
             } catch(e) {
                 mp.game.graphics.notify(`${eventName}:error:1`);
-                mp.gui.chat.push(e.toString());
+                mp.console.logError(`${eventName}:` + e.toString());
+                mp.gui.chat.push(`${eventName}:` + e.toString());
             }
         }
     });
@@ -342,6 +343,7 @@ global.acheat = {
 }
 
 mp.events.add('authready', () => {
+    mp.console.clear();
     require('./src/player/auth');
 })
 
