@@ -171,6 +171,7 @@ namespace Golemo.Core
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Машина находится далеко от Вас", 3000);
                     return;
                 }
+                if (vehicle.HasSharedData("ACCESS") && vehicle.GetSharedData<string>("ACCESS") == "DUMMY") return;
                 Vector3 BonePos = new Vector3((float)arguments[2], (float)arguments[3], (float)arguments[4]);
                 switch (index)
                 {

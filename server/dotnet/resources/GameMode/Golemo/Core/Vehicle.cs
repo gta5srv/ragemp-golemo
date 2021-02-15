@@ -845,6 +845,8 @@ namespace Golemo.Core
                     Vehicle vehicle = sender.Vehicle;
                     if (vehicle.Class == 13 && Main.Players[sender].InsideGarageID == -1) return;
 
+                    if (vehicle.GetSharedData<string>("ACCESS") == "DUMMY") return;
+
                     int fuel = vehicle.GetSharedData<int>("PETROL");
                     if (fuel <= 0)
                     {

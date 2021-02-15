@@ -30,6 +30,7 @@ mp.events.add('circleCallback', (index) => {
                     case 3:
                         let localPlayer = mp.players.local;
                         if (entity == null) return;
+                        if(entity.getVariable("ACCESS") == "DUMMY") return;
                         if (index == 1 || index == 3) {
                             const boneID = entity.getBoneIndexByName("boot"); 
                             var trunkpos = entity.getWorldPositionOfBone(boneID);

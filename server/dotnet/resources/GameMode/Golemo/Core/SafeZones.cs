@@ -9,7 +9,7 @@ namespace Golemo.Core
     class SafeZones : Script
     {
         private static nLog Log = new nLog("SafeZones");
-        public static void CreateSafeZone(Vector3 position, int height, int width)
+        public static void CreateSafeZone(Vector3 position, int height, int width, bool showNotify = true)
         {
             var colShape = NAPI.ColShape.Create2DColShape(position.X, position.Y, height, width, 0);
             colShape.OnEntityEnterColShape += (shape, player) =>
@@ -17,7 +17,7 @@ namespace Golemo.Core
                 try
                 {
                     Trigger.ClientEvent(player, "safeZone", true);
-                    player.SendNotification("~g~Вы вошли в зеленую зону", false);
+                    if (showNotify) player.SendNotification("~g~Вы вошли в зеленую зону", false);
                 }
                 catch (Exception e) { Log.Write($"SafeZoneEnter: {e.Message}", nLog.Type.Error); }
 
@@ -27,7 +27,7 @@ namespace Golemo.Core
                 try
                 {
                     Trigger.ClientEvent(player, "safeZone", false);
-                    player.SendNotification("~r~Вы покинули зеленую зону", false);
+                    if (showNotify) player.SendNotification("~r~Вы покинули зеленую зону", false);
                 }
                 catch (Exception e) { Log.Write($"SafeZoneExit: {e.Message}", nLog.Type.Error); }
             };

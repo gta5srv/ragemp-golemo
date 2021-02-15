@@ -106,6 +106,7 @@ mp.keys.bind(0x47, false, function () { // G key
             OpenCircle('Игрок', 0);
             break;
         case "vehicle":
+            if(entity.getVariable("ACCESS") == "DUMMY") return;
             mp.gui.cursor.visible = true;
             OpenCircle('Машина', 0);
             break;
@@ -240,12 +241,14 @@ mp.events.add('render', () => {
 		}
         else if (entity != null && !localplayer.isInAnyVehicle(false)) {
 			if(truckorderveh == null || entity != truckorderveh) {
-				mp.game.graphics.drawText("[G]", [entity.position.x, entity.position.y, entity.position.z], {
-					font: 4,
-					color: [255, 255, 255, 185],
-					scale: [0.35, 0.35],
-					outline: true
-				});
+                if(entity.getVariable("ACCESS") != "DUMMY") {
+                    mp.game.graphics.drawText("[G]", [entity.position.x, entity.position.y, entity.position.z], {
+                        font: 4,
+                        color: [255, 255, 255, 185],
+                        scale: [0.35, 0.35],
+                        outline: true
+                    });
+                }
 			} else if(entity == truckorderveh) {
 				mp.game.graphics.drawText("Ваш трейлер", [entity.position.x, entity.position.y, entity.position.z], {
 					font: 4,
