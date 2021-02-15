@@ -115,7 +115,7 @@ namespace Golemo.Core
             71, // barber-shop
             362, // masks shop
             72, // ls customs
-            569, // carwash
+            100, // carwash
             251, // aero shop
             371, // FishShop
             628, // SellShop
@@ -6058,7 +6058,37 @@ namespace Golemo.Core
             label = NAPI.TextLabel.CreateTextLabel(Main.StringToU16("Business"), new Vector3(EnterPoint.X, EnterPoint.Y, EnterPoint.Z + 1.5), textrange, 0.5F, 4, new Color(255, 255, 255), true, 0);
             mafiaLabel = NAPI.TextLabel.CreateTextLabel(Main.StringToU16("Mafia: none"), new Vector3(EnterPoint.X, EnterPoint.Y, EnterPoint.Z + 2), 5F, 0.5F, 4, new Color(255, 255, 255), true, 0);
             UpdateLabel();
-            if (Type != 1) marker = NAPI.Marker.CreateMarker(1, EnterPoint - new Vector3(0, 0, range - 0.3f), new Vector3(), new Vector3(), range, new Color(255, 255, 255, 220), false, 0);
+            //if (Type != 1) marker = NAPI.Marker.CreateMarker(1, EnterPoint - new Vector3(0, 0, range - 0.3f), new Vector3(), new Vector3(), range, new Color(255, 255, 255, 220), false, 0);
+            switch (Type)
+            {
+                case 0:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 14:
+                case 15:
+                case 16:
+                    marker = NAPI.Marker.CreateMarker(27, EnterPoint + new Vector3(0, 0, 0.15), new Vector3(), new Vector3(), 1f, new Color(254, 94, 0, 150), false, 0);
+                    break;
+                case 2:
+                case 3:
+                case 4:
+               case 17:
+                    marker = NAPI.Marker.CreateMarker(36, EnterPoint + new Vector3(0, 0, 1), new Vector3(), new Vector3(), 0.7f, new Color(254, 94, 0, 100), false, 0);
+                    break;
+                case 5:
+                    marker = NAPI.Marker.CreateMarker(37, EnterPoint + new Vector3(0, 0, 1), new Vector3(), new Vector3(), 0.7f, new Color(254, 94, 0, 100), false, 0);
+                    break;
+                case 11:
+                    marker = NAPI.Marker.CreateMarker(31, EnterPoint + new Vector3(0, 0, 1), new Vector3(), new Vector3(), 0.7f, new Color(254, 94, 0, 150), false, 0);
+                    break;
+                case 12:
+                case 13:
+                    marker = NAPI.Marker.CreateMarker(26, EnterPoint + new Vector3(0, 0, 0.15), new Vector3(), new Vector3(), 3f, new Color(254, 94, 0, 100), false, 0);
+                    break;
+            }
         }
 
         public void UpdateLabel()
