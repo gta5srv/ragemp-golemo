@@ -424,9 +424,8 @@ namespace Golemo.Fractions
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (Main.Players[player].FractionID >= 1 && Main.Players[player].FractionID <= 5)
+                if ((Main.Players[player].FractionID >= 1 && Main.Players[player].FractionID <= 5) || Main.Players[player].AdminLVL > 0)
                 {
-                    //Log.Write($"Gangsta {player.Name} entered gangPoint");
                     player.SetData("GANGPOINT", (int)shape.GetData<int>("ID"));
                     GangPoint region = gangPoints[(int)shape.GetData<int>("ID")];
                     if (region.IsCapture && captureIsGoing && (Main.Players[player].FractionID == attackersFracID || Main.Players[player].FractionID == region.GangOwner))
@@ -446,7 +445,7 @@ namespace Golemo.Fractions
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (Main.Players[player].FractionID >= 1 && Main.Players[player].FractionID <= 5)
+                if (Main.Players[player].FractionID >= 1 && Main.Players[player].FractionID <= 5 || Main.Players[player].AdminLVL > 0)
                 {
                     //Log.Write($"Gangsta {player.Name} exited gangPoint");
                     if (shape.GetData<int>("ID") == player.GetData<int>("GANGPOINT"))
