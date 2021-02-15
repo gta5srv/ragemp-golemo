@@ -339,6 +339,10 @@ namespace Golemo.Core
                         vData.Add(VehicleManager.Vehicles[veh.NumberPlate].Components);
                         vData.Add(VehicleManager.Vehicles[veh.NumberPlate].Dirt);
                     }
+                    if(veh.HasSharedData("ACCESS") && veh.GetSharedData<string>("ACCESS") == "DUMMY")
+                    {
+                        vData.Add(true);
+                    }
                     Trigger.ClientEvent(player, "VehStream_FixStreamIn", veh.Handle, JsonConvert.SerializeObject(vData));
                 }
                 return;

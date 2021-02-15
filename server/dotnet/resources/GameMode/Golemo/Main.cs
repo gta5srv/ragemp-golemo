@@ -310,6 +310,8 @@ namespace Golemo
                     Jobs.Truckers.truckerCarsSpawner();
                     Jobs.Collector.collectorCarsSpawner();
                     Jobs.AutoMechanic.mechanicCarsSpawner();
+
+                    Buildings.Dummies.OnResourceStart();
                 }
                 else Log.Write("DB `othervehicles` return null result", nLog.Type.Warn);
 
