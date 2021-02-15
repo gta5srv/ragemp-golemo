@@ -99,8 +99,11 @@ namespace Golemo.GUI
                     client.SetData("Phone", true);
                 }
                 Trigger.ClientEvent(client, "phoneOpen", data);
-                Main.OnAntiAnim(client);
-                client.PlayAnimation("anim@cellphone@in_car@ds", "cellphone_text_read_base", 49); // Анимация взгляда в телефон для персонажа
+                if (!client.IsInVehicle)
+                {
+                    Main.OnAntiAnim(client);
+                    client.PlayAnimation("anim@cellphone@in_car@ds", "cellphone_text_read_base", 49); // Анимация взгляда в телефон для персонажа
+                }
             }
             catch (Exception e)
             {
@@ -129,8 +132,11 @@ namespace Golemo.GUI
                     client.SetData("Phone", true);
                 }
                 Trigger.ClientEvent(client, "phoneOpen", data);
-                Main.OnAntiAnim(client);
-                client.PlayAnimation("anim@cellphone@in_car@ds", "cellphone_text_read_base", 49); // Анимация взгляда в телефон для персонажа
+                if (!client.IsInVehicle)
+                {
+                    Main.OnAntiAnim(client);
+                    client.PlayAnimation("anim@cellphone@in_car@ds", "cellphone_text_read_base", 49); // Анимация взгляда в телефон для персонажа
+                }
             }
             catch (Exception e)
             {
@@ -154,7 +160,6 @@ namespace Golemo.GUI
                 if (!client.IsInVehicle) client.StopAnimation();
 
                 Main.OffAntiAnim(client);
-                if (client.IsInVehicle) client.SetData("ToResetAnimPhone", true);
             }
             catch (Exception e)
             {
@@ -180,7 +185,6 @@ namespace Golemo.GUI
                 if (!client.IsInVehicle) client.StopAnimation();
 
                 client.ResetData("AntiAnimDown");
-                if (client.IsInVehicle) client.SetData("ToResetAnimPhone", true);
             }
             catch (Exception e)
             {

@@ -187,7 +187,6 @@ namespace Golemo.Jobs
             NAPI.Data.SetEntityData(player, "IN_CP_MODE", false);
             NAPI.Data.SetEntityData(player, "WANTED", 0);
             NAPI.Data.SetEntityData(player, "REQUEST", "null");
-            player.SetData("IS_IN_ARREST_AREA", false);
             player.SetData("PAYMENT", 0);
             player.SetData("INTERACTIONCHECK", 0);
             player.SetData("IN_HOSPITAL", false);

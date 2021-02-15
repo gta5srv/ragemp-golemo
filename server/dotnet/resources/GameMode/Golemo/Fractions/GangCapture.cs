@@ -445,7 +445,7 @@ namespace Golemo.Fractions
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-                if (Main.Players[player].FractionID >= 1 && Main.Players[player].FractionID <= 5 || Main.Players[player].AdminLVL > 0)
+                if ((Main.Players[player].FractionID >= 1 && Main.Players[player].FractionID <= 5) || Main.Players[player].AdminLVL > 0)
                 {
                     //Log.Write($"Gangsta {player.Name} exited gangPoint");
                     if (shape.GetData<int>("ID") == player.GetData<int>("GANGPOINT"))
