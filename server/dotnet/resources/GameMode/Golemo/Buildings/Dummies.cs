@@ -31,7 +31,7 @@ namespace Golemo.Buildings
                 VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(item.Key);
                 var vehicle = NAPI.Vehicle.CreateVehicle(vh, item.Value.Item3, item.Value.Item4, item.Value.Item1, item.Value.Item2, "DUMMY", 255, true, false, 0);
                 vehicle.SetSharedData("ACCESS", "DUMMY");
-                Core.SafeZones.CreateSafeZone(vehicle.Position, 10, 10, false);
+                Core.SafeZones.CreateSafeZone(vehicle.Position, 10, 10, false); //если вам не нужно Зеленая зона у машины, то удалите эту строку
             }
 
             Log.Write("Заспавнено " + _vehicleDummies.Count + " выставочного транспорта", nLog.Type.Info);

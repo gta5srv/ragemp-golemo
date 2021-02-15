@@ -62,9 +62,13 @@ namespace Golemo.Core
                 var veh = player.GetData<Vehicle>("CARROOMTEST");
                 veh.Delete();
 
-                RemoteEvent_carroomCancel(player);
+                uint dim = Dimensions.RequestPrivateDimension(player);
+                NAPI.Entity.SetEntityDimension(player, dim);
+                Main.Players[player].ExteriorPos = player.Position;
+                NAPI.Entity.SetEntityPosition(player, new Vector3(CamPosition.X, CamPosition.Y - 2, CamPosition.Z));
 
-                player.ResetData("CARROOMTEST");
+                Trigger.ClientEvent(player, "carRoom");
+                OpenCarromMenu(player, BusinessManager.BizList[player.GetData<int>("CARROOMID")].Type);
             }
             catch (Exception e)
             {

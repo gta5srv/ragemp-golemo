@@ -4,12 +4,15 @@ using System.Text;
 using GTANetworkAPI;
 using Golemo.GUI;
 using GolemoSDK;
+using Newtonsoft.Json;
+using System.Data;
 
 namespace Golemo.Core
 {
     class Rentcar : Script
     {
         private static nLog Log = new nLog("Rentcar");
+
         public static List<CarInfo> CarInfos = new List<CarInfo>();
 
         private static List<Vector3> RentAreas = new List<Vector3>()
@@ -37,7 +40,7 @@ namespace Golemo.Core
             }
             return nearesetArea;
         }
-        
+
         public static void rentCarsSpawner()
         {
             var random = new Random();
@@ -54,8 +57,6 @@ namespace Golemo.Core
             }
         }
 
-
-
         public static void RespawnCar(Vehicle vehicle)
         {
             var number = vehicle.GetData<int>("NUMBER");
@@ -63,7 +64,7 @@ namespace Golemo.Core
             NAPI.Entity.SetEntityPosition(vehicle, CarInfos[number].Position);
             NAPI.Entity.SetEntityRotation(vehicle, CarInfos[number].Rotation);
             VehicleManager.RepairCar(vehicle);
-            
+
             NAPI.Data.SetEntityData(vehicle, "ACCESS", "RENT");
             NAPI.Data.SetEntityData(vehicle, "NUMBER", number);
             NAPI.Data.SetEntityData(vehicle, "DRIVER", null);
@@ -94,14 +95,16 @@ namespace Golemo.Core
                         VehicleManager.WarpPlayerOutOfVehicle(player);
                         return;
                     }
-                    if(CarInfos[number].Model == VehicleHash.Cruiser && Main.Players[player].LVL >= 2) {
+                    if (CarInfos[number].Model == VehicleHash.Cruiser && Main.Players[player].LVL >= 2)
+                    {
                         Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Эти велосипеды предназначены только для новичков", 3000);
                         VehicleManager.WarpPlayerOutOfVehicle(player);
                         return;
                     }
                     int price = CarInfos[number].Price;
-                    switch(Main.Accounts[player].VipLvl) {
-                        case 0: 
+                    switch (Main.Accounts[player].VipLvl)
+                    {
+                        case 0:
                             price = CarInfos[number].Price;
                             break;
                         case 1:
@@ -110,10 +113,10 @@ namespace Golemo.Core
                         case 2:
                             price = Convert.ToInt32(CarInfos[number].Price * 0.9);
                             break;
-                        case 3: 
+                        case 3:
                             price = Convert.ToInt32(CarInfos[number].Price * 0.85);
                             break;
-                        case 4: 
+                        case 4:
                             price = Convert.ToInt32(CarInfos[number].Price * 0.8);
                             break;
                         default:
@@ -136,6 +139,11 @@ namespace Golemo.Core
             try
             {
                 if (!player.HasData("CARROOMID")) return;
+                if (player.HasData("CARROOMTEST"))
+                {
+                    player.ResetData("CARROOMTEST");
+                    return;
+                }
                 if (!vehicle.HasData("ACCESS") || vehicle.GetData<string>("ACCESS") != "RENT" || vehicle.GetData<Player>("DRIVER") != player) return;
                 Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, $"Через 3 минуты аренда транспорта закончится, если вы снова не сядете в т/с", 3000);
                 NAPI.Data.SetEntityData(player, "IN_RENT_CAR", false);
@@ -154,7 +162,6 @@ namespace Golemo.Core
                     if (!player.HasData("RENT_CAR_EXIT_TIMER")) return;
                     if (NAPI.Data.GetEntityData(player, "IN_RENT_CAR"))
                     {
-                        //                    Main.StopT(NAPI.Data.GetEntityData(player, "RENT_CAR_EXIT_TIMER"), "timer_28");
                         Timers.Stop(NAPI.Data.GetEntityData(player, "RENT_CAR_EXIT_TIMER"));
                         NAPI.Data.ResetEntityData(player, "RENT_CAR_EXIT_TIMER");
                         return;
@@ -164,7 +171,6 @@ namespace Golemo.Core
                         Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Срок аренды автомобиля закончился", 3000);
                         RespawnCar(vehicle);
                         player.ResetData("RENTED_CAR");
-                        //                        Main.StopT(NAPI.Data.GetEntityData(player, "RENT_CAR_EXIT_TIMER"), "timer_30");
                         Timers.Stop(NAPI.Data.GetEntityData(player, "RENT_CAR_EXIT_TIMER"));
                         NAPI.Data.ResetEntityData(player, "RENT_CAR_EXIT_TIMER");
                         return;
@@ -195,8 +201,9 @@ namespace Golemo.Core
                 return;
             }
             int price = CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price;
-            switch(Main.Accounts[player].VipLvl) {
-                case 0: 
+            switch (Main.Accounts[player].VipLvl)
+            {
+                case 0:
                     price = CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price;
                     break;
                 case 1:
@@ -205,10 +212,10 @@ namespace Golemo.Core
                 case 2:
                     price = Convert.ToInt32(CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price * 0.9);
                     break;
-                case 3: 
+                case 3:
                     price = Convert.ToInt32(CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price * 0.85);
                     break;
-                case 4: 
+                case 4:
                     price = Convert.ToInt32(CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price * 0.8);
                     break;
                 default:
