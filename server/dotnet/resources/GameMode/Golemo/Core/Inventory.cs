@@ -1300,13 +1300,6 @@ namespace Golemo.Core
                         }
 
                         var wHash = Weapons.GetHash(item.Type.ToString());
-                        int wInt = 0;
-                        if (!Int32.TryParse(item.Data, out wInt) && Main.Players[player].AdminLVL < 1)
-                        {
-                            nInventory.Remove(player, item.Type, 1);
-                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Вы не можете использовать админское оружие", 3000);
-                            return;
-                        }
                         if (Weapons.WeaponsAmmoTypes.ContainsKey(item.Type))
                         {
                             var ammoItem = nInventory.Find(UUID, Weapons.WeaponsAmmoTypes[item.Type]);
