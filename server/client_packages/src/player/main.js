@@ -156,7 +156,7 @@ mp.keys.bind(Keys.VK_E, false, function () { // E key
 });
 
 mp.keys.bind(Keys.VK_L, false, function () { // L key
-    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened) return;
+    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 2000 || global.menuOpened) return;
     mp.events.callRemote('lockCarPressed');
     lastCheck = new Date().getTime();
 });
