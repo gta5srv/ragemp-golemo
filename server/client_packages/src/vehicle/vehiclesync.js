@@ -86,23 +86,23 @@ mp.events.add("VehStream_SetLockStatus", (veh, status) => {
                 if (status) {
                     veh.setDoorsLocked(2);
 					mp.game.audio.playSoundFromEntity(1, "Remote_Control_Close", veh.handle, "PI_Menu_Sounds", true, 0);
-                    entity.setLights(2); 
+                    veh.setLights(2); 
                     setTimeout(() => { 
-                        entity.setLights(0); 
+                        veh.setLights(0); 
                         setTimeout(() => { 
-                            entity.setLights(2); 
+                            veh.setLights(2); 
                             setTimeout(() => { 
-                                entity.setLights(0); 
+                                veh.setLights(0); 
                             }, 100)
                         }, 100)
                     }, 100) 
                 } else {
                     veh.setDoorsLocked(1);
 					mp.game.audio.playSoundFromEntity(1, "Remote_Control_Open", veh.handle, "PI_Menu_Sounds", true, 0);
-                    entity.setLights(2); 
+                    veh.setLights(2); 
                     setTimeout(() => { 
-                        entity.setLights(0); 
-                        entity.setIndicatorLights(1, false);
+                        veh.setLights(0); 
+                        veh.setIndicatorLights(1, false);
                     }, 100)
 				}
             }
