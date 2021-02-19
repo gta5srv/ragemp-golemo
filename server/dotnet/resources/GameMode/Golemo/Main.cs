@@ -2139,6 +2139,7 @@ namespace Golemo
                     #endregion
                     #region Add-on Cases
                     case 800:
+                        if (player.IsInVehicle) return;
                         Trigger.ClientEvent(player, "openRealtorMenu");
                         return;
                     case 801: //todo Farmer

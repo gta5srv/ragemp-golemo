@@ -375,6 +375,7 @@ namespace Golemo.Fractions
         public static void OpenMenuSpawner(Player player)
         {
             if (!Main.Players.ContainsKey(player)) return;
+            if (player.IsInVehicle) return;
             CarSpawner spawner = carSpawners.Find(x => x.FractionID == Main.Players[player].FractionID);
 
             List<List<object>> data = new List<List<object>>();

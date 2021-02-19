@@ -92,6 +92,7 @@ namespace Golemo.Jobs.FarmerJob
         [RemoteEvent("changePage")]
         public static void OpenMarketMenu(Player player, int page)
         {
+            if (player.IsInVehicle) return;
             var hitem = nInventory.Find(Main.Players[player].UUID, ItemType.Hay);
             var shitem = nInventory.Find(Main.Players[player].UUID, ItemType.Seed);
             int hayscount = hitem != null ? hitem.Count : 0;

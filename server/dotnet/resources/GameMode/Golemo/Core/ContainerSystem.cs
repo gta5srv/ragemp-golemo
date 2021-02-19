@@ -83,6 +83,7 @@ namespace Golemo.Core
 
         public static void OpenMenuContainer(Player player)
         {
+            if (player.IsInVehicle) return;
             if (!player.HasData("ContainerID")) return;
             Container container = containers[player.GetData<int>("ContainerID")];
             if (!container.State) return;

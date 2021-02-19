@@ -77,6 +77,7 @@ namespace Golemo.Jobs.FarmerJob
         {
             try
             {
+                if (player.IsInVehicle) return;
                 var item = nInventory.Find(Main.Players[player].UUID, ItemType.Seed);
                 int itemcount = item != null ? item.Count : 0;
                 LoadLvl(player, "farmer");

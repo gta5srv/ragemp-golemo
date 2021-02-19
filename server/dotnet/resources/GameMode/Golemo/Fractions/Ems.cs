@@ -350,6 +350,7 @@ namespace Golemo.Fractions
                             Trigger.ClientEvent(player, "DeathTimer", false);
                             player.SetSharedData("InDeath", false);
                             var spawnPos = new Vector3();
+                            var spawnRot = new Vector3(0, 0, 0);
 
                             if (Main.Players[player].DemorganTime != 0)
                             {
@@ -367,6 +368,7 @@ namespace Golemo.Fractions
                             }
 
                             NAPI.Player.SpawnPlayer(player, spawnPos);
+                            NAPI.Entity.SetEntityRotation(player, spawnRot);
                             NAPI.Player.SetPlayerHealth(player, 20);
                             player.ResetData("IS_DYING");
                             player.ResetSharedData("IS_DYING");

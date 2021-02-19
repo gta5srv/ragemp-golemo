@@ -17,9 +17,9 @@ namespace Golemo.Core
         private static nLog Log = new nLog("Forbes");
 
         // Показывать админов в FORBES
-        private static bool SeeAdmins = true;
+        private static bool SeeAdmins = false;
         // С какого ранга не показывать в FORBES (Советую 0)
-        private static int AdminLVLToSee = 0;
+        private static int AdminLVLToSee = 1;
         // Сколько показывать мест в FORBES (Больше 100 не советуется)
         private static int MaxForbes = 30;
 
@@ -36,7 +36,7 @@ namespace Golemo.Core
                     Majors = new Dictionary<string, int> { };
                     foreach (DataRow Row in database.Rows)
                     {
-                        if (!SeeAdmins && Convert.ToInt32(Row["adminlvl"]) >= AdminLVLToSee) continue;
+                        if (SeeAdmins && Convert.ToInt32(Row["adminlvl"]) >= AdminLVLToSee) continue;
 
                         string nick = Row["firstname"].ToString() + "_" + Row["lastname"].ToString();
                         int money = GetPlayerAllMoney(nick, Convert.ToInt32(MoneySystem.Bank.Accounts[Convert.ToInt32(Row["bank"])].Balance) + Convert.ToInt32(Row["money"]));

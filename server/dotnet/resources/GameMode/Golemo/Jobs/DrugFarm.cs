@@ -144,6 +144,7 @@ namespace Golemo.Jobs
         }
         public static void interactPressed(Player client, int id)
         {
+            if (client.IsInVehicle) return;
             switch (id)
             {
                 case 381:
