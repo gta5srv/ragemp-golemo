@@ -397,7 +397,7 @@ mp.events.add("VehStream_FixStreamIn", (entity, data) => {
         data = JSON.parse(data);
         entity.setNumberPlateText(data[0]);
         entity.setColours(data[1], data[2]);
-        if (data[3] != null && data[3] !== true) {
+        if (data[3] != null) {
             //mp.gui.chat.push('VehStream_FixStreamIn check');
             data = data[3];
 
@@ -430,19 +430,6 @@ mp.events.add("VehStream_FixStreamIn", (entity, data) => {
 
             entity.setWheelType(data.WheelsType);
             entity.setMod(23, data.Wheels);
-        }
-        if(data[3] === true){
-            entity.setAllowNoPassengersLockon(true);    //no passangers
-            entity.setCanBeVisiblyDamaged(false);       //no damages
-            entity.setCanBreak(false);                  //can break
-            entity.setDeformationFixed();               //fixed deformation
-            entity.setDirtLevel(0);                     //clear
-            entity.setDisablePetrolTankDamage(true);    //disable fueltank damage
-            entity.setDisablePetrolTankFires(true);     //disable fire fuel
-            entity.setDoorsLockedForAllPlayers(true);   //locked door
-            entity.freezePosition(true);                //freeze
-            entity.setInvincible(true);                 //godmode
-			entity.setDoorsLocked(2);					//door locked
         }
     }
 });
@@ -734,6 +721,20 @@ mp.events.add("entityStreamIn", (entity) => {
                         entity.setDoorBreakable(x, true);
                 }
             }, 1500);
+
+            if(entity.getVariable("ACCESS") == "DUMMY"){
+                entity.setAllowNoPassengersLockon(true);    //no passangers
+                entity.setCanBeVisiblyDamaged(false);       //no damages
+                entity.setCanBreak(false);                  //can break
+                entity.setDeformationFixed();               //fixed deformation
+                entity.setDirtLevel(0);                     //clear
+                entity.setDisablePetrolTankDamage(true);    //disable fueltank damage
+                entity.setDisablePetrolTankFires(true);     //disable fire fuel
+                entity.setDoorsLockedForAllPlayers(true);   //locked door
+                entity.freezePosition(true);                //freeze
+                entity.setInvincible(true);                 //godmode
+                entity.setDoorsLocked(2);					//door locked
+            }
         }
     } catch (e) { }
 });
