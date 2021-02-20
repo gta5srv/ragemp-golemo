@@ -10,6 +10,7 @@ mp.events.add(
         {
             if (!data.isNear)
             {
+                if (!loggedin || chatActive || editing || global.menuOpened) return;
                 data.isNear = true;
                 mp.keys.bind(luckywheel.interaction.button, false, luckywheel.onClick);
                 data.sendNotify('Нажмите ~INPUT_CONTEXT~ , чтобы вращать колесо удачи');

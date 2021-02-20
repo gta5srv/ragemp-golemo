@@ -6,6 +6,7 @@ const luckywheel =
         pos: new mp.Vector3(1111.052, 229.8579, -49.133),
         model: undefined,
         isSpinning: false,
+        lastClickTime: 0,
         animations: 
         [
           'Enter_to_ArmRaisedIDLE',
@@ -86,8 +87,9 @@ const luckywheel =
         return;
       }
       //ограничить нажатие Е
-      if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened) return;
+      if (new Date().getTime() - this.lastClickTime < 1000) return;
       mp.events.callRemote('luckywheel.cometoluckywheel');
+      this.lastClickTime = new Date().getTime();
     },
     async comeToLuckyWheel(pos) 
     {
