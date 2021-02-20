@@ -2154,6 +2154,12 @@ namespace Golemo
                     case 804: //todo FractionCarSpawner
                         Fractions.CarSpawner.OpenMenuSpawner(player);
                         break;
+                    case 805:
+                        Casino.CasinoManager.CallBackShape(player);
+                        break;
+                    case 806:
+                        Casino.CarLottery.CallBackShape(player);
+                        break;
                     case 556:
                         Houses.ParkManager.interactionPressed(player);
                         return;
@@ -2438,6 +2444,12 @@ namespace Golemo
                             return;
                         case "DICE":
                             Commands.acceptDiceGame(player);
+                            return;
+                        case "ENTER_CASINO":
+                            Casino.CasinoManager.EnterCasino(player);
+                            return;
+                        case "RANDOMMEMBER_ADD":
+                            Casino.CarLottery.AcceptTakePart(player);
                             return;
                     }
                 }
@@ -2867,13 +2879,14 @@ namespace Golemo
                             }
                             else
                             {
-                                Notify.Send(p, NotifyType.Info, NotifyPosition.BottomCenter, "Вы получили 200 RedBucks и подарок, за 5 часов онлайна сегодня", 3000);
-                                Accounts[p].RedBucks += 200;
-                                nInventory.Add(p, new nItem(ItemType.GiveBox, 1, "123456789"));
-                                GUI.Dashboard.sendItems(p);
                                 Players[p].LastBonus = 0;
                                 Players[p].IsBonused = true;
+                                MoneySystem.Wallet.ChangeLuckyWheelSpins(p, 1);
+                                MoneySystem.Wallet.ChangeDonateBalance(p, 200);
+                                nInventory.Add(p, new nItem(ItemType.GiveBox, 1, "golemmod"));
+                                GUI.Dashboard.sendItems(p);
                                 Trigger.ClientEvent(p, "UpdateLastBonus", $"следующий бонус можно получить только завтра"); //todo lastbonus
+                                Notify.Succ(p, $"Ваш бонус за онлайн: 200 коинов, подарок, а также +1 прокрутка колеса удачи!");
                                 return;
                             }
                             DateTime date = new DateTime((new DateTime().AddMinutes(oldconfig.LastBonusMin - Players[p].LastBonus)).Ticks);
@@ -2900,6 +2913,8 @@ namespace Golemo
                     Fractions.Cityhall.lastHourTax = 0;
                     Fractions.Ems.HumanMedkitsLefts = 100;
                     Forbes.SyncMajors(); //forbes
+
+                    Casino.CarLottery.FinishCompetition();
 
                     if (DateTime.Now.Hour == 0) //todo lastbonus
                     {

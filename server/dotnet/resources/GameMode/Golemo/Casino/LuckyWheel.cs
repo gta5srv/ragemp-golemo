@@ -1,0 +1,320 @@
+﻿using System;
+using System.Linq;
+using GTANetworkAPI;
+using GolemoSDK;
+using System.Collections.Generic;
+
+namespace Golemo.Casino
+{
+    class LuckyWheel : Script
+    {
+        #region Modules
+        private static Random Rnd = new Random();
+        private static nLog Log = new nLog("LuckyWheel");
+        private static long WaitFor { get; set; } = 0;
+        private static int BlockTime { get; } = 14000;
+
+        private static void ComeToLuckyWheel(Player player)
+        {
+            long time = DateTime.Now.Ticks;
+            if (WaitFor > time)
+            {
+                //Ждем пока колесо остановится (Завязано на таймере)
+                player.SendNotification("Вам надо немного подождать");
+            }
+            else if (!MoneySystem.Wallet.ChangeLuckyWheelSpins(player, -1))
+            {
+                Notify.Error(player, "У вас недостаточно попыток прокрутки!");
+                return;
+            }
+            else
+            {
+                //Присваимваем рандомное значение для колеса
+                WaitFor = time + BlockTime;
+                int value = Rnd.Next(0, 20);
+                player.SetSharedData("LUCKY_WHEEL_CALL", true);
+                player.SetSharedData("LUCKY_WHEEL_WIN", value);
+                Trigger.ClientEvent(player, "luckywheel.cometoluckywheel", value);
+            }
+        }
+        private static void SpinLuckyWheel(Player player)
+        {
+            if (player.HasSharedData("LUCKY_WHEEL_WIN") && player.HasSharedData("LUCKY_WHEEL_CALL"))
+            {
+                player.SetSharedData("LUCKY_WHEEL_CALL", true);
+                Trigger.ClientEventInRange(player.Position, 100, "luckywheel.spin", player.GetSharedData<int>("LUCKY_WHEEL_WIN"));
+            }
+        }
+        private static void FinishSpin(Player player)
+        {
+            if (player.HasSharedData("LUCKY_WHEEL_WIN") && player.HasSharedData("LUCKY_WHEEL_CALL"))
+            {
+                string resultName = "Приз";
+                switch (player.GetSharedData<int>("LUCKY_WHEEL_WIN"))
+                {
+                    case 0:
+                    case 8:
+                    case 12:
+                    case 16:
+                        resultName = "Одежда";
+                        GiveOutPrizeClothes(player);
+                        break;
+                    case 2:
+                    case 6:
+                    case 14:
+                    case 19:
+                        int price = Rnd.Next(20000, 200000);
+                        resultName = $"Игровая валюта в размере {price}";
+                        MoneySystem.Wallet.Change(player, price);
+                        break;
+                    case 18:
+                        resultName = "Эксклюзивная машина";
+                        GiveOutPrizeVehicle(player);
+                        break;
+                    case 1:
+                    case 5:
+                    case 9:
+                    case 13:
+                    case 17:
+                        resultName = "Мистический предмет";
+                        GiveOutPrizeMysticItem(player);
+                        break;
+                    case 3:
+                    case 7:
+                    case 10:
+                    case 15:
+                        resultName = "Оружие";
+                        GiveOutPrizeWeapon(player);
+                        break;
+                    case 11:
+                        resultName = "Уникальный костюм";
+                        GiveOutPrizeCostume(player);
+                        break;
+                    case 4:
+                        int donateCoins = Rnd.Next(50, 500);
+                        resultName = $"Донат валюта в размере{donateCoins}";
+                        MoneySystem.Wallet.ChangeDonateBalance(player, donateCoins);
+                        break;
+                }
+                Notify.Succ(player, $"Выигрыш: {resultName}. Поздравляем!");
+                player.ResetSharedData("LUCKY_WHEEL_CALL");
+                player.ResetSharedData("LUCKY_WHEEL_WIN");
+            }
+        }
+        #region Compensations
+        //Выплачиваемые компенсации, при ошибке выдачи призов
+        private static Dictionary<string, int> amountCompensations = new Dictionary<string, int>()
+        {
+            { "weapon", 30000 },
+            { "mystic", 15000 },
+            { "vehicle", 50000 },
+            { "clothes", 20000 }
+        };
+        private static void GiveOutPrizeCostume(Player player)
+        {
+            Core.Customization.AddClothes(player, ItemType.Top, 178, 0);
+            Core.Customization.AddClothes(player, ItemType.Leg, 77, 0);
+            Core.Customization.AddClothes(player, ItemType.Feet, 55, 0);
+        }
+        private static void GiveOutPrizeWeapon(Player player)
+        {
+            int amountCompensation = amountCompensations["weapon"];
+            int randomInt = Rnd.Next(0, 4);
+            int tryAdd;
+            switch (randomInt)
+            {
+                case 0:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.Bat));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.Bat, "donatefrp");
+                    break;
+                case 1:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.HeavyPistol));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.HeavyPistol, "donatefrp");
+                    break;
+                case 2:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.Musket));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.Musket, "donatefrp");
+                    break;
+                case 3:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.AdvancedRifle));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.AdvancedRifle, "donatefrp");
+                    break;
+            }
+        }
+        private static void GiveOutPrizeMysticItem(Player player)
+        {
+            int amountCompensation = amountCompensations["mystic"];
+            int randomInt = Rnd.Next(0, 5);
+            int tryAdd;
+            switch (randomInt)
+            {
+                case 0:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.Flashlight));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.Flashlight, "golemomod");
+                    break;
+                case 1:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.BattleAxe));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.BattleAxe, "golemomod");
+                    break;
+                case 2:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.FlareGun));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.FlareGun, "golemomod");
+                    break;
+                case 3:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.StunGun));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.StunGun, "golemomod");
+                    break;
+                case 4:
+                    tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.RepairKit));
+                    if (tryAdd == -1 || tryAdd > 0)
+                    {
+                        Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                        MoneySystem.Wallet.Change(player, amountCompensation);
+                        return;
+                    }
+                    Core.Weapons.GiveWeapon(player, ItemType.RepairKit, "golemomod");
+                    break;
+            }
+        }
+        private static void GiveOutPrizeVehicle(Player player)
+        {
+            int amountCompensation = amountCompensations["vehicle"];
+            int cars = new Random().Next(0, 4);
+            string model = null;
+            switch (cars)
+            {
+                case 0:
+                    model = "baller3";
+                    break;
+                case 1:
+                    model = "cheburek";
+                    break;
+                case 2:
+                    model = "furia";
+                    break;
+                case 3:
+                    model = "vigilante";
+                    break;
+            }
+            if (Core.VehicleManager.getAllPlayerVehicles(player.Name).Count >= Houses.GarageManager.GarageTypes.Values.Last().MaxCars)
+            {
+                MoneySystem.Wallet.Change(player, amountCompensation);
+                Notify.Alert(player, $"Вы получили компенсацию в размере {amountCompensation}$ так как у вас максимальное количество авто");
+            }
+            else
+            {
+                var vNumber = Core.VehicleManager.Create(player.Name, model, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0));
+                var house = Houses.HouseManager.GetHouse(player, false);
+                if (house != null)
+                {
+                    if (house.GarageID != 0)
+                    {
+                        var garage = Houses.GarageManager.Garages[house.GarageID];
+                        if (Core.VehicleManager.getAllPlayerVehicles(player.Name).Count < Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
+                        {
+                            garage.SpawnCar(vNumber);
+                        }
+                    }
+                }
+                Notify.Succ(player, $"Вы получили уникальный автомообиль {VehicleHandlers.VehiclesName.GetRealVehicleName(model)}.");
+            }
+        }
+        private static void GiveOutPrizeClothes(Player player)
+        {
+            int amountCompensation = amountCompensations["clothes"];
+            var tryAdd2 = Core.nInventory.TryAdd(player, new nItem(ItemType.Hat));
+            if (tryAdd2 == -1 || tryAdd2 > 0)
+            {
+                Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
+                MoneySystem.Wallet.Change(player, amountCompensation);
+                return;
+            }
+            int cloth = Rnd.Next(0, 4);
+            switch (cloth)
+            {
+                case 0:
+                    Core.Customization.AddClothes(player, ItemType.Hat, 77, 0);
+                    break;
+                case 1:
+                    Core.Customization.AddClothes(player, ItemType.Hat, 40, 0);
+                    break;
+                case 2:
+                    Core.Customization.AddClothes(player, ItemType.Hat, 22, 0);
+                    break;
+                case 3:
+                    Core.Customization.AddClothes(player, ItemType.Hat, 42, 0);
+                    break;
+            }
+        }
+        #endregion
+        #endregion
+
+        #region Events
+        [RemoteEvent("luckywheel.cometoluckywheel")]
+        public static void ComeToLuckyWheel_Event(Player player)
+        {
+            ComeToLuckyWheel(player);
+        }
+
+        [RemoteEvent("luckywheel.spin")]
+        public static void SpinLuckyWheel_Event(Player player)
+        {
+            SpinLuckyWheel(player);
+        }
+
+        [RemoteEvent("luckywheel.finishspin")]
+        public static void FinishSpin_Event(Player player)
+        {
+            FinishSpin(player);
+        }
+        #endregion
+    }
+}

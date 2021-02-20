@@ -39,6 +39,7 @@ namespace GolemoSDK
         public int LastHourMin { get; set; } = 0;
         public int LastBonus { get; set; } = 0; //todo lastbonus
         public bool IsBonused { get; set; } = false; //todo lastbonus
+        public int LuckyWheelSpins { get; set; } = 0;
         public int HotelID { get; set; } = -1;
         public int HotelLeft { get; set; } = 0;
         public int Sim { get; set; } = -1;

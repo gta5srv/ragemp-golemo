@@ -141,10 +141,6 @@ namespace Golemo.Core.Character
                     Trigger.ClientEvent(player, "enableadvert", true);
                     Fractions.LSNews.onLSNPlayerLoad(player);
                 }
-                //if (AdminLVL > 0)
-                //{
-                //    NAPI.Task.Run(() => { ReportSys.onAdminLoad(player); }, 5000);
-                //}
             }
             catch (Exception e)
             {
@@ -197,6 +193,7 @@ namespace Golemo.Core.Character
                         LastHourMin = Convert.ToInt32(Row["lasthour"]);
                         LastBonus = Convert.ToInt32(Row["lastbonus"]); //todo lastbonus
                         IsBonused = Convert.ToBoolean(Row["isbonused"]); //todo lastbonus
+                        LuckyWheelSpins = Convert.ToInt32(Row["luckywheelspins"]); //todo luckywheel
                         HotelID = Convert.ToInt32(Row["hotel"]);
                         HotelLeft = Convert.ToInt32(Row["hotelleft"]);
                         Contacts = JsonConvert.DeserializeObject<Dictionary<int, string>>(Row["contacts"].ToString());
@@ -326,7 +323,8 @@ namespace Golemo.Core.Character
                     $"`wanted`='{JsonConvert.SerializeObject(WantedLVL)}',`biz`='{JsonConvert.SerializeObject(BizIDs)}',`adminlvl`={AdminLVL}," +
                     $"`licenses`='{JsonConvert.SerializeObject(Licenses)}',`unwarn`='{MySQL.ConvertTime(Unwarn)}',`unmute`='{Unmute}'," +
                     $"`warns`={Warns},`hotel`={HotelID},`hotelleft`={HotelLeft},`lastveh`='{LastVeh}',`onduty`={OnDuty},`lasthour`={LastHourMin},`lastbonus`={LastBonus},`isbonused`={IsBonused}," +
-                    $"`demorgan`={DemorganTime},`contacts`='{JsonConvert.SerializeObject(Contacts)}',`achiev`='{JsonConvert.SerializeObject(Achievements)}',`sim`={Sim},`PetName`='{PetName}',`personid`='{PersonID}',`eat`='{Eat}',`water`='{Water}' WHERE `uuid`={UUID}");
+                    $"`luckywheelspins`={LuckyWheelSpins},`demorgan`={DemorganTime},`contacts`='{JsonConvert.SerializeObject(Contacts)}',`achiev`='{JsonConvert.SerializeObject(Achievements)}',`sim`={Sim},`PetName`='{PetName}'," +
+                    $"`personid`='{PersonID}',`eat`='{Eat}',`water`='{Water}' WHERE `uuid`={UUID}");
 
                 MoneySystem.Bank.Save(Bank);
                 await Log.DebugAsync($"Player [{FirstName}:{LastName}] was saved.");
@@ -383,10 +381,10 @@ namespace Golemo.Core.Character
                 Main.PlayerNames.Add(UUID, $"{firstName}_{lastName}");
 
                 await MySQL.QueryAsync($"INSERT INTO `characters`(`uuid`,`personid`,`firstname`,`lastname`,`gender`,`health`,`armor`,`lvl`,`exp`,`money`,`bank`,`work`,`fraction`,`fractionlvl`,`arrest`,`demorgan`,`wanted`," +
-                    $"`biz`,`adminlvl`,`licenses`,`unwarn`,`unmute`,`warns`,`lastveh`,`onduty`,`lasthour`,`lastbonus`,`isbonused`,`hotel`,`hotelleft`,`contacts`,`achiev`,`sim`,`pos`,`createdate`,`eat`,`water`) " +
+                    $"`biz`,`adminlvl`,`licenses`,`unwarn`,`unmute`,`warns`,`lastveh`,`onduty`,`lasthour`,`lastbonus`,`isbonused`,`luckywheelspins`,`hotel`,`hotelleft`,`contacts`,`achiev`,`sim`,`pos`,`createdate`,`eat`,`water`) " +
                     $"VALUES({UUID},'{PersonID}','{FirstName}','{LastName}',{Gender},{Health},{Armor},{LVL},{EXP},{Money},{Bank},{WorkID},{FractionID},{FractionLVL},{ArrestTime},{DemorganTime}," +
                     $"'{JsonConvert.SerializeObject(WantedLVL)}','{JsonConvert.SerializeObject(BizIDs)}',{AdminLVL},'{JsonConvert.SerializeObject(Licenses)}','{MySQL.ConvertTime(Unwarn)}'," +
-                    $"'{Unmute}',{Warns},'{LastVeh}',{OnDuty},{LastHourMin},{LastBonus},{IsBonused},{HotelID},{HotelLeft},'{JsonConvert.SerializeObject(Contacts)}','{JsonConvert.SerializeObject(Achievements)}',{Sim}," +
+                    $"'{Unmute}',{Warns},'{LastVeh}',{OnDuty},{LastHourMin},{LastBonus},{IsBonused},{LuckyWheelSpins},{HotelID},{HotelLeft},'{JsonConvert.SerializeObject(Contacts)}','{JsonConvert.SerializeObject(Achievements)}',{Sim}," +
                     $"'{JsonConvert.SerializeObject(SpawnPos)}','{MySQL.ConvertTime(CreateDate)}','{Eat}','{Water}')");
                 NAPI.Task.Run(() => { player.Name = FirstName + "_" + LastName; });
                 nInventory.Check(UUID);

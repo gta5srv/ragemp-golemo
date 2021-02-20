@@ -260,6 +260,11 @@ require('./src/admin/reportpanel');
 require('./src/admin/tpwp');
 //==============================
 
+//casino========================
+require('./src/casino/luckywheel');
+require('./src/casino/carlottery');
+//==============================
+
 //fractions=====================
 require('./src/fractions/vehiclespawner');
 require('./src/fractions/gangzones');
