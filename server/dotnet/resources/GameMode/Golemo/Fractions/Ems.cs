@@ -758,8 +758,9 @@ namespace Golemo.Fractions
                         Notify.Send(client, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас нет аптечек", 3000);
                         return;
                     }
+                    int itemCount = itemInv.Count;
                     nInventory.Remove(client, ItemType.HealthKit, 1);
-                    Notify.Send(client, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы положили аптечку. У Вас осталось {itemInv.Count - 1} штук", 3000);
+                    Notify.Send(client, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы положили аптечку. У Вас осталось {itemCount-1} штук", 3000);
                     Stocks.fracStocks[8].Medkits++;
                     GameLog.Stock(Main.Players[client].FractionID, Main.Players[client].UUID, "medkit", 1, true);
                     break;
