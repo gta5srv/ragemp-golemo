@@ -6,14 +6,15 @@ mp.events.add(
     'render': () => 
     {
         const data = luckywheel.interaction;
-        if (mp.game.gameplay.getDistanceBetweenCoords(player.position.x, player.position.y, player.position.z, data.pos.x, data.pos.y, data.pos.z, true) < data.radius)
+        if (mp.game.gameplay.getDistanceBetweenCoords(player.position.x, player.position.y, player.position.z, data.pos.x, data.pos.y, data.pos.z, true) < data.radius && !(
+            !loggedin || chatActive || editing || global.menuOpened || cuffed || localplayer.getVariable('InDeath')
+        ))
         {
             if (!data.isNear)
             {
-                if (!loggedin || chatActive || editing || global.menuOpened) return;
                 data.isNear = true;
                 mp.keys.bind(luckywheel.interaction.button, false, luckywheel.onClick);
-                data.sendNotify('Нажмите ~INPUT_CONTEXT~ , чтобы вращать колесо удачи');
+                data.sendNotify('Нажмите ~INPUT_CONTEXT~ , для прокрутки колеса');
             }
         }
         else if (data.isNear)

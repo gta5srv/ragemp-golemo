@@ -11,16 +11,16 @@ namespace Golemo.Casino
         #region Modules
         private static Random Rnd = new Random();
         private static nLog Log = new nLog("LuckyWheel");
-        private static long WaitFor { get; set; } = 0;
-        private static int BlockTime { get; } = 14000;
+        private static DateTime WaitFor { get; set; }
+        private static int BlockTimeSeconds { get; } = 21;
 
         private static void ComeToLuckyWheel(Player player)
         {
-            long time = DateTime.Now.Ticks;
-            if (WaitFor > time)
+            if (DateTime.Now < WaitFor)
             {
                 //Ждем пока колесо остановится (Завязано на таймере)
                 player.SendNotification("Вам надо немного подождать");
+                return;
             }
             else if (!MoneySystem.Wallet.ChangeLuckyWheelSpins(player, -1))
             {
@@ -30,10 +30,12 @@ namespace Golemo.Casino
             else
             {
                 //Присваимваем рандомное значение для колеса
-                WaitFor = time + BlockTime;
+                WaitFor = DateTime.Now.AddSeconds(BlockTimeSeconds);
                 int value = Rnd.Next(0, 20);
                 player.SetSharedData("LUCKY_WHEEL_CALL", true);
                 player.SetSharedData("LUCKY_WHEEL_WIN", value);
+                player.StopAnimation();
+                Main.OnAntiAnim(player);
                 Trigger.ClientEvent(player, "luckywheel.cometoluckywheel", value);
             }
         }
@@ -97,6 +99,7 @@ namespace Golemo.Casino
                         break;
                 }
                 Notify.Succ(player, $"Выигрыш: {resultName}. Поздравляем!");
+                Main.OffAntiAnim(player);
                 player.ResetSharedData("LUCKY_WHEEL_CALL");
                 player.ResetSharedData("LUCKY_WHEEL_WIN");
             }
@@ -270,8 +273,8 @@ namespace Golemo.Casino
         private static void GiveOutPrizeClothes(Player player)
         {
             int amountCompensation = amountCompensations["clothes"];
-            var tryAdd2 = Core.nInventory.TryAdd(player, new nItem(ItemType.Hat));
-            if (tryAdd2 == -1 || tryAdd2 > 0)
+            var tryAdd = Core.nInventory.TryAdd(player, new nItem(ItemType.Hat));
+            if (tryAdd == -1 || tryAdd > 0)
             {
                 Notify.Alert(player, $"Недостаточно места, вам выдана компенсация {amountCompensation}$");
                 MoneySystem.Wallet.Change(player, amountCompensation);
@@ -314,6 +317,31 @@ namespace Golemo.Casino
         public static void FinishSpin_Event(Player player)
         {
             FinishSpin(player);
+        }
+        #endregion
+
+        #region Commands
+        [Command("givewheelspins")]
+        public static void CMD_GiveLuckyWheelSpinsToPlayer(Player player, int id = -1, int value = 1)
+        {
+            if (!Core.Group.CanUseCmd(player, "givewheelspins")) return;
+
+            Player target;
+            if(id == -1)
+            {
+                target = player;
+            }
+            else
+            {
+                target = Main.GetPlayerByID(id);
+                if (target == null)
+                {
+                    Notify.Error(player, "Игрок с таким ID не найден");
+                    return;
+                }
+            }
+            MoneySystem.Wallet.ChangeLuckyWheelSpins(target, value);
+            
         }
         #endregion
     }
