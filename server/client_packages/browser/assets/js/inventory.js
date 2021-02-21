@@ -327,7 +327,7 @@ var board = new Vue({
                 default:
                 break;
             }
-            mp.trigger("donbuy", id, data);
+            mp.trigger("donbuyBoard", id, data);
         },
 		show: function(stars){
 			this.balance = stars;

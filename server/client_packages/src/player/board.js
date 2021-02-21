@@ -35,7 +35,7 @@ mp.events.add('wheelAdd', (id, data) => {
 mp.events.add('wheel', (id, data) => {
     mp.events.callRemote("donate", id, data);
 });
-mp.events.add('donbuy', (id, data) => {
+mp.events.add('donbuyBoard', (id, data) => {
 	global.menuClose();
 	mp.events.call('fromBlur', 200)
 	board.execute(`board.close()`);
