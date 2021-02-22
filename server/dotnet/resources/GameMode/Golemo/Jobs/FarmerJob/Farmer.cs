@@ -340,7 +340,7 @@ namespace Golemo.Jobs.FarmerJob
             player.SetClothes(3, 64, 0);
             player.SetClothes(4, 36, 0);
             player.SetClothes(6, 66, 5);
-            player.SetClothes(11, 117, 0);
+            player.SetClothes(11, 121, 0);
         }
         #endregion
 
