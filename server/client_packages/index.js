@@ -302,6 +302,7 @@ require('./src/utils/screeneffects');
 
 //vehicle=======================
 require('./src/vehicle/autopilot');
+require('./src/vehicle/SpeedCheck');
 //==============================
 
 //world=========================

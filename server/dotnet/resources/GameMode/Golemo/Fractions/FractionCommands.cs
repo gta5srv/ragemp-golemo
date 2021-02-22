@@ -473,46 +473,13 @@ namespace Golemo.Fractions
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Слишком большая причина", 3000);
                 return;
             }
-            if (Main.Players[target].Money < sum && MoneySystem.Bank.Accounts[Main.Players[target].Bank].Balance < sum)
-            {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока недостаточно средств", 3000);
-                return;
-            }
 
             target.SetData("TICKETER", player);
             target.SetData("TICKETSUM", sum);
             target.SetData("TICKETREASON", reason);
-            Trigger.ClientEvent(target, "openDialog", "TICKET", $"{player.Name} выписал Вам штраф в размере {sum}$ за {reason}. Оплатить?");
+            Main.Players[target].Fines += sum;
+            Notify.Send(target, NotifyType.Success, NotifyPosition.BottomCenter, $"{player.Name} вам выписал штраф в размере {sum}$ за {reason}", 3000);
             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы выписали штраф для {target.Name} в размере {sum}$ за {reason}", 3000);
-        }
-        public static void ticketConfirm(Player target, bool confirm)
-        {
-            Player player = target.GetData<Player>("TICKETER");
-            if (player == null || !Main.Players.ContainsKey(player)) return;
-            int sum = target.GetData<int>("TICKETSUM");
-            string reason = target.GetData<string>("TICKETREASON");
-
-            if (confirm)
-            {
-                if (!MoneySystem.Wallet.Change(target, -sum) && !MoneySystem.Bank.Change(Main.Players[target].Bank, -sum, false))
-                {
-                    Notify.Send(target, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно средств", 3000);
-                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У игрока недостаточно средств", 3000);
-                }
-
-                Stocks.fracStocks[6].Money += Convert.ToInt32(sum * 0.9);
-                MoneySystem.Wallet.Change(player, Convert.ToInt32(sum * 0.1));
-                Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы оплатили штраф в размере {sum}$ за {reason}", 3000);
-                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"{target.Name} оплатил штраф в размере {sum}$ за {reason}", 3000);
-                Commands.RPChat("me", player, " выписал штраф для {name}", target);
-                Manager.sendFractionMessage(7, $"{player.Name} оштрафовал {target.Name} на {sum}$ ({reason})", true);
-                GameLog.Ticket(Main.Players[player].UUID, Main.Players[target].UUID, sum, reason, player.Name, target.Name);
-            }
-            else
-            {
-                Notify.Send(target, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы отказались платить штраф в размере {sum}$ за {reason}", 3000);
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"{target.Name} отказался платить штраф в размере {sum}$ за {reason}", 3000);
-            }
         }
         public static void arrestTarget(Player player, Player target)
         {

@@ -2182,6 +2182,9 @@ namespace Golemo
                     case 229:
                         Fractions.GiveLic.GunLic(player);
                         return;
+                    case 908:
+                        Trigger.ClientEvent(player, "openDialog", "FINE_PAYMENT", $"Вы действительно хотите оплатить штрафы в размере {Main.Players[player].Fines}$ ?");
+                        return;
                     //todo realtor, container, farmer, fractionSpawner
                     #endregion
                     default:
@@ -2278,6 +2281,11 @@ namespace Golemo
                         case "BUY_CAR":
                             {
                                 Houses.House house = Houses.HouseManager.GetHouse(player, true);
+                                if (Players[player].Fines != 0)
+                                {
+                                    Notify.Error(player, "Вы не можете купить машину, у вас есть неоплаченные штрафы.", 2500);
+                                    return;
+                                }
                                 if (house == null && VehicleManager.getAllPlayerVehicles(player.Name.ToString()).Count >= 1)
                                 {
                                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас нет личного дома", 3000);
@@ -2439,9 +2447,6 @@ namespace Golemo
                         case "DEATH_CONFIRM":
                             Fractions.Ems.DeathConfirm(player, true);
                             return;
-                        case "TICKET":
-                            Fractions.FractionCommands.ticketConfirm(player, true);
-                            return;
                         case "DICE":
                             Commands.acceptDiceGame(player);
                             return;
@@ -2451,6 +2456,13 @@ namespace Golemo
                         case "RANDOMMEMBER_ADD":
                             Casino.CarLottery.AcceptTakePart(player);
                             return;
+                        case "FINE_PAYMENT":
+                            {
+                                Notify.Succ(player, $"Вы оплатили штрафы суммой на {Players[player].Fines}$.", 2500);
+                                MoneySystem.Wallet.Change(player, -Players[player].Fines);
+                                Players[player].Fines = 0;
+                                return;
+                            }
                     }
                 }
                 else
@@ -2483,9 +2495,6 @@ namespace Golemo
                             return;
                         case "DEATH_CONFIRM":
                             Fractions.Ems.DeathConfirm(player, false);
-                            return;
-                        case "TICKET":
-                            Fractions.FractionCommands.ticketConfirm(player, false);
                             return;
                         case "DICE":
                             Commands.rejectDiceGame(player);

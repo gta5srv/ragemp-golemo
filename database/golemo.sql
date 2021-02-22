@@ -284,6 +284,7 @@ CREATE TABLE `characters` (
   `lastbonus` int(11) DEFAULT 0,
   `isbonused` tinyint(1) DEFAULT 0,
   `idkey` int(11) NOT NULL AUTO_INCREMENT,
+  `Fines` int(11) DEFAULT 0,
   PRIMARY KEY (`idkey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

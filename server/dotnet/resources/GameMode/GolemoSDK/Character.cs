@@ -24,6 +24,7 @@ namespace GolemoSDK
         public int FractionID { get; set; } = 0;
         public int FractionLVL { get; set; } = 0;
         public int ArrestTime { get; set; } = 0;
+        public int Fines { get; set; } = 0;
         public int Water { get; set; } = 100;
         public int Eat { get; set; } = 100;
         public int DemorganTime { get; set; } = 0;

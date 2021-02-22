@@ -147,9 +147,13 @@ namespace Golemo.Core
         {
             var prod = biz.Products.FirstOrDefault(p => p.Name == vName);
             string vNumber = "none";
-
+            if (Main.Players[player].Fines != 0)
+            {
+                Notify.Error(player, "Вы не можете купить машину, у вас есть неоплаченные штрафы.", 2500);
+                return vNumber;
+            }
             //Если нет лицензии на вождение автомобилем
-            if(Main.Players[player].Licenses[1] == false && biz.Type != 5)
+            if (Main.Players[player].Licenses[1] == false && biz.Type != 5)
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "У вас нет лицензии на управление транспорта категории [B]", 2500);
                 return vNumber;
