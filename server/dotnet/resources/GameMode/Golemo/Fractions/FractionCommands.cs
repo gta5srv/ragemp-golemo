@@ -473,13 +473,16 @@ namespace Golemo.Fractions
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Слишком большая причина", 3000);
                 return;
             }
-
-            target.SetData("TICKETER", player);
-            target.SetData("TICKETSUM", sum);
-            target.SetData("TICKETREASON", reason);
+            //добавление суммы штрафа игроку
             Main.Players[target].Fines += sum;
+            //добавление какой-то определенной суммы тому, кто выдал штраф
+            MoneySystem.Wallet.Change(player, Convert.ToInt32(sum * 0.1));
             Notify.Send(target, NotifyType.Success, NotifyPosition.BottomCenter, $"{player.Name} вам выписал штраф в размере {sum}$ за {reason}", 3000);
             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы выписали штраф для {target.Name} в размере {sum}$ за {reason}", 3000);
+
+            Commands.RPChat("me", player, " выписал штраф для {name}", target);
+            Manager.sendFractionMessage(7, $"{player.Name} оштрафовал {target.Name} на {sum}$ ({reason})", true);
+            GameLog.Ticket(Main.Players[player].UUID, Main.Players[target].UUID, sum, reason, player.Name, target.Name);
         }
         public static void arrestTarget(Player player, Player target)
         {
