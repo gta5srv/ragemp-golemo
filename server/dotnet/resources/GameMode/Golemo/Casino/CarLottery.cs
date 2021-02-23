@@ -11,13 +11,15 @@ namespace Golemo.Casino
 {
     class CarLottery : Script
     {
-        private static nLog Log = new nLog("CarRandom");
+        private static nLog Log = new nLog("CarLottery");
+        //Закончен или нет
         private static bool CompleteFlag = false;
+        //Розыгрываемая модель
         public static string vModel;
         //Цена за участие в лотерее
         private static int _price = 5000;
         //Минимальное количество участников, которое необходимо для проведения лотереи
-        private static int _minCountMembers = 5;
+        private static int _minCountMembers = 1;
         //Координаты колшейпа взаимодействия
         private static Vector3 _mainShapePosition = new Vector3(1105.8865, 220.15826, -48.99499);
 
@@ -25,7 +27,7 @@ namespace Golemo.Casino
         private static GTANetworkAPI.ColShape _podiumShape;
         private static GTANetworkAPI.Marker _mainShapeMarker;
 
-        public static List<int> MemberUUIDs = new List<int>();
+        public static List<string> MemberNames = new List<string>();
         //Название моделей розыгрываемых машин
         private static List<string> CarsfoGive = new List<string>() {
             "zentorno",
@@ -84,65 +86,47 @@ namespace Golemo.Casino
             }
             catch (Exception e) { Log.Write("Randomcar: " + e.Message, nLog.Type.Error); }
         }
+
+        [Command("carlottery")]
+        public static void CMD_FinishCompetition(Player player, int timeMS = 1000)
+        {
+            if (!Core.Group.CanUseCmd(player, "carlottery")) return;
+            NAPI.Task.Run(() => {
+                FinishCompetition(true);
+                Notify.Succ(player, "Вы вручную закончили розыгрыш автомобиля");
+            }, timeMS);
+        }
+
         public static void FinishCompetition(bool isSendAdmin = false)
         {
             try
             {
                 if (DateTime.Now.Hour != 22 && !isSendAdmin && !CompleteFlag) return;
-                if(MemberUUIDs.Count < _minCountMembers)
+                if(MemberNames.Count < _minCountMembers)
                 {
                     NAPI.Chat.SendChatMessageToAll("!{#fc4626} [Казино]: !{#ffffff}" + $"Из-за недостатка участников, розыгрыш автомобиля {VehicleHandlers.VehiclesName.GetRealVehicleName(vModel)}, отменяется! Следующий розыгрыш завтра!");
-                    MemberUUIDs.Clear();
+                    MemberNames.Clear();
                     CompleteFlag = true;
                     return;
                 }
-                int rnd = new Random().Next(0, MemberUUIDs.Count);
-                int memberuuid = MemberUUIDs[rnd];
-                if (Main.PlayerNames[memberuuid] != null)
+                int rnd = new Random().Next(0, MemberNames.Count);
+                string memberName = MemberNames[rnd];
+                var vNumber = VehicleManager.Create(memberName, $"{vModel}", new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0));
+                var house = Houses.HouseManager.GetHouse(memberName, true);
+                if (house != null)
                 {
-                    var vNumber = Core.VehicleManager.Create(Main.PlayerNames[memberuuid], $"{vModel}", new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0));
-                    var house = Houses.HouseManager.GetHouse(NAPI.Player.GetPlayerFromName(Main.PlayerNames[memberuuid]), false);
-                    if (house != null)
+                    if (house.GarageID != 0)
                     {
-                        if (house.GarageID != 0)
+                        var garage = Houses.GarageManager.Garages[house.GarageID];
+                        if (VehicleManager.getAllPlayerVehicles(memberName).Count < Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
                         {
-                            var garage = Houses.GarageManager.Garages[house.GarageID];
-                            if (Core.VehicleManager.getAllPlayerVehicles(Main.PlayerNames[memberuuid]).Count < Houses.GarageManager.GarageTypes[garage.Type].MaxCars)
-                            {
-                                garage.SpawnCar(vNumber);
-                            }
+                            garage.SpawnCar(vNumber);
                         }
                     }
-                    NAPI.Chat.SendChatMessageToAll("!{#fc4626} [Казино]: !{#ffffff}" + $"В розыгрыше автомобиля выиграл {Main.PlayerNames[memberuuid]} и забрал {VehicleHandlers.VehiclesName.GetRealVehicleName(vModel)} Поздравим! Следующий розыгрыш завтра!");
                 }
-                else
-                {
-                    var result = MySQL.QueryRead($"SELECT firstname AND lastname FROM characters WHERE uuid = '{memberuuid}'");
-                    string FirstName = Convert.ToString(result.Rows[0]);
-                    string LastName = Convert.ToString(result.Rows[1]);
-                    string name = FirstName + '_' + LastName;
-                    VehicleData data = new VehicleData();
-                    VehicleHash vhash = (VehicleHash)NAPI.Util.GetHashKey(vModel);
-                    string Holder = name;
-                    string Model = vModel;
-                    int Health = 1000;
-                    int Fuel = VehicleTank.ContainsKey(NAPI.Vehicle.GetVehicleClass(vhash)) ? VehicleTank[NAPI.Vehicle.GetVehicleClass(vhash)] : 120;
-                    int Price = (BusinessManager.ProductsOrderPrice.ContainsKey(vModel)) ? Convert.ToInt32(BusinessManager.ProductsOrderPrice[vModel] * 0.5) : 0;
-                    data.Components = new VehicleCustomization();
-                    data.Components.PrimColor = new Color(0, 0, 0);
-                    data.Components.SecColor = new Color(0, 0, 0);
-                    data.Components.NeonColor = new Color(0, 0, 0);
-                    data.Items = new List<nItem>();
-                    data.Dirt = 0.0F;
-
-                    string Number = GenerateNumber();
-                    Vehicles.Add(Number, data);
-                    MySQL.Query("INSERT INTO `vehicles`(`number`, `holder`, `model`, `health`, `fuel`, `price`, `components`, `items`)" +
-                        $" VALUES ('{Number}','{Holder}','{Model}',{Health},{Fuel},{Price},'{JsonConvert.SerializeObject(data.Components)}','{JsonConvert.SerializeObject(data.Items)}')");
-                    Log.Write("Created new vehicle with number: " + Number);
-                    NAPI.Chat.SendChatMessageToAll("!{#fc4626} [Казино]: !{#ffffff}" + $"В розыгрыше автомобиля выиграл {name} и забрал {VehicleHandlers.VehiclesName.GetRealVehicleName(vModel)} Поздравим! Следующий розыгрыш завтра!");
-                }
-                MemberUUIDs.Clear();
+                NAPI.Chat.SendChatMessageToAll("!{#fc4626} [Казино]: !{#ffffff}" + 
+                    $"В розыгрыше автомобиля выиграл {memberName} и забрал {VehicleHandlers.VehiclesName.GetRealVehicleName(vModel)} Поздравим! Следующий розыгрыш завтра!");
+                MemberNames.Clear();
                 CompleteFlag = true;
             }
             catch (Exception e) { Log.Write("RandomWinner: " + e.Message, nLog.Type.Error); }
@@ -150,22 +134,22 @@ namespace Golemo.Casino
         public static void AcceptTakePart(Player player)
         {
             if (!isAccessToTakePart(player)) return;
+            if (!Main.PlayerNames.ContainsValue(player.Name))
+            {
+                Notify.Info(player, "Вы не зарегистрированы на сервере");
+                return;
+            }
             if (!MoneySystem.Wallet.Change(player, -_price))
             {
                 Notify.Error(player, "У вас недостаточно средств");
                 return;
             }
-            Casino.CarLottery.MemberUUIDs.Add(Main.Players[player].UUID);
+            MemberNames.Add(player.Name);
             Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, "Вы приняли участие в розыгрыше!", 2500);
         }
         private static bool isAccessToTakePart(Player player)
         {
-            if (DateTime.Now.Hour > 22)
-            {
-                Notify.Error(player, "Розыгрыш уже прошёл. Приходите завтра.");
-                return false;
-            }
-            if (MemberUUIDs.Contains(Main.Players[player].UUID))
+            if (MemberNames.Contains(player.Name))
             {
                 Notify.Error(player, "Вы уже учавствуете в розыгрыше");
                 return false;
