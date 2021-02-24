@@ -93,9 +93,9 @@ namespace Golemo.VehicleHandlers
                     {
                         if (Main.Players[player].Licenses[1] == true)
                         {
+                            Main.Players[player].Licenses[1] = false;
                             Notify.Error(player, "У вас отобрали лицензию за неоплаченные штрафы.", 2500);
                         }
-                        Main.Players[player].Licenses[1] = false;
                     }
                 }
             }
