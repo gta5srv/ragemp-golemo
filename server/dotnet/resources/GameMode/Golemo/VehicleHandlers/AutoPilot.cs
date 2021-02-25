@@ -23,7 +23,7 @@ namespace Golemo.VehicleHandlers
                 bool access = false;
                 foreach (var item in accessVehicle)
                 {
-                    if (NAPI.Util.VehicleNameToModel(item) == hash)
+                    if ((VehicleHash)NAPI.Util.GetHashKey(item) == hash)
                     {
                         access = true;
                         break;
