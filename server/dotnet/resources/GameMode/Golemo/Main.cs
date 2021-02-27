@@ -2466,8 +2466,6 @@ namespace Golemo
                                 Notify.Succ(player, $"Вы оплатили штрафы суммой на {Players[player].Fines}$.", 2500);
                                 //добавляет определенный процент в казну мерии
                                 Fractions.Stocks.fracStocks[6].Money += Convert.ToInt32(Players[player].Fines * 0.9);
-                                //снимает сумму штрафов с игрока
-                                MoneySystem.Wallet.Change(player, -Players[player].Fines);
                                 //очищает штрафы
                                 Players[player].Fines = 0;
                                 return;
