@@ -183,6 +183,7 @@ namespace Golemo.Core.Character
                         Fines = Convert.ToInt32(Row["fines"]);
                         DemorganTime = Convert.ToInt32(Row["demorgan"]);
                         WantedLVL = JsonConvert.DeserializeObject<WantedLevel>(Row["wanted"].ToString());
+                        WorksStats = JsonConvert.DeserializeObject<List<WorkStats>>(Row["workstats"].ToString());
                         BizIDs = JsonConvert.DeserializeObject<List<int>>(Row["biz"].ToString());
                         AdminLVL = Convert.ToInt32(Row["adminlvl"]);
                         Licenses = JsonConvert.DeserializeObject<List<bool>>(Row["licenses"].ToString());
@@ -321,7 +322,7 @@ namespace Golemo.Core.Character
 
                 await MySQL.QueryAsync($"UPDATE `characters` SET `pos`='{pos}',`gender`={Gender},`health`={Health},`armor`={Armor},`lvl`={LVL},`exp`={EXP}," +
                     $"`money`={Money},`bank`={Bank},`work`={WorkID},`fraction`={FractionID},`fractionlvl`={FractionLVL},`arrest`={ArrestTime},`fines`={Fines}," +
-                    $"`wanted`='{JsonConvert.SerializeObject(WantedLVL)}',`biz`='{JsonConvert.SerializeObject(BizIDs)}',`adminlvl`={AdminLVL}," +
+                    $"`wanted`='{JsonConvert.SerializeObject(WantedLVL)}',`workstats`='{JsonConvert.SerializeObject(WorksStats)}',`biz`='{JsonConvert.SerializeObject(BizIDs)}',`adminlvl`={AdminLVL}," +
                     $"`licenses`='{JsonConvert.SerializeObject(Licenses)}',`unwarn`='{MySQL.ConvertTime(Unwarn)}',`unmute`='{Unmute}'," +
                     $"`warns`={Warns},`hotel`={HotelID},`hotelleft`={HotelLeft},`lastveh`='{LastVeh}',`onduty`={OnDuty},`lasthour`={LastHourMin},`lastbonus`={LastBonus},`isbonused`={IsBonused}," +
                     $"`luckywheelspins`={LuckyWheelSpins},`demorgan`={DemorganTime},`contacts`='{JsonConvert.SerializeObject(Contacts)}',`achiev`='{JsonConvert.SerializeObject(Achievements)}',`sim`={Sim},`PetName`='{PetName}'," +
@@ -382,9 +383,9 @@ namespace Golemo.Core.Character
                 Main.PlayerNames.Add(UUID, $"{firstName}_{lastName}");
 
                 await MySQL.QueryAsync($"INSERT INTO `characters`(`uuid`,`personid`,`firstname`,`lastname`,`gender`,`health`,`armor`,`lvl`,`exp`,`money`,`bank`,`work`,`fraction`,`fractionlvl`,`arrest`,`fines`,`demorgan`,`wanted`," +
-                    $"`biz`,`adminlvl`,`licenses`,`unwarn`,`unmute`,`warns`,`lastveh`,`onduty`,`lasthour`,`lastbonus`,`isbonused`,`luckywheelspins`,`hotel`,`hotelleft`,`contacts`,`achiev`,`sim`,`pos`,`createdate`,`eat`,`water`) " +
+                    $"`workstats`,`biz`,`adminlvl`,`licenses`,`unwarn`,`unmute`,`warns`,`lastveh`,`onduty`,`lasthour`,`lastbonus`,`isbonused`,`luckywheelspins`,`hotel`,`hotelleft`,`contacts`,`achiev`,`sim`,`pos`,`createdate`,`eat`,`water`) " +
                     $"VALUES({UUID},'{PersonID}','{FirstName}','{LastName}',{Gender},{Health},{Armor},{LVL},{EXP},{Money},{Bank},{WorkID},{FractionID},{FractionLVL},{ArrestTime},{Fines},{DemorganTime}," +
-                    $"'{JsonConvert.SerializeObject(WantedLVL)}','{JsonConvert.SerializeObject(BizIDs)}',{AdminLVL},'{JsonConvert.SerializeObject(Licenses)}','{MySQL.ConvertTime(Unwarn)}'," +
+                    $"'{JsonConvert.SerializeObject(WantedLVL)}','{JsonConvert.SerializeObject(WorksStats)}','{JsonConvert.SerializeObject(BizIDs)}',{AdminLVL},'{JsonConvert.SerializeObject(Licenses)}','{MySQL.ConvertTime(Unwarn)}'," +
                     $"'{Unmute}',{Warns},'{LastVeh}',{OnDuty},{LastHourMin},{LastBonus},{IsBonused},{LuckyWheelSpins},{HotelID},{HotelLeft},'{JsonConvert.SerializeObject(Contacts)}','{JsonConvert.SerializeObject(Achievements)}',{Sim}," +
                     $"'{JsonConvert.SerializeObject(SpawnPos)}','{MySQL.ConvertTime(CreateDate)}','{Eat}','{Water}')");
                 NAPI.Task.Run(() => { player.Name = FirstName + "_" + LastName; });
@@ -494,5 +495,72 @@ namespace Golemo.Core.Character
                 Log.Write("EXCEPTION AT \"CHANGENAME\":\n" + e.ToString(), nLog.Type.Error);
             }
         }
+        #region WorkStats Handler
+        public bool AddExpForWork(int value = 1)
+        {
+            isHaveWorkStatsForThisWork();
+            return WorksStats[GetWorkStatsIndex()].AddExp(value);
+        }
+        public int GetLevelAtThisWork()
+        {
+            return WorksStats[GetWorkStatsIndex()].Level;
+        }
+        //имеется ли данные о текущей работе у игрока?
+        public bool isHaveWorkStatsForThisWork()
+        {
+            if (WorksStats.Contains(WorksStats.Find(x => x.WorkID == this.WorkID)))
+            {
+                HasTheMaxLevelOfWorkStatsBeenChanged();
+                HasTheMaxExpOfWorkStatsBeenChanged();
+                return true; //да
+            }
+            else
+            {
+                AddNewWorkStatsForTheWorkID();
+                return false; //нет
+            }
+        }
+        public int GetWorkStatsIndex()
+        {
+            if (WorkID == 0) return 0;
+            return WorksStats.FindIndex(x => x.WorkID == WorkID);
+        }
+        //добавить данные о новой работе
+        private void AddNewWorkStatsForTheWorkID()
+        {
+            WorkStats data = new WorkStats(WorkID, 1, 0, 0, Jobs.WorkManager.MaxLevelForThisWork[WorkID], Jobs.WorkManager.MaxExpForThisWork[WorkID]);
+            WorksStats.Add(data);
+        }
+        //изменилось ли значение максимального уровня для работы, который не дает дальше повышать уровень?
+        private bool HasTheMaxLevelOfWorkStatsBeenChanged()
+        {
+            if (WorksStats[GetWorkStatsIndex()]._maxLevel != Jobs.WorkManager.MaxLevelForThisWork[WorkID])
+            {
+                ChangeMaxLevelWorkStatsForWorkID();
+                return true; //да, изменилось
+            }
+            else
+                return false; //нет, не изменилось
+        }
+        //изменилось ли значение необходимого опыта для повышения уровня у работы?
+        private bool HasTheMaxExpOfWorkStatsBeenChanged()
+        {
+            if (WorksStats[GetWorkStatsIndex()]._expCountForUpLevel != Jobs.WorkManager.MaxExpForThisWork[WorkID])
+            {
+                ChangeMaxExpWorkStatsForWorkID();
+                return true; //да, изменилось
+            }
+            else
+                return false; //нет, не измелось
+        }
+        private void ChangeMaxLevelWorkStatsForWorkID()
+        {
+            WorksStats[GetWorkStatsIndex()].ChangeMaxLevel(Jobs.WorkManager.MaxLevelForThisWork[WorkID]);
+        }
+        private void ChangeMaxExpWorkStatsForWorkID()
+        {
+            WorksStats[GetWorkStatsIndex()].ChangeNeedExp(Jobs.WorkManager.MaxExpForThisWork[WorkID]);
+        }
+        #endregion
     }
 }

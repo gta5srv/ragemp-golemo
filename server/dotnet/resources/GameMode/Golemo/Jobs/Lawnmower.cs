@@ -336,6 +336,11 @@ namespace Golemo.Jobs
                 if (MowerWays[way][check].DistanceTo(player.Position) > 5) return;
 
                 var payment = Convert.ToInt32(checkpointPayment * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
+                //надбавка с учетом уровня игрока на данной работе
+                payment += Jobs.WorkManager.PaymentIncreaseAmount[Main.Players[player].WorkID] * Main.Players[player].GetLevelAtThisWork();
+                //добавление опыта
+                if (Main.Players[player].AddExpForWork(Main.oldconfig.PaydayMultiplier))
+                    Notify.Alert(player, $"Поздравляем с повышением уровня! Текущий уровень теперь: {Main.Players[player].GetLevelAtThisWork()}");
                 MoneySystem.Wallet.Change(player, payment);
                 GameLog.Money($"server", $"player({Main.Players[player].UUID})", payment, $"lawnCheck");
 

@@ -333,8 +333,6 @@ namespace Golemo.Jobs
                 player.SetData("COLLECTOR_BAGS", player.GetData<int>("COLLECTOR_BAGS") - 1);
 
                 var coef = Convert.ToInt32(player.Position.DistanceTo2D(player.GetData<Vector3>("W_LASTPOS")) / 100);
-                var payment = Convert.ToInt32(coef * checkpointPayment * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
-
                 DateTime lastTime = player.GetData<DateTime>("W_LASTTIME");
                 if (DateTime.Now < lastTime.AddSeconds(coef * 2))
                 {
@@ -342,7 +340,12 @@ namespace Golemo.Jobs
                     return;
                 }
 
-                //player.SetData("PAYMENT", player.GetData<int>("PAYMENT") + payment);
+                var payment = Convert.ToInt32(coef * checkpointPayment * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
+                //надбавка с учетом уровня игрока на данной работе
+                payment += Jobs.WorkManager.PaymentIncreaseAmount[Main.Players[player].WorkID] * Main.Players[player].GetLevelAtThisWork();
+                //добавление опыта
+                if (Main.Players[player].AddExpForWork(Main.oldconfig.PaydayMultiplier))
+                    Notify.Alert(player, $"Поздравляем с повышением уровня! Текущий уровень теперь: {Main.Players[player].GetLevelAtThisWork()}");
                 player.SetData("W_LASTPOS", player.Position);
                 player.SetData("W_LASTTIME", DateTime.Now);
                 MoneySystem.Wallet.Change(player, payment);

@@ -513,6 +513,11 @@ namespace Golemo.Jobs
                 var min = Convert.ToInt32(500 * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
                 if (payment > max) payment = max;
                 else if (payment < min) payment = min;
+                //надбавка с учетом уровня игрока на данной работе
+                payment += Jobs.WorkManager.PaymentIncreaseAmount[Main.Players[player].WorkID] * Main.Players[player].GetLevelAtThisWork();
+                //добавление опыта
+                if (Main.Players[player].AddExpForWork(Main.oldconfig.PaydayMultiplier))
+                    Notify.Alert(player, $"Поздравляем с повышением уровня! Текущий уровень теперь: {Main.Players[player].GetLevelAtThisWork()}");
                 MoneySystem.Wallet.Change(player, payment);
                 GameLog.Money($"server", $"player({Main.Players[player].UUID})", payment, $"truckerCheck");
                 var ow = NAPI.Player.GetPlayerFromName(biz.Owner);
@@ -544,6 +549,7 @@ namespace Golemo.Jobs
                         }
                     } catch { }
                 });
+
                 Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы доставили трейлер", 3000);
                 return;
             }

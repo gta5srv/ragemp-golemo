@@ -188,7 +188,10 @@ namespace Golemo.Jobs
                 if (Checkpoints[(int)shape.GetData<int>("NUMBER")].Position.DistanceTo(player.Position) > 3) return;
 
                 var payment = Convert.ToInt32(checkpointPayment * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
-                //player.SetData("PAYMENT", player.GetData<int>("PAYMENT") + payment);
+                //надбавка с учетом уровня игрока на данной работе
+                payment += Jobs.WorkManager.PaymentIncreaseAmount[Main.Players[player].WorkID] * Main.Players[player].GetLevelAtThisWork();
+                if (Main.Players[player].AddExpForWork(Main.oldconfig.PaydayMultiplier))
+                    Notify.Alert(player, $"Поздравляем с повышением уровня! Текущий уровень теперь: {Main.Players[player].GetLevelAtThisWork()}");
                 MoneySystem.Wallet.Change(player, payment);
                 GameLog.Money($"server", $"player({Main.Players[player].UUID})", payment, $"electricianCheck");
 

@@ -798,7 +798,11 @@ namespace Golemo.Jobs
 
                     NAPI.Data.SetEntityData(player, "WORKCHECK", check);
                     var payment = Convert.ToInt32(BuswaysPayments[way] * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
-                    //NAPI.Data.SetEntityData(player, "PAYMENT", NAPI.Data.GetEntityData(player, "PAYMENT") + payment);
+                    //надбавка с учетом уровня игрока на данной работе
+                    payment += Jobs.WorkManager.PaymentIncreaseAmount[Main.Players[player].WorkID] * Main.Players[player].GetLevelAtThisWork();
+                    //добавление опыта
+                    if (Main.Players[player].AddExpForWork(Main.oldconfig.PaydayMultiplier))
+                        Notify.Alert(player, $"Поздравляем с повышением уровня! Текущий уровень теперь: {Main.Players[player].GetLevelAtThisWork()}");
                     MoneySystem.Wallet.Change(player, payment);
                     GameLog.Money($"server", $"player({Main.Players[player].UUID})", payment, $"busCheck");
                 }
@@ -828,7 +832,11 @@ namespace Golemo.Jobs
                     NAPI.Data.SetEntityData(player, "BUS_ONSTOP", false);
                     Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Можете ехать дальше", 3000);
                     var payment = Convert.ToInt32(BuswaysPayments[way] * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
-                    //NAPI.Data.SetEntityData(player, "PAYMENT", NAPI.Data.GetEntityData(player, "PAYMENT") + payment);
+                    //надбавка с учетом уровня игрока на данной работе
+                    payment += Jobs.WorkManager.PaymentIncreaseAmount[Main.Players[player].WorkID] * Main.Players[player].GetLevelAtThisWork();
+                    //добавление опыта
+                    if (Main.Players[player].AddExpForWork(Main.oldconfig.PaydayMultiplier))
+                        Notify.Alert(player, $"Поздравляем с повышением уровня! Текущий уровень теперь: {Main.Players[player].GetLevelAtThisWork()}");
                     MoneySystem.Wallet.Change(player, payment);
                     GameLog.Money($"server", $"player({Main.Players[player].UUID})", payment, $"busCheck");
                     if (check + 1 != BusWays[way].Count) check++;

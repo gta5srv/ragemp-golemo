@@ -52,11 +52,12 @@ namespace Golemo.Jobs
             catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }
         }
 
-        public void JobMenu_onEntityEnterColShape(ColShape shape, Player entity)
+        public void JobMenu_onEntityEnterColShape(ColShape shape, Player player)
         {
             try
             {
-                openJobsSelecting(entity);
+                if (!Main.Players.ContainsKey(player)) return;
+                openJobsSelecting(player);
             }
             catch (Exception ex) { Log.Write("JobMenu_onEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
         }
@@ -98,14 +99,50 @@ namespace Golemo.Jobs
         };
         private static SortedList<int, int> JobsMinLVL = new SortedList<int, int>()
         {
-            { 1, 0 },
-            { 2, 1 },
-            { 3, 2 },
-            { 4, 2 },
-            { 5, 0 },
-            { 6, 5 },
-            { 7, 8 },
-            { 8, 4 },
+            { 1, 0 },   //электрик
+            { 2, 1 },   //почтальон
+            { 3, 2 },   //таксист
+            { 4, 2 },   //водитель автобуса
+            { 5, 0 },   //газонокосильщик
+            { 6, 5 },   //дальнобойщик
+            { 7, 8 },   //инкассатор
+            { 8, 4 },   //автомеханик
+        };
+        //id работы и максимальный уровень, которого можно достичь на работе
+        public static Dictionary<int, int> MaxLevelForThisWork = new Dictionary<int, int>()
+        {
+            { 1, 10 },  //электрик
+            { 2, 10 },  //почтальон
+            { 3, 10 },  //таксист
+            { 4, 10 },  //водитель автобуса
+            { 5, 10 },  //газонокосильщик
+            { 6, 4 },   //дальнобойщик
+            { 7, 10 },  //инкассатор
+            { 8, 10 },  //автомеханик
+        };
+        //id работы и максимальный опыт (чекпоинты), который нужно набрать, чтобы поднялся уровень
+        public static Dictionary<int, int> MaxExpForThisWork = new Dictionary<int, int>()
+        {
+            { 1, 60 },  //электрик
+            { 2, 30 },  //почтальон
+            { 3, 20 },  //таксист
+            { 4, 20 },  //водитель автобуса
+            { 5, 80 },  //газонокосильщик
+            { 6, 15 },  //дальнобойщик
+            { 7, 15 },  //инкассатор
+            { 8, 20 },  //автомеханик
+        };
+        //надбавка к чекпоинтам для каждой работы
+        public static Dictionary<int, int> PaymentIncreaseAmount = new Dictionary<int, int>()
+        {
+            { 1, 3 },  //электрик
+            { 2, 5 },  //почтальон
+            { 3, 7 },  //таксист
+            { 4, 7 },  //водитель автобуса
+            { 5, 2 },  //газонокосильщик
+            { 6, 11 },  //дальнобойщик
+            { 7, 13 },  //инкассатор
+            { 8, 9 },  //автомеханик
         };
 
         public static void Layoff(Player player)
@@ -163,6 +200,10 @@ namespace Golemo.Jobs
                     return;
                 }
                 Main.Players[player].WorkID = job;
+                if (!Main.Players[player].isHaveWorkStatsForThisWork())
+                {
+                    Notify.Alert(player, "Похоже, вы впервые пришли к нам работать! Желаю больших успехов!");
+                }
                 Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы устроились работать {JobList[job]}. Доберитесь до точки начала работы", 3000);
                 Trigger.ClientEvent(player, "createWaypoint", Points[job].X, Points[job].Y);
                 Dashboard.sendStats(player);

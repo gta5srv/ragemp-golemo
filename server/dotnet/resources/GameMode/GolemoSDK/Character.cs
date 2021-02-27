@@ -29,6 +29,7 @@ namespace GolemoSDK
         public int Eat { get; set; } = 100;
         public int DemorganTime { get; set; } = 0;
         public WantedLevel WantedLVL { get; set; } = null;
+        public List<WorkStats> WorksStats { get; set; } = new List<WorkStats>();
         public List<int> BizIDs { get; set; } = new List<int>();
         public int AdminLVL { get; set; } = 0;
         public List<bool> Licenses { get; set; } = new List<bool>();

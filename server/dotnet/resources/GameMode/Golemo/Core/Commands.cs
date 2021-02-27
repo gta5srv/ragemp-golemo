@@ -112,6 +112,32 @@ namespace Golemo.Core
 
         #region AdminCommands
 
+        [Command("showworkstat")]
+        public static void CMD_ShowWorkStats(Player player, int workid = 0)
+        {
+            if (!Core.Group.CanUseCmd(player, "showworkstat")) return;
+            Character.Character data = Main.Players[player];
+            if (workid == 0) workid = data.WorkID;
+            string[] message = new string[6];
+            if(!data.WorksStats.Contains(data.WorksStats.Find(x => x.WorkID == workid)))
+            {
+                Notify.Error(player, "Вы никогда не устраивались на данную работу");
+                return;
+            }
+            message[0] = $"WorkID: {Convert.ToString(data.WorksStats[data.GetWorkStatsIndex()].WorkID)}";
+            message[1] = $"Level: {Convert.ToString(data.WorksStats[data.GetWorkStatsIndex()].Level)}";
+            message[2] = $"Exp: {Convert.ToString(data.WorksStats[data.GetWorkStatsIndex()].Exp)}";
+            message[3] = $"Allpoints: {Convert.ToString(data.WorksStats[data.GetWorkStatsIndex()].AllPoints)}";
+            message[4] = $"MaxLevel: {Convert.ToString(data.WorksStats[data.GetWorkStatsIndex()]._maxLevel)}";
+            message[5] = $"RequiredExp: {Convert.ToString(data.WorksStats[data.GetWorkStatsIndex()]._expCountForUpLevel)}";
+            player.SendChatMessage("===================Work Stats===================");
+            for (int i = 0; i < message.Length; i++)
+            {
+                player.SendChatMessage(message[i]);
+            }
+            player.SendChatMessage("================================================");
+        }
+
         [Command("getlastbonus")] //todo lastbonus
         public static void GetLastBonus(Player player, int id)
         {
