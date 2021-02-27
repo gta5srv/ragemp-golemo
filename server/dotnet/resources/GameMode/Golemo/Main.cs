@@ -2962,7 +2962,18 @@ namespace Golemo
                     //часы в сутки, когда контейнеры должны респавниться
                     List<int> containersRespawnHours = new List<int>() { 15, 18, 21 };
                     if (containersRespawnHours.Contains(DateTime.Now.Hour)) ContainerSystem.ChangeStateContainers();
-
+                    if (DateTime.Now.Hour == 16 && DateTime.Now.Hour == 20 && DateTime.Now.Hour == 22)
+                    {
+                        int countmember = Fractions.Manager.countOfFractionMembers(1) + Fractions.Manager.countOfFractionMembers(2) + Fractions.Manager.countOfFractionMembers(3) + Fractions.Manager.countOfFractionMembers(4) + Fractions.Manager.countOfFractionMembers(5) + Fractions.Manager.countOfFractionMembers(10) + Fractions.Manager.countOfFractionMembers(11) + Fractions.Manager.countOfFractionMembers(12) + Fractions.Manager.countOfFractionMembers(13);
+                        if (countmember < 10)
+                        {
+                            NAPI.Chat.SendChatMessageToAll("!{#fc4626} [GLOBAL]: !{#ffffff}" + "Ящик не появился так как онлайн в крайм организациях слишком мал.");
+                        }
+                        else
+                        {
+                            Fractions.Activity.AmmunationBox.SpawnAnAmmoBox();
+                        }
+                    }
                     Fractions.Gangs.UpdateMultiplier(); //цена закупки наркоту для банд
                     Jobs.FarmerJob.Market.UpdateMultiplier(); //коэффициент на маркете
                     Jobs.DrugFarm.UpdateMultiplier(); //drugfarm
