@@ -163,7 +163,7 @@ namespace Golemo.Core.Character
                     foreach (DataRow Row in result.Rows)
                     {
                         UUID = Convert.ToInt32(Row["uuid"]);
-                        PersonID = Convert.ToString(Row["personid"]);
+                        PersonID = Convert.ToString(Row["personid"]); //todo PersonID
                         if (PersonID == null || PersonID == "") PersonID = GeneratePersonID(uuid, true);
                         FirstName = Convert.ToString(Row["firstname"]);
                         LastName = Convert.ToString(Row["lastname"]);
@@ -180,10 +180,11 @@ namespace Golemo.Core.Character
                         FractionID = Convert.ToInt32(Row["fraction"]);
                         FractionLVL = Convert.ToInt32(Row["fractionlvl"]);
                         ArrestTime = Convert.ToInt32(Row["arrest"]);
-                        Fines = Convert.ToInt32(Row["fines"]);
+                        Fines = Convert.ToInt32(Row["fines"]); //todo fines 
                         DemorganTime = Convert.ToInt32(Row["demorgan"]);
                         WantedLVL = JsonConvert.DeserializeObject<WantedLevel>(Row["wanted"].ToString());
-                        WorksStats = JsonConvert.DeserializeObject<List<WorkStats>>(Row["workstats"].ToString());
+                        WorksStats = JsonConvert.DeserializeObject<List<WorkStats>>(Row["workstats"].ToString()); //todo workstats
+                        if (WorksStats == null) WorksStats = new List<WorkStats>();
                         BizIDs = JsonConvert.DeserializeObject<List<int>>(Row["biz"].ToString());
                         AdminLVL = Convert.ToInt32(Row["adminlvl"]);
                         Licenses = JsonConvert.DeserializeObject<List<bool>>(Row["licenses"].ToString());
@@ -508,6 +509,7 @@ namespace Golemo.Core.Character
         //имеется ли данные о текущей работе у игрока?
         public bool isHaveWorkStatsForThisWork()
         {
+            if (WorksStats == null) WorksStats = new List<WorkStats>();
             if (WorksStats.Contains(WorksStats.Find(x => x.WorkID == this.WorkID)))
             {
                 HasTheMaxLevelOfWorkStatsBeenChanged();
