@@ -2333,6 +2333,7 @@ namespace Golemo.Core
             var custom = CustomPlayerData[Main.Players[player].UUID];
 
             var gender = Main.Players[player].Gender;
+            Customization.ClearClothes(player, gender);
             player.SetSharedData("GENDER", gender);
 
             var clothes = custom.Clothes;
