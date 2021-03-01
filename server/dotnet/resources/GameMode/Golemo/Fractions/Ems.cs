@@ -289,6 +289,7 @@ namespace Golemo.Fractions
                 Jobs.Gopostal.Event_PlayerDeath(player, entityKiller, weapon);
 
                 if (player.HasData("job_farmer")) Jobs.FarmerJob.Farmer.StartWork(player, false);
+                if (player.HasData("Phone")) MenuManager.Close(player);
 
                 //VehicleManager.WarpPlayerOutOfVehicle(player);
                 Main.Players[player].IsAlive = false;
