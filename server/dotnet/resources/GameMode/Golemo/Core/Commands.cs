@@ -3878,6 +3878,7 @@ namespace Golemo.Core
         {
             try
             {
+                if (!Group.CanUseCmd(player, "sellcars")) return;
                 Houses.HouseManager.OpenCarsSellMenu(player);
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
