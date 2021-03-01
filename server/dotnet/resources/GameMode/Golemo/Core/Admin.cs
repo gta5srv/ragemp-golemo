@@ -271,7 +271,7 @@ namespace Golemo.Core
         public static void delFracLeader(Player sender, Player target)
         {
             if (!Group.CanUseCmd(sender, "delleader")) return;
-            if (Main.Players[target].FractionID != 0 && Main.Players[target].FractionID <= 18)
+            if (Main.Players[target].FractionID != 0 && Main.Players[target].FractionID <= Fractions.Configs.FractionTypes.Count)
             {
                 if (Main.Players[target].FractionLVL < Fractions.Configs.FractionRanks[Main.Players[target].FractionID].Count)
                 {

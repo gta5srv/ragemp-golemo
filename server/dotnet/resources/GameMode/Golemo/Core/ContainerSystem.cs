@@ -140,14 +140,14 @@ namespace Golemo.Core
 
         public List<string> Loots = new List<string>();
 
-        public GTANetworkAPI.Object Model;
-        public GTANetworkAPI.Object Door_l;
-        public GTANetworkAPI.Object Door_R;
-        public GTANetworkAPI.Object Fence;
+        private GTANetworkAPI.Object Model;
+        private GTANetworkAPI.Object Door_l;
+        private GTANetworkAPI.Object Door_R;
+        private GTANetworkAPI.Object Fence;
 
-        public GTANetworkAPI.ColShape shape;
-        public GTANetworkAPI.Marker marker;
-        public GTANetworkAPI.TextLabel label;
+        private GTANetworkAPI.ColShape shape;
+        private GTANetworkAPI.Marker marker;
+        private GTANetworkAPI.TextLabel label;
         public Container(int id, string name, Vector3 pos, Vector3 rot, int price, bool donate = false, string model = "prop_container_02a", string door_l = "prop_cntrdoor_ld_l", string door_r = "prop_cntrdoor_ld_r", string fence = "prop_fncsec_01b")
         {
             ID = id;
