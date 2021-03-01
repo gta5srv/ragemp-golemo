@@ -32,6 +32,7 @@ mp.events.add('phoneChange', (ind, data) => {
 });
 mp.events.add('phoneClose', () => {
     if(phone != null) phone.execute('reset();');
+    global.phoneOpen = 0;
 });
 // // //
 mp.events.add('phoneCallback', (itemid, event, data) => {
