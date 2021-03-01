@@ -95,16 +95,16 @@ namespace Golemo.Jobs
                     if (player.GetData<int>("PACKAGES") == 0) return;
                     else if (player.GetData<int>("PACKAGES") > 1)
                     {
-                        player.SetData("PACKAGES", player.GetData<int>("PACKAGES") - 1);
-                        Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"У Вас осталось {player.GetData<int>("PACKAGES")} посылок", 3000);
-
                         var coef = Convert.ToInt32(player.Position.DistanceTo2D(player.GetData<Vector3>("W_LASTPOS")) / 100);
                         DateTime lastTime = player.GetData<DateTime>("W_LASTTIME");
                         if (DateTime.Now < lastTime.AddSeconds(coef * 2))
                         {
-                            Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Хозяина нет дома, попробуйте позже", 3000);
+                            Notify.Error(player, "Хозяина нет дома, попробуйте позже", 3000);
                             return;
                         }
+                        player.SetData("PACKAGES", player.GetData<int>("PACKAGES") - 1);
+                        Notify.Info(player, $"У Вас осталось {player.GetData<int>("PACKAGES")} посылок", 3000);
+
                         var payment = Convert.ToInt32(coef * checkpointPayment * Group.GroupPayAdd[Main.Accounts[player].VipLvl] * Main.oldconfig.PaydayMultiplier);
                         //надбавка с учетом уровня игрока на данной работе
                         payment += Jobs.WorkManager.PaymentIncreaseAmount[Main.Players[player].WorkID] * Main.Players[player].GetLevelAtThisWork();
