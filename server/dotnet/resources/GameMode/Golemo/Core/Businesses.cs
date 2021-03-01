@@ -191,7 +191,6 @@ namespace Golemo.Core
         {
             new List<string>() // premium
             {
-                "Dukes",
                 "Sultan",
                 "SultanRS",
                 "Kuruma",
@@ -3820,6 +3819,8 @@ namespace Golemo.Core
             switch (biz.Type)
             {
                 case 0:
+                case 8:
+                case 15:
                     OpenBizShopMenu(player);
                     return;
                 case 1:
@@ -3856,9 +3857,6 @@ namespace Golemo.Core
                     Trigger.ClientEvent(player, "openClothes", biz.Products[0].Price);
                     player.PlayAnimation("amb@world_human_guard_patrol@male@base", "base", 1);
                     NAPI.Entity.SetEntityDimension(player, Dimensions.RequestPrivateDimension(player));
-                    return;
-                case 8:
-                    OpenBizShopMenu(player);
                     return;
                 case 9:
                     if ((player.GetData<bool>("ON_DUTY") && Fractions.Manager.FractionTypes[Main.Players[player].FractionID] == 2) || player.GetData<bool>("ON_WORK"))
@@ -3949,9 +3947,6 @@ namespace Golemo.Core
                     }
                     player.SetData("PETSHOPID", biz.ID);
                     enterPetShop(player, biz.Products[0].Name);
-                    return;
-                case 15:
-                    OpenBizShopMenu(player);
                     return;
                 case 16:
                     RodManager.OpenBizSellShopMenu(player);
@@ -5088,11 +5083,53 @@ namespace Golemo.Core
                     BusinessManager.Orders.Add(order.UID, biz.ID);
 
                     biz.Orders.Add(order);
+                    SetTimerToAddProducts(player, biz, order);
 
                     Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы заказали {p.Name} в количестве {amount}. №{order.UID}", 3000);
                     player.SendChatMessage($"Номер Вашего заказа: {order.UID}");
                     return;
                 }
+            }
+        }
+
+        public static void SetTimerToAddProducts(Player player, Business biz, Order order)
+        {
+            if (!Main.Players[player].BizIDs.Contains(biz.ID)) return;
+            Player pl = player;
+            try
+            {
+                Timers.StartOnce($"{Main.Players[pl].UUID}_ordertime", 180000, () => { //3  minutes 180.000
+                    if (!BusinessManager.Orders.ContainsKey(order.UID))
+                    {
+                        Timers.Stop($"{Main.Players[pl].UUID}_ordertime");
+                        return;
+                    }
+                    Business biz = BusinessManager.BizList[BusinessManager.Orders[order.UID]];
+                    if (order == null)
+                    {
+                        Timers.Stop($"{Main.Players[pl].UUID}_ordertime");
+                        return;
+                    }
+                    var ow = NAPI.Player.GetPlayerFromName(biz.Owner);
+                    if (ow != null)
+                        Notify.Alert(ow, $"Ваш заказ на {order.Name} был выполнен", 3000);
+
+                    foreach (var p in biz.Products)
+                    {
+                        if (p.Name != order.Name) continue;
+                        p.Ordered = false;
+                        p.Lefts += order.Amount;
+                        break;
+                    }
+                    biz.Orders.Remove(order);
+                    BusinessManager.Orders.Remove(order.UID);
+
+                    Timers.Stop($"{Main.Players[pl].UUID}_ordertime");
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Write("ERROR (SetTimerToAddProducts): " + e.ToString(), nLog.Type.Error);
             }
         }
 
