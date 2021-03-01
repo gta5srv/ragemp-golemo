@@ -338,6 +338,9 @@ mp.events.add('tunbuy', (state) => {
             }
             else mp.events.callRemote('buyTuning', 20, paintType, lscRGB.r, lscRGB.g, lscRGB.b);
         }
+		else if(lscPage === "horn_menu"){
+			mp.events.callRemote('buyTuning', categoryIds[lscPage], lscSelected, playerVehicle.getNumberPlateText().replace(/\s/g, ''));
+		}
         else
             mp.events.callRemote('buyTuning', categoryIds[lscPage], lscSelected, -1);
     }

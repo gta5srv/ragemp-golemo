@@ -4197,6 +4197,7 @@ namespace Golemo.Core
 
                 var cat = Convert.ToInt32(arguments[0].ToString());
                 var id = Convert.ToInt32(arguments[1].ToString());
+                string number = "none";
 
                 Log.Write($"cat:{cat}, id:{id}");
 
@@ -4213,8 +4214,15 @@ namespace Golemo.Core
                     g = Convert.ToInt32(arguments[3].ToString());
                     b = Convert.ToInt32(arguments[4].ToString());
                 }
-
-                var vehModel = VehicleManager.Vehicles[player.Vehicle.NumberPlate].Model;
+                if (cat == 12 && player.Vehicle == null)
+                {
+                    number = Convert.ToString(arguments[2].ToString());
+                }
+                else
+                {
+                    number = player.Vehicle.NumberPlate;
+                }
+                var vehModel = VehicleManager.Vehicles[number].Model;
 
                 var modelPrice = ProductsOrderPrice[vehModel];
                 var modelPriceMod = (modelPrice < 150000) ? 1 : 2;
@@ -4245,11 +4253,9 @@ namespace Golemo.Core
                     return;
                 }
 
-                GameLog.Money($"player({Main.Players[player].UUID})", $"biz({biz.ID})", price, $"buyTuning({player.Vehicle.NumberPlate},{cat},{id})");
+                GameLog.Money($"player({Main.Players[player].UUID})", $"biz({biz.ID})", price, $"buyTuning({number},{cat},{id})");
                 MoneySystem.Wallet.Change(player, -price);
                 Trigger.ClientEvent(player, "tunBuySuccess", id);
-
-                var number = player.Vehicle.NumberPlate;
 
                 switch (cat)
                 {
