@@ -158,6 +158,7 @@ var aCategory = -1;
 
 // // //
 var pFraction = 0;
+var fractionActions = [];
 fractionActions[1] = ["Ограбить", "Украсть оружие", "Мешок"];
 fractionActions[2] = ["Ограбить", "Украсть оружие", "Мешок"];
 fractionActions[3] = ["Ограбить", "Украсть оружие", "Мешок"];
@@ -175,6 +176,7 @@ fractionActions[14] = ["Вести за собой"];
 fractionActions[15] = ["Вести за собой"];
 fractionActions[16] = ["Вести за собой"];
 fractionActions[17] = ["Вести за собой", "Мешок", "Обыскать", "Изъять нелегал", "Сорвать маску"];
+fractionActions[18] = ["Вести за собой", "Обыскать", "Изъять оружие", "Изъять нелегал", "Сорвать маску", "Выписать штраф"];
 mp.events.add('fractionChange', (fraction) => {
     pFraction = fraction;
 });
