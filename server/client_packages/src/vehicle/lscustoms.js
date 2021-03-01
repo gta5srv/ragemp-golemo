@@ -16,6 +16,7 @@ var priceMod = 1;
 var isBike = false;
 var modelPriceMod = 1;
 var carName = "";
+let playerVehicle = null; //todo
 setTimeout(function () { lsc.execute(`show(${false});`); }, 1500);
 
 mp.events.add('hideTun', () => {
@@ -30,6 +31,11 @@ mp.events.add('browserDomReady', (browser) => {
 mp.events.add('tpage', (id) => {
     afkSecondsCount = 0;
     if (!opened) return;
+
+    if(playerVehicle != null) {
+        localplayer.setIntoVehicle(playerVehicle.handle, -1);
+    }
+    localplayer.freezePosition(false);
 
     if (id == "exit_menu") {
         lsc.execute(`show(${false});`);
@@ -48,7 +54,8 @@ mp.events.add('tpage', (id) => {
                 lsc.execute(`disable(${JSON.stringify(toDisable)});`);
                 lsc.execute(`show(${true});`);
             }, 200);
-            localplayer.vehicle.setHeading(148.9986);
+            //todo
+            playerVehicle.setHeading(148.9986);
 
             var camFrom = tunCam;
             tunCam = mp.cameras.new('default', new mp.Vector3(-333.7966, -137.409, 40.58963), new mp.Vector3(0, 0, 0), 60);
@@ -56,30 +63,30 @@ mp.events.add('tpage', (id) => {
             tunCam.setActiveWithInterp(camFrom.handle, 500, 1, 1);
 
             if (lscPage == "numbers_menu") {
-                localplayer.vehicle.setNumberPlateTextIndex(lscSettedMod);
+                playerVehicle.setNumberPlateTextIndex(lscSettedMod);
             }
             else if (lscPage == "paint_menu_three") {
-                localPlayer.vehicle.setNeonLightEnabled(0, false);
-                localPlayer.vehicle.setNeonLightEnabled(1, false);
-                localPlayer.vehicle.setNeonLightEnabled(2, false);
-                localPlayer.vehicle.setNeonLightEnabled(3, false);
+                playerVehicle.setNeonLightEnabled(0, false);
+                playerVehicle.setNeonLightEnabled(1, false);
+                playerVehicle.setNeonLightEnabled(2, false);
+                playerVehicle.setNeonLightEnabled(3, false);
                 mp.events.call("hideColorp");
             }
             else if (lscPage == "glasses_menu") {
-                localplayer.vehicle.setWindowTint(lscSettedMod);
+                playerVehicle.setWindowTint(lscSettedMod);
             }
             else if (lscPage != "paint_menu") {
                 if (lscPage == "turbo_menu")
-                    localplayer.vehicle.toggleMod(18, false);
+                    playerVehicle.toggleMod(18, false);
                 else if (lscPage == "lights_menu") {
-                    mp.game.invoke('0xE41033B25D003A07', localplayer.vehicle.handle, 0);
-                    localplayer.vehicle.setLights(0); //todo lights
-					localplayer.vehicle.toggleMod(22, false);
+                    mp.game.invoke('0xE41033B25D003A07', playerVehicle.handle, 0);
+                    playerVehicle.setLights(0); //todo lights
+					playerVehicle.toggleMod(22, false);
                 } else if (lscPage == "wheels_menu")
-                    localplayer.vehicle.setWheelType(lscSettedWheelType);
+                    playerVehicle.setWheelType(lscSettedWheelType);
 
                 if (categoryModsIds[lscPage] == undefined) return;
-                localplayer.vehicle.setMod(categoryModsIds[lscPage], lscSettedMod);
+                playerVehicle.setMod(categoryModsIds[lscPage], lscSettedMod);
             }
         }
         else if (categoryIds[id] != undefined) {
@@ -88,40 +95,45 @@ mp.events.add('tpage', (id) => {
             tunCam.pointAtCoord(-338.7966, -137.409, 37.88963);
             tunCam.setActiveWithInterp(camFrom.handle, 500, 1, 1);
 
-            localplayer.vehicle.setHeading(categoryPositions[categoryIds[id]].CarHeading);
+            playerVehicle.setHeading(categoryPositions[categoryIds[id]].CarHeading);
 
             if (id == "numbers_menu") {
-                lscSettedMod = localplayer.vehicle.getNumberPlateTextIndex();
+                lscSettedMod = playerVehicle.getNumberPlateTextIndex();
+            }
+            //todo
+            else if(id == "horn_menu") {
+                localplayer.position = new mp.Vector3(-337.77844, -136.5335, 36);
+                localplayer.freezePosition(true);
             }
             else if (id == "glasses_menu") {
-                lscSettedMod = localplayer.vehicle.getWindowTint();
+                lscSettedMod = playerVehicle.getWindowTint();
             }
             else if (id == "paint_menu") {
                 if (lscPage != "home") {
                     mp.events.call("hideColorp");
-                    localplayer.vehicle.setCustomPrimaryColour(lscPrimary.r, lscPrimary.g, lscPrimary.b);
-                    localplayer.vehicle.setCustomSecondaryColour(lscSecondary.r, lscSecondary.g, lscSecondary.b);
-                    localplayer.vehicle.setNeonLightEnabled(0, true);
-                    localplayer.vehicle.setNeonLightEnabled(1, true);
-                    localplayer.vehicle.setNeonLightEnabled(2, true);
-                    localplayer.vehicle.setNeonLightEnabled(3, true);
-                    localplayer.vehicle.setNeonLightsColour(lscNeon.r, lscNeon.g, lscNeon.b);
+                    playerVehicle.setCustomPrimaryColour(lscPrimary.r, lscPrimary.g, lscPrimary.b);
+                    playerVehicle.setCustomSecondaryColour(lscSecondary.r, lscSecondary.g, lscSecondary.b);
+                    playerVehicle.setNeonLightEnabled(0, true);
+                    playerVehicle.setNeonLightEnabled(1, true);
+                    playerVehicle.setNeonLightEnabled(2, true);
+                    playerVehicle.setNeonLightEnabled(3, true);
+                    playerVehicle.setNeonLightsColour(lscNeon.r, lscNeon.g, lscNeon.b);
                 }
                 else {
-                    lscPrimary = localplayer.vehicle.getCustomPrimaryColour(1, 1, 1);
-                    lscSecondary = localplayer.vehicle.getCustomSecondaryColour(1, 1, 1);
-                    lscNeon = localplayer.vehicle.getNeonLightsColour(1, 1, 1);
+                    lscPrimary = playerVehicle.getCustomPrimaryColour(1, 1, 1);
+                    lscSecondary = playerVehicle.getCustomSecondaryColour(1, 1, 1);
+                    lscNeon = playerVehicle.getNeonLightsColour(1, 1, 1);
                 }
             }
             else {
                 if (lscPage == "home") {
                     if (id == "lights_menu") {
-                        localplayer.vehicle.setLights(3);
-						localplayer.vehicle.toggleMod(22, true); //todo lights
-                        if (id >= 0) mp.game.invoke('0xE41033B25D003A07', localplayer.vehicle.handle, 255); //todo lights
+                        playerVehicle.setLights(3);
+						playerVehicle.toggleMod(22, true); //todo lights
+                        if (id >= 0) mp.game.invoke('0xE41033B25D003A07', playerVehicle.handle, 255); //todo lights
                     } else if (id == "wheels_menu")
-                        lscSettedWheelType = localplayer.vehicle.getWheelType();
-                    lscSettedMod = localplayer.vehicle.getMod(categoryModsIds[id]);
+                        lscSettedWheelType = playerVehicle.getWheelType();
+                    lscSettedMod = playerVehicle.getMod(categoryModsIds[id]);
                 }
             }
 
@@ -145,7 +157,7 @@ mp.events.add('tpage', (id) => {
             }
         }
         else if (wheelsTypes[id] != undefined) {
-            localplayer.vehicle.setWheelType(wheelsTypes[id]);
+            playerVehicle.setWheelType(wheelsTypes[id]);
             var prices = [];
             for (var key in global.tuningWheels[wheelsTypes[id]]) {
                 var price = global.tuningWheels[wheelsTypes[id]][key] * priceMod;
@@ -176,10 +188,10 @@ mp.events.add('tpage', (id) => {
 })
 // Forced update //
 mp.events.add('tupd', () => {
-    lscSpeed = (mp.game.vehicle.getVehicleModelMaxSpeed(localplayer.vehicle.model) / 1.2).toFixed();
-    lscBrakes = localplayer.vehicle.getMaxBraking() * 100;
-    lscBoost = localplayer.vehicle.getAcceleration() * 100;
-    lscСlutch = localplayer.vehicle.getMaxTraction() * 10;
+    lscSpeed = (mp.game.vehicle.getVehicleModelMaxSpeed(playerVehicle.model) / 1.2).toFixed();
+    lscBrakes = playerVehicle.getMaxBraking() * 100;
+    lscBoost = playerVehicle.getAcceleration() * 100;
+    lscСlutch = playerVehicle.getMaxTraction() * 10;
     lsc.execute(`set(${lscSpeed},${lscBrakes},${lscBoost},${lscСlutch})`);
 })
 // Click on element //
@@ -278,31 +290,33 @@ mp.events.add('thov', (id) => {
     if (lscPage === "wheels_menu") return;
 
     if (lscPage == "numbers_menu") {
-        localplayer.vehicle.setNumberPlateTextIndex(parseInt(id));
+        playerVehicle.setNumberPlateTextIndex(parseInt(id));
     }
     else if (lscPage == "glasses_menu") {
-        localplayer.vehicle.setWindowTint(parseInt(id));
+        playerVehicle.setWindowTint(parseInt(id));
     }
+    //todo horns
     else if (lscPage == "horn_menu") {
-        localplayer.vehicle.startHorn(1000, hornNames[id], 0);
+        playerVehicle.setMod(categoryModsIds[lscPage], Number(id));
+        playerVehicle.startHorn(6000, Number(id), false);
     }
     else if (lscPage == "lights_menu") {
-        localplayer.vehicle.setLights(3);
+        playerVehicle.setLights(3);
         if (id >= 0) {
-            localplayer.vehicle.setMod(22, 0); 
-			localplayer.vehicle.toggleMod(22, true); //todo lights
-            mp.game.invoke('0xE41033B25D003A07', localplayer.vehicle.handle, parseInt(id));
-        } else localplayer.vehicle.setMod(22, -1);
+            playerVehicle.setMod(22, 0); 
+			playerVehicle.toggleMod(22, true); //todo lights
+            mp.game.invoke('0xE41033B25D003A07', playerVehicle.handle, parseInt(id));
+        } else playerVehicle.setMod(22, -1);
     }
     else {
         if (categoryModsIds[lscPage] != undefined) {
             if (lscPage == "turbo_menu")
-                localplayer.vehicle.toggleMod(18, true);
-            localplayer.vehicle.setMod(categoryModsIds[lscPage], parseInt(id));
+                playerVehicle.toggleMod(18, true);
+            playerVehicle.setMod(categoryModsIds[lscPage], parseInt(id));
             mp.events.call('tupd');
         }
         else if (wheelsTypes[lscPage] != undefined) {
-            localplayer.vehicle.setMod(23, parseInt(id));
+            playerVehicle.setMod(23, parseInt(id));
         }
     }
 })
@@ -331,26 +345,26 @@ mp.events.add('tunbuy', (state) => {
         lsc.execute(`show(${true});`);
         opened = true;
         if (lscPage == "numbers_menu") {
-            localplayer.vehicle.setNumberPlateTextIndex(lscSettedMod);
+            playerVehicle.setNumberPlateTextIndex(lscSettedMod);
         }
         else if (lscPage == "glasses_menu") {
-            localplayer.vehicle.setWindowTint(lscSettedMod);
+            playerVehicle.setWindowTint(lscSettedMod);
         }
         else if (lscPage == "paint_menu_one") {
-            localplayer.vehicle.setCustomPrimaryColour(lscPrimary.r, lscPrimary.g, lscPrimary.b);
+            playerVehicle.setCustomPrimaryColour(lscPrimary.r, lscPrimary.g, lscPrimary.b);
         }
         else if (lscPage == "paint_menu_two") {
-            localplayer.vehicle.setCustomSecondaryColour(lscSecondary.r, lscSecondary.g, lscSecondary.b);
+            playerVehicle.setCustomSecondaryColour(lscSecondary.r, lscSecondary.g, lscSecondary.b);
         }
         else if (lscPage == "paint_menu_three") {
-            localplayer.vehicle.setNeonLightsColour(lscNeon.r, lscNeon.g, lscNeon.b);
+            playerVehicle.setNeonLightsColour(lscNeon.r, lscNeon.g, lscNeon.b);
         }
         else {
             if (lscPage == "turbo_menu")
-                localplayer.vehicle.toggleMod(18, false);
+                playerVehicle.toggleMod(18, false);
 
             if (categoryModsIds[lscPage] == undefined) return;
-            localplayer.vehicle.setMod(categoryModsIds[lscPage], lscSettedMod);
+            playerVehicle.setMod(categoryModsIds[lscPage], lscSettedMod);
         }
     }
 })
@@ -362,16 +376,16 @@ mp.events.add('tunBuySuccess', (id) => {
 
         lscSettedMod = id;
         if (wheelsTypes[lscPage] != undefined)
-            lscSettedWheelType = localplayer.vehicle.getWheelType();
+            lscSettedWheelType = playerVehicle.getWheelType();
         else if (lscPage == "paint_menu_one") {
             mp.events.call("showColorp");
-            lscPrimary = localplayer.vehicle.getCustomPrimaryColour(1, 1, 1);
+            lscPrimary = playerVehicle.getCustomPrimaryColour(1, 1, 1);
         } else if (lscPage == "paint_menu_two") {
             mp.events.call("showColorp");
-            lscSecondary = localplayer.vehicle.getCustomSecondaryColour(1, 1, 1);
+            lscSecondary = playerVehicle.getCustomSecondaryColour(1, 1, 1);
         } else if (lscPage == "paint_menu_three") {
             mp.events.call("showColorp");
-            lscNeon = localplayer.vehicle.getNeonLightsColour(1, 1, 1);
+            lscNeon = playerVehicle.getNeonLightsColour(1, 1, 1);
         }
     }
 })
@@ -379,19 +393,19 @@ mp.events.add('tunColor', function (c) {
     if (!opened) return;
     afkSecondsCount = 0;
     if (lscPage == "paint_menu_one") {
-        localplayer.vehicle.setCustomPrimaryColour(c.r, c.g, c.b);
+        playerVehicle.setCustomPrimaryColour(c.r, c.g, c.b);
         lscRGB = { r: c.r, g: c.g, b: c.b };
     }
     else if (lscPage == "paint_menu_two") {
-        localplayer.vehicle.setCustomSecondaryColour(c.r, c.g, c.b);
+        playerVehicle.setCustomSecondaryColour(c.r, c.g, c.b);
         lscRGB = { r: c.r, g: c.g, b: c.b };
     }
     else if (lscPage == "paint_menu_three") {
-        localplayer.vehicle.setNeonLightsColour(c.r, c.g, c.b);
-        localplayer.vehicle.setNeonLightEnabled(0, true);
-        localplayer.vehicle.setNeonLightEnabled(1, true);
-        localplayer.vehicle.setNeonLightEnabled(2, true);
-        localplayer.vehicle.setNeonLightEnabled(3, true);
+        playerVehicle.setNeonLightsColour(c.r, c.g, c.b);
+        playerVehicle.setNeonLightEnabled(0, true);
+        playerVehicle.setNeonLightEnabled(1, true);
+        playerVehicle.setNeonLightEnabled(2, true);
+        playerVehicle.setNeonLightEnabled(3, true);
         lscRGB = { r: c.r, g: c.g, b: c.b };
     }
 });
@@ -499,7 +513,7 @@ mp.events.add('openTun', (priceModief, carModel, modelPriceModief, components, v
     global.menuOpen();
     toDisable = ["armor_menu", "protection_menu"];
     categoryMods.forEach(element => {
-        if (localplayer.vehicle.getNumMods(element.Index) <= 0) toDisable.push(element.Name);
+        if (playerVehicle.getNumMods(element.Index) <= 0) toDisable.push(element.Name);
     });
     isBike = false;
 
@@ -532,4 +546,5 @@ mp.events.add('tuningSeatsCheck', function () {
             return;
         }
     mp.events.callRemote('tuningSeatsCheck');
+    playerVehicle = localplayer.vehicle;
 });
