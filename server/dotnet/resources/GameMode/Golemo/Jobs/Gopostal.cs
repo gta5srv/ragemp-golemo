@@ -71,8 +71,20 @@ namespace Golemo.Jobs
                 if (!Main.Players.ContainsKey(player)) return;
                 if (Main.Players[player].WorkID == 2 && NAPI.Data.GetEntityData(player, "ON_WORK"))
                 {
-                    NAPI.Data.SetEntityData(player, "ON_WORK", false);
+                    player.SetData("ON_WORK", false);
+                    player.SetData("PAYMENT", 0);
+                    player.SetData("PACKAGES", 0);
+
                     Customization.ApplyCharacter(player);
+                    Trigger.ClientEvent(player, "deleteWorkBlip");
+                    Trigger.ClientEvent(player, "deleteCheckpoint", 1, 0);
+                    NAPI.Task.Run(() => { BasicSync.DetachObject(player); }, 1000);
+                    if (player.GetData<Vehicle>("WORK") != null)
+                    {
+                        NAPI.Entity.DeleteEntity(player.GetData<Vehicle>("WORK"));
+                        player.SetData<Vehicle>("WORK", null);
+                    }
+                    Notify.Info(player, $"Вы закончили рабочий день", 3000);
                 }
             }
             catch (Exception e) { Log.Write("PlayerDeath: " + e.Message, nLog.Type.Error); }
