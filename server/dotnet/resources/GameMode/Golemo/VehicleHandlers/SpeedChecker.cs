@@ -23,12 +23,12 @@ namespace Golemo.VehicleHandlers
         };
         private static List<Vector3> PropPosition = new List<Vector3>() {
 
-            new Vector3(245.74384, -1029.6787, 27.122063),
-            new Vector3(964.34595, 131.69156, 78.87041),
-            new Vector3(276.06183, -595.51874, 41.081535),
-            new Vector3(-237.26509, -651.05145, 31.17887),
-            new Vector3(-506.43875, -287.9266, 33.331497),
-            new Vector3(-485.86865, -822.957, 28.23704),
+            new Vector3(245, -1029, 28.2f),
+            new Vector3(964, 131, 79.96f),
+            new Vector3(276, -595, 42.18f),
+            new Vector3(-237, -651, 32.28f),
+            new Vector3(-506, -288, 34.44f),
+            new Vector3(-485, -823, 29.35f),
 
         };
 
