@@ -780,6 +780,10 @@ namespace Golemo.Houses
             menuItem.Text = $"Продать гос-ву за {Convert.ToInt32(price)}$";
             menu.Add(menuItem);
 
+            menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+            menuItem.Text = "Назад";
+            menu.Add(menuItem);
+
             menuItem = new Menu.Item("close", Menu.MenuItem.Button);
             menuItem.Text = "Закрыть";
             menu.Add(menuItem);
@@ -838,6 +842,9 @@ namespace Golemo.Houses
                     return;
                 case "roommates":
                     OpenRoommatesMenu(player);
+                    return;
+                case "back":
+                    Main.OpenPlayerMenu(player).Wait();
                     return;
                 case "close":
                     MenuManager.Close(player);
@@ -957,6 +964,10 @@ namespace Golemo.Houses
             menuItem.Text = "Управление мебелью";
             menu.Add(menuItem);
 
+            menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+            menuItem.Text = "Назад";
+            menu.Add(menuItem);
+
             menuItem = new Menu.Item("close", Menu.MenuItem.Button);
             menuItem.Text = "Закрыть";
             menu.Add(menuItem);
@@ -969,6 +980,11 @@ namespace Golemo.Houses
             if (item.ID == "close")
             {
                 MenuManager.Close(player);
+                return;
+            }
+            if(item.ID == "back")
+            {
+                HouseManager.OpenHouseManageMenu(player);
                 return;
             }
             if (Main.Players[player].InsideHouseID == -1)
@@ -1030,8 +1046,8 @@ namespace Golemo.Houses
                 menuItem.Text = "Установить/Убрать";
                 nmenu.Add(menuItem);
 
-                menuItem = new Menu.Item("close", Menu.MenuItem.Button);
-                menuItem.Text = "Закрыть";
+                menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+                menuItem.Text = "Назад";
                 nmenu.Add(menuItem);
 
                 nmenu.Open(player);
@@ -1059,8 +1075,8 @@ namespace Golemo.Houses
                 menuItem.Text = "Шкаф с предметами (15000$)";
                 nmenu.Add(menuItem);
 
-                menuItem = new Menu.Item("close", Menu.MenuItem.Button);
-                menuItem.Text = "Закрыть";
+                menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+                menuItem.Text = "Назад";
                 nmenu.Add(menuItem);
 
                 nmenu.Open(player);
@@ -1069,9 +1085,9 @@ namespace Golemo.Houses
 
         private static void callback_furniture1(Player player, Menu menu, Menu.Item item, string eventName, dynamic data)
         {
-            if (item.ID == "close")
+            if (item.ID == "back")
             {
-                MenuManager.Close(player);
+                OpenFurnitureMenu(player);
                 return;
             }
             if (Main.Players[player].InsideHouseID == -1)
@@ -1137,9 +1153,9 @@ namespace Golemo.Houses
 
         private static void callback_furniture(Player player, Menu menu, Menu.Item item, string eventName, dynamic data)
         {
-            if (item.ID == "close")
+            if (item.ID == "back")
             {
-                MenuManager.Close(player);
+                OpenFurnitureMenu(player);
                 return;
             }
             if (Main.Players[player].InsideHouseID == -1)
@@ -1268,7 +1284,7 @@ namespace Golemo.Houses
         {
             if (item.ID == "back")
             {
-                MenuManager.Close(player);
+                HouseManager.OpenHouseManageMenu(player);
                 return;
             }
 
@@ -1297,8 +1313,8 @@ namespace Golemo.Houses
                 menu.Add(menuItem);
             }
 
-            menuItem = new Menu.Item("close", Menu.MenuItem.Button);
-            menuItem.Text = "Закрыть";
+            menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+            menuItem.Text = "Назад";
             menu.Add(menuItem);
 
             menu.Open(player);
@@ -1309,8 +1325,11 @@ namespace Golemo.Houses
             {
                 try
                 {
-                    MenuManager.Close(player);
-                    if (item.ID == "close") return;
+                    if (item.ID == "back")
+                    {
+                        HouseManager.OpenHouseManageMenu(player);
+                        return;
+                    }
                     OpenSelectedCarMenu(player, item.ID);
                 }
                 catch (Exception e) { Log.Write("callback_cars: " + e.Message + e.Message, nLog.Type.Error); }
@@ -1393,6 +1412,9 @@ namespace Golemo.Houses
                         break;
                 }
             }
+            menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+            menuItem.Text = "Назад";
+            menu.Add(menuItem);
 
             menuItem = new Menu.Item("close", Menu.MenuItem.Button);
             menuItem.Text = "Закрыть";
@@ -1581,6 +1603,9 @@ namespace Golemo.Houses
 
                     VehicleManager.Vehicles[menu.Items[0].Text].KeyNum++;
                     Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы сменили замки на машине {menu.Items[0].Text}. Теперь старые ключи не могут быть использованы", 3000);
+                    return;
+                case "back":
+                    HouseManager.OpenCarsMenu(player);
                     return;
             }
         }
