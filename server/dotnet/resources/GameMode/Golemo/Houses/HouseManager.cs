@@ -694,7 +694,7 @@ namespace Golemo.Houses
                         {
                             var veh = v;
                             if (veh == null) return;
-                            VehicleManager.Vehicles[vehicle].Fuel = (!NAPI.Data.HasEntityData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : NAPI.Data.GetEntityData(veh, "PETROL");
+                            VehicleManager.Vehicles[vehicle].Fuel = (!NAPI.Data.HasEntitySharedData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : veh.GetSharedData<int>("PETROL");
                             NAPI.Entity.DeleteEntity(veh);
                             MoneySystem.Wallet.Change(player, -200);
                             GameLog.Money($"player({Main.Players[player].UUID})", $"server", 200, $"carEvac");
@@ -1504,7 +1504,7 @@ namespace Golemo.Houses
 
                     var veh = garage.GetOutsideCar(number);
                     if (veh == null) return;
-                    VehicleManager.Vehicles[number].Fuel = (!NAPI.Data.HasEntityData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : NAPI.Data.GetEntityData(veh, "PETROL");
+                    VehicleManager.Vehicles[number].Fuel = (!NAPI.Data.HasEntitySharedData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : veh.GetSharedData<int>("PETROL");
                     NAPI.Entity.DeleteEntity(veh);
                     garage.SendVehicleIntoGarage(number);
 

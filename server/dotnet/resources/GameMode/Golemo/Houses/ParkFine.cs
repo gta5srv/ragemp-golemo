@@ -380,8 +380,7 @@ namespace Golemo.Houses
                         {
                             var veh = v;
                             if (veh == null) return;
-                            //VehicleManager.Vehicles[number].Fuel = (!NAPI.Data.HasEntitySharedData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : NAPI.Data.GetEntitySharedData(veh, "PETROL");
-                            VehicleManager.Vehicles[number].Fuel = (!NAPI.Data.HasEntityData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : NAPI.Data.GetEntityData(veh, "PETROL");
+                            VehicleManager.Vehicles[number].Fuel = (!NAPI.Data.HasEntitySharedData(veh, "PETROL")) ? VehicleManager.VehicleTank[veh.Class] : veh.GetSharedData<int>("PETROL");
                             NAPI.Entity.DeleteEntity(veh);
 
                             MoneySystem.Wallet.Change(player, -200);
