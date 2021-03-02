@@ -659,6 +659,11 @@ namespace Golemo.Houses
                         return;
                     }
                     var vehicles = VehicleManager.getAllPlayerVehicles(player.Name).Count;
+                    if(house.GarageID == 0)
+                    {
+                        Notify.Error(player, "У дома нет гаража!", 3000);
+                        return;
+                    }
                     var maxcars = GarageManager.GarageTypes[GarageManager.Garages[house.GarageID].Type].MaxCars;
                     if (vehicles > maxcars)
                     {

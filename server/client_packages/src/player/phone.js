@@ -38,10 +38,11 @@ mp.events.add('phoneClose', () => {
 // // //
 mp.events.add('phoneCallback', (itemid, event, data) => {
     mp.events.callRemote('Phone', 'callback', itemid, event, data);
-    //mp.gui.chat.push(itemid+":"+event+":"+data);
+    //mp.gui.chat.push("CallBack: "+itemid+":"+event+":"+data);
 });
 mp.events.add('phoneNavigation', (btn) => {
     mp.events.callRemote('Phone', 'navigation', btn);
+    //mp.gui.chat.push("Navigation: " + btn);
 });
 // // //
 /*mp.events.add("playerQuit", (player, exitType, reason) => {

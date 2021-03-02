@@ -32,8 +32,10 @@ namespace Golemo.GUI
                 return Task.CompletedTask;
             try
             {
+                if(arguments == null) return Task.CompletedTask;
                 string eventName = Convert.ToString(arguments[0]);
 
+                if (!Menus.ContainsKey(client)) return Task.CompletedTask;
                 Menu menu = Menus[client];
                 switch (eventName)
                 {
@@ -70,8 +72,12 @@ namespace Golemo.GUI
             }
             catch (Exception e)
             {
-                Menu menu = Menus[client];
-                Log.Write($"EXCEPTION AT /{menu.ID}/\"PHONE_CALLBACK\":\n" + e.ToString(), nLog.Type.Error);
+                string menuID = "-1";
+                if (Menus.ContainsKey(client))
+                {
+                    menuID = Menus[client].ID;
+                }
+                Log.Write($"EXCEPTION AT /{menuID}/\"PHONE_CALLBACK\":\n" + e.ToString(), nLog.Type.Error);
             }
 
             return Task.CompletedTask;
