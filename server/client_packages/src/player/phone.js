@@ -14,6 +14,7 @@ mp.events.add('phoneHide', () => {
     mp.gui.cursor.visible = false;
 });
 mp.events.add('phoneOpen', (data) => {
+    global.phoneOpen = 1;
     var json = JSON.parse(data);
     // // //
     var id = json[0];

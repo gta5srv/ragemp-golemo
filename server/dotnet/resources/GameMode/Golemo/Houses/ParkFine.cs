@@ -206,8 +206,8 @@ namespace Golemo.Houses
                 break;
             }
 
-            menuItem = new Menu.Item("close", Menu.MenuItem.Button);
-            menuItem.Text = "Закрыть";
+            menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+            menuItem.Text = "Назад";
             menu.Add(menuItem);
 
             menu.Open(player);
@@ -219,9 +219,14 @@ namespace Golemo.Houses
             {
                 try
                 {
-                    MenuManager.Close(player);
-                    if (item.ID == "close") return;
-                    OpenSelectedCarMenu(player, item.ID);
+                    if (item.ID == "back")
+                    {
+                        Main.OpenPlayerMenu(player).Wait();
+                    }
+                    else
+                    {
+                        OpenSelectedCarMenu(player, item.ID);
+                    }
                 }
                 catch (Exception e) { Log.Write("callback_cars: " + e.Message + e.Message, nLog.Type.Error); }
             });
@@ -286,6 +291,10 @@ namespace Golemo.Houses
                         break;
                 }
             }
+
+            menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+            menuItem.Text = "Назад";
+            menu.Add(menuItem);
 
             menuItem = new Menu.Item("close", Menu.MenuItem.Button);
             menuItem.Text = "Закрыть";
@@ -358,8 +367,6 @@ namespace Golemo.Houses
                         Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно средств (не хватает {200 - Main.Players[player].Money}$)", 3000);
                         return;
                     }
-
-
                     var targetVehicles = VehicleManager.getAllPlayerVehicles(player.Name.ToString());
                     var vehicle = "";
                     foreach (var num in targetVehicles)
@@ -367,8 +374,6 @@ namespace Golemo.Houses
                         vehicle = num;
                         break;
                     }
-
-
                     foreach (var v in NAPI.Pools.GetAllVehicles())
                     {
                         if (v.HasData("ACCESS") && v.GetData<string>("ACCESS") == "PERSONAL" && NAPI.Vehicle.GetVehicleNumberPlate(v) == vehicle)
@@ -411,7 +416,9 @@ namespace Golemo.Houses
                     VehicleManager.Vehicles[menu.Items[0].Text].KeyNum++;
                     Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы сменили замки на машине {menu.Items[0].Text}. Теперь старые ключи не могут быть использованы", 3000);
                     return;
-
+                case "back":
+                    ParkManager.OpenMenu(player);
+                    return;
             }
         }
 

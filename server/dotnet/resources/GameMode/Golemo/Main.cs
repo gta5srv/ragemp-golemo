@@ -3881,8 +3881,8 @@ namespace Golemo
                 menu.Add(menuItem);
             }
 
-            menuItem = new Menu.Item("close", Menu.MenuItem.Button);
-            menuItem.Text = "Закрыть";
+            menuItem = new Menu.Item("back", Menu.MenuItem.Button);
+            menuItem.Text = "Назад";
             menu.Add(menuItem);
 
             menu.Open(player);
@@ -3942,6 +3942,9 @@ namespace Golemo
                 case "Ближайшая остановка":
                     waypoint = Jobs.Bus.GetNearestStation(player.Position);
                     Trigger.ClientEvent(player, "createWaypoint", waypoint.X, waypoint.Y);
+                    return;
+                case "back":
+                    Main.OpenPlayerMenu(player).Wait();
                     return;
             }
         }

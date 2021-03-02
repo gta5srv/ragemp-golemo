@@ -121,7 +121,6 @@ namespace Golemo.Core
             {
                 if (item.ID == "back")
                 {
-                    MenuManager.Close(player);
                     Main.OpenPlayerMenu(player).Wait();
                 }
             }
