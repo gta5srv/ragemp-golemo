@@ -648,7 +648,7 @@ namespace Golemo
                                 //NAPI.Entity.SetEntityPosition(player, house.Position + new Vector3(0, 0, 1.5));
                                 nInventory.ClearWithoutClothes(player);
                             }
-                            else if (Players[player].HotelID != -1)
+                            else if (Players[player].HotelID != -1 && Houses.Hotel.HotelEnters[Players[player].HotelID] != null)
                             {
                                 NAPI.Entity.SetEntityPosition(player, Houses.Hotel.HotelEnters[Players[player].HotelID] + new Vector3(0, 0, 1.12));
                             }
