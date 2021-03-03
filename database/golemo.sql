@@ -280,11 +280,13 @@ CREATE TABLE `characters` (
   `createdate` datetime NOT NULL,
   `pos` text NOT NULL,
   `work` int(255) NOT NULL,
-  `personid` text DEFAULT NULL,
-  `lastbonus` int(11) DEFAULT 0,
-  `isbonused` tinyint(1) DEFAULT 0,
   `idkey` int(11) NOT NULL AUTO_INCREMENT,
-  `Fines` int(11) DEFAULT 0,
+  `personid` varchar(9) DEFAULT NULL,
+  `lastbonus` int(11) NOT NULL DEFAULT 0,
+  `isbonused` tinyint(1) NOT NULL DEFAULT 0,
+  `luckywheelspins` int(11) NOT NULL DEFAULT 0,
+  `fines` int(11) NOT NULL DEFAULT 0,
+  `workstats` text DEFAULT NULL
   PRIMARY KEY (`idkey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
