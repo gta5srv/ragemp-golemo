@@ -149,24 +149,24 @@ namespace Golemo.Fractions
         public static Dictionary<Player, MemberData> Members = new Dictionary<Player, MemberData>();
         public static SortedList<int, Vector3> FractionSpawns = new SortedList<int, Vector3>()
         {
-            {1, new Vector3(-219.8333, -1615.615, 35.74932)},    // The Families
-            {2, new Vector3(93.79514, -1961.605, 21.62755)},     // The Ballas Gang
-            {3, new Vector3(480.8304, -1527.922, 30.18241)},     // Los Santos Vagos
-            {4, new Vector3(1403.206, -1483.664, 60.63504)},     // Marabunta Grande
-            {5, new Vector3(891.9399, -2174.212, 33.16626)},     // Blood Street
-            {6, new Vector3(262.9857, 223.3491, 102.5633)},      // Cityhall
-            {7, new Vector3(457.4271, -991.4473, 31.5696)},      // LSPD police
-            {8, new Vector3(244.7622, -1374.57, 40.41434)},      // Emergency care
-            {9, new Vector3(149.4746, -756.9065, 243.0319)},     // FBI 
-            {10, new Vector3(1387.338, 1155.952, 115.2144)},     // La Cosa Nostra 
-            {11, new Vector3(-115.1648, 983.5231, 236.6358)},    // Russian Mafia
-            {12, new Vector3(-1549.22, -86.07732, 55.20967)},    // Yakuza 
-            {13, new Vector3(-1809.738, 444.3138, 129.3889)},    // Armenian Mafia 
-            {14, new Vector3(-2355.625, 3254.189, 33.69071)},    // Army
-            {15, new Vector3(-1063.046, -249.463, 44.0211)},    // LSNews
-            {16, new Vector3(982.2743, -104.14917, 73.72877)},    // The Lost
-            {17, new Vector3(2154.641, 2921.034, -63.02243)},    // Merryweather
-            {18, new Vector3(-441.9835, 5987.603, 30.59653)},    // Sheriff
+            {1, new Vector3(-220, -1615, 36)},    // The Families
+            {2, new Vector3(88.25, -1954, 22)},     // The Ballas Gang
+            {3, new Vector3(487, -1527, 30)},     // Los Santos Vagos
+            {4, new Vector3(1402.5, -1490, 61)},     // Marabunta Grande
+            {5, new Vector3(892, -2174.4, 33)},     // Blood Street
+            {6, new Vector3(255, 228, 107)},      // Cityhall
+            {7, new Vector3(457, -991, 31.5)},      // LSPD police
+            {8, new Vector3(245, -1374, 41)},      // Emergency care
+            {9, new Vector3(149, -756.5, 243)},     // FBI 
+            {10, new Vector3(1387, 1156, 115)},     // La Cosa Nostra 
+            {11, new Vector3(-115, 983.5, 236.5)},    // Russian Mafia
+            {12, new Vector3(-1549, -86, 55)},    // Yakuza 
+            {13, new Vector3(-1810, 444, 129)},    // Armenian Mafia 
+            {14, new Vector3(-2355, 3254.5, 33.5)},    // Army
+            {15, new Vector3(-1082, -248, 44.5)},    // LSNews
+            {16, new Vector3(982.4, -103.5, 75.5)},    // The Lost
+            {17, new Vector3(2109, 2931, -61.5)},    // Merryweather
+            {18, new Vector3(-442, 5987.6, 30.6)},    // Sheriff
         };
         public static SortedList<int, int> FractionTypes = new SortedList<int, int>() // 0 - mafia, 1 gangs, 2 - gov, 
         {
@@ -1784,7 +1784,7 @@ namespace Golemo.Fractions
                     NAPI.Marker.CreateMarker(1, stockCoords[id] - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1f, new Color(227, 252, 252, 220));
                     NAPI.TextLabel.CreateTextLabel(Main.StringToU16($"~b~Склад {Manager.getName(id)}"), new Vector3(stockCoords[id].X, stockCoords[id].Y, stockCoords[id].Z + 0.6), 5F, 0.5F, 0, new Color(227, 252, 252));
 
-                    colshape = NAPI.ColShape.CreateCylinderColShape(garageCoords[id], 5, 8, 0); // garage colshape
+                    colshape = NAPI.ColShape.CreateCylinderColShape(garageCoords[id], 3f, 8, 0); // garage colshape
                     colshape.SetData("FRACID", id);
                     colshape.OnEntityEnterColShape += enterGarageShape;
                     colshape.OnEntityExitColShape += exitGarageShape;
