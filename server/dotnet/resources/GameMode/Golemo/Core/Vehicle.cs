@@ -16,9 +16,6 @@ namespace Golemo.Core
     {
         private static nLog Log = new nLog("Vehicle");
         private static Random Rnd = new Random();
-        //private static Timer fuelTimer;
-
-        private Vehicle SpawnVeh = NAPI.Vehicle.CreateVehicle(VehicleHash.Dinghy, new Vector3(3370.183, 5186.575, 0.6195515), new Vector3(0.3827768, 2.631065, 261.6981), 1, 1);
 
         public static SortedDictionary<string, VehicleData> Vehicles = new SortedDictionary<string, VehicleData>();
         public static SortedDictionary<int, int> VehicleTank = new SortedDictionary<int, int>()
@@ -983,7 +980,6 @@ namespace Golemo.Core
 
                             garage.GetVehicleFromGarage(sender, number);
                             break;
-                        case "QUEST":
                         case "MAFIADELIVERY":
                         case "GANGDELIVERY":
                             if (Core.VehicleStreaming.GetEngineState(vehicle))
