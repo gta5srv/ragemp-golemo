@@ -178,6 +178,10 @@ var circleData = {
         ["leadaway", "pocket", "rob", "robguns"],
         ["leadaway", "pocket", "rob", "robguns"],
         ["leadaway"],
+        ["leadaway"],
+        ["leadaway"],
+        ["leadaway", "search", "takegun", "takeillegal", "takemask"],
+        ["leadaway", "search", "takegun", "takeillegal", "takemask", "ticket"],
     ],
     "Категории":
     [
