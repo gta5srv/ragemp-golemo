@@ -286,7 +286,7 @@ CREATE TABLE `characters` (
   `isbonused` tinyint(1) NOT NULL DEFAULT 0,
   `luckywheelspins` int(11) NOT NULL DEFAULT 0,
   `fines` int(11) NOT NULL DEFAULT 0,
-  `workstats` text DEFAULT NULL
+  `workstats` text DEFAULT NULL,
   PRIMARY KEY (`idkey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
