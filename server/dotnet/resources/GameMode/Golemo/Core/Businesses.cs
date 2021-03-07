@@ -5104,7 +5104,7 @@ namespace Golemo.Core
             Player pl = player;
             try
             {
-                Timers.StartOnce($"{Main.Players[pl].UUID}_ordertime", 180000, () => { //3  minutes 180.000
+                Timers.StartOnce($"{Main.Players[pl].UUID}_ordertime_{order.UID}", 180000, () => { //3  minutes 180.000
                     if (!BusinessManager.Orders.ContainsKey(order.UID))
                     {
                         Timers.Stop($"{Main.Players[pl].UUID}_ordertime");
