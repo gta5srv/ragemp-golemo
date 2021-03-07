@@ -1,4 +1,4 @@
-using GTANetworkAPI;
+п»їusing GTANetworkAPI;
 using System;
 using Golemo.GUI;
 using System.Collections.Generic;
@@ -19,11 +19,11 @@ namespace Golemo.Houses
             try
             {
                 NAPI.Marker.CreateMarker(1, _position - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 3, new Color(0, 255, 255));
-                NAPI.Blip.CreateBlip(527, _position, 1f, 84, "Свалка", 255, 0, true, 0, 0);
+                NAPI.Blip.CreateBlip(527, _position, 1f, 84, "РЎРІР°Р»РєР°", 255, 0, true, 0, 0);
                 _shape = NAPI.ColShape.CreateCylinderColShape(_position, 1, 3, 0);
                 _shape.OnEntityEnterColShape += svalkaShape_onEntityEnterColShape;
                 _shape.OnEntityExitColShape += svalkaShape_onEntityExitColShape;
-                NAPI.TextLabel.CreateTextLabel("~b~Свалка", _position + new Vector3(0, 0, 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
+                NAPI.TextLabel.CreateTextLabel("~b~РЎРІР°Р»РєР°", _position + new Vector3(0, 0, 0.7), 5F, 0.3F, 0, new Color(255, 255, 255));
             }
             catch (Exception e) { Log.Write("ResourceStart: " + e.Message, nLog.Type.Error); }
         }
@@ -51,11 +51,11 @@ namespace Golemo.Houses
             menu.Callback = callback_carsell;
 
             Menu.Item menuItem = new Menu.Item("header", Menu.MenuItem.Header);
-            menuItem.Text = "Продажа автомобилей";
+            menuItem.Text = "РџСЂРѕРґР°Р¶Р° Р°РІС‚РѕРјРѕР±РёР»РµР№";
             menu.Add(menuItem);
 
             menuItem = new Menu.Item("label", Menu.MenuItem.Card);
-            menuItem.Text = "Выберите машину, которую хотите продать";
+            menuItem.Text = "Р’С‹Р±РµСЂРёС‚Рµ РјР°С€РёРЅСѓ, РєРѕС‚РѕСЂСѓСЋ С…РѕС‚РёС‚Рµ РїСЂРѕРґР°С‚СЊ";
             menu.Add(menuItem);
 
             foreach (var v in VehicleManager.getAllPlayerVehicles(player.Name))
@@ -68,7 +68,7 @@ namespace Golemo.Houses
             }
 
             menuItem = new Menu.Item("close", Menu.MenuItem.Button);
-            menuItem.Text = "Закрыть";
+            menuItem.Text = "Р—Р°РєСЂС‹С‚СЊ";
             menu.Add(menuItem);
 
             menu.Open(player);
@@ -85,7 +85,7 @@ namespace Golemo.Houses
             var price = (BusinessManager.ProductsOrderPrice.ContainsKey(vData.Model)) ? Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.5) : 0;
             MoneySystem.Wallet.Change(player, price);
             GameLog.Money($"server", $"player({Main.Players[player].UUID})", price, $"carSellgov({vData.Model})");
-            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Вы продали государству {vData.Model} ({item.ID}) за {price}$", 3000);
+            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Р’С‹ РїСЂРѕРґР°Р»Рё РіРѕСЃСѓРґР°СЂСЃС‚РІСѓ {vData.Model} ({item.ID}) Р·Р° {price}$", 3000);
             VehicleManager.Remove(item.ID);
             MenuManager.Close(player);
         }
