@@ -75,7 +75,7 @@ namespace Golemo.Fractions
             { 13, DateTime.Now },
         };
 
-        private static List<Vector3> GangStartDelivery = new List<Vector3>() 
+        private static List<Vector3> GangStartDelivery = new List<Vector3>()
         {
             new Vector3(-220.0348, -1616.9259, 34),   //families
             new Vector3(87.51017, -1956.686, 20),    //ballas
@@ -124,17 +124,21 @@ namespace Golemo.Fractions
         };
         private static Dictionary<int, Vector3> MafiaStartDelivery = new Dictionary<int, Vector3>()
         {
-            { 10, new Vector3(1463.797, 1128.923, 114.3969) },
-            { 11, new Vector3(-128.5574, 994.9902, 235.8243) },
-            { 12, new Vector3(-1538.677, -76.76743, 54.22959) },
-            { 13, new Vector3(-1795.539, 399.2474, 112.8691) },
+            { 10, new Vector3(1459.2191, 1131.0612, 114.33403) },      //LCN
+            { 11, new Vector3(-112.74935, 981.96436, 235.75682) },     //RUS
+            { 12, new Vector3(-1542.5857, -89.67308, 54.330566) },    //YAKUZA
+            { 13, new Vector3(-1797.4884, 406.8104, 113.38864) },     //ARMENIAN
+            //{ 10, new Vector3(1463.797, 1128.923, 114.3969) },
+            //{ 11, new Vector3(-128.5574, 994.9902, 235.8243) },
+            //{ 12, new Vector3(-1538.677, -76.76743, 54.22959) },
+            //{ 13, new Vector3(-1795.539, 399.2474, 112.8691) },
         };
-        private static Dictionary<int, Vector3> MafiaStartDeliveryRot = new Dictionary<int, Vector3>()
+        private static Dictionary<int, List<Vector3>> MafiaStartDeliverySpawns = new Dictionary<int, List<Vector3>>()
         {
-            { 10, new Vector3(1.19556, 0.2941337, 91.12183) },
-            { 11, new Vector3(-0.02024388, 0.4382547, 198.8489) },
-            { 12, new Vector3(-0.4612706, 0.8252076, 180.706) },
-            { 13, new Vector3(-0.3686997, -0.2600957, 286.0435) },
+            { 10, new List<Vector3>(){ new Vector3(1464.8633, 1111.521, 116), new Vector3(-0.15251231, 0.00012332108, 90.86093) } },
+            { 11, new List<Vector3>(){ new Vector3(-121.00341, 966.8002, 236), new Vector3(4.7276945, 2.2408156, -21.568594) } },
+            { 12, new List<Vector3>(){ new Vector3(-1538.677, -76.76743, 54), new Vector3(-0.017458452, -0.3650366, -2.4890184) } },
+            { 13, new List<Vector3>(){ new Vector3(-1799.5266, 394.75067, 115), new Vector3(-2.9579344, -0.8282345, 86.01487) } },
         };
 
         private static List<Vector3> GangEndDelivery = new List<Vector3>()
@@ -180,7 +184,8 @@ namespace Golemo.Fractions
                     NAPI.Marker.CreateMarker(1, pos - new Vector3(0, 0, 1f), new Vector3(), new Vector3(), 1f, new Color(200, 200, 200, 100), false, 0);
                     colShape = NAPI.ColShape.CreateCylinderColShape(pos, 1, 3, 0);
                     colShape.SetData("GANG_ID", gangID);
-                    colShape.OnEntityEnterColShape += (s, e) => {
+                    colShape.OnEntityEnterColShape += (s, e) =>
+                    {
                         try
                         {
                             if (!Main.Players.ContainsKey(e)) return;
@@ -189,7 +194,8 @@ namespace Golemo.Fractions
                         }
                         catch (Exception ex) { Log.Write("start_colShape.OnEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
                     };
-                    colShape.OnEntityExitColShape += (s, e) => {
+                    colShape.OnEntityExitColShape += (s, e) =>
+                    {
                         try
                         {
                             e.SetData("INTERACTIONCHECK", 0);
@@ -204,16 +210,23 @@ namespace Golemo.Fractions
                 var i = 0;
                 foreach (var pos in MafiaStartDelivery)
                 {
-                    colShape = NAPI.ColShape.CreateCylinderColShape(pos.Value, 3, 3, NAPI.GlobalDimension);
+                    colShape = NAPI.ColShape.CreateCylinderColShape(pos.Value, 1, 3, 0);
                     colShape.SetData("ID", pos.Key);
-                    colShape.OnEntityEnterColShape += (s, e) => {
+                    colShape.OnEntityEnterColShape += (s, e) =>
+                    {
                         try
                         {
-                            e.SetData("ONMAFIAID", s.GetData<int>("ID")); e.SetData("INTERACTIONCHECK", 53);
+                            if (!Main.Players.ContainsKey(e)) return;
+                            if (s.HasData("ID") && s.GetData<int>("ID") == Main.Players[e].FractionID)
+                            {
+                                e.SetData("ONMAFIAID", s.GetData<int>("ID"));
+                                e.SetData("INTERACTIONCHECK", 53);
+                            }
                         }
                         catch (Exception ex) { Log.Write("Delivery_colShape.OnEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
                     };
-                    colShape.OnEntityExitColShape += (s, e) => {
+                    colShape.OnEntityExitColShape += (s, e) =>
+                    {
                         try
                         {
                             e.SetData("INTERACTIONCHECK", 0);
@@ -221,8 +234,7 @@ namespace Golemo.Fractions
                         catch (Exception ex) { Log.Write("Delivery_colShape.OnEntityExitColShape: " + ex.Message, nLog.Type.Error); }
                     };
 
-                    NAPI.Marker.CreateMarker(1, pos.Value - new Vector3(0, 0, 2.7), new Vector3(), new Vector3(), 3, new Color(255, 0, 0, 220), false, NAPI.GlobalDimension);
-                    NAPI.TextLabel.CreateTextLabel("~g~Получить миссию доставки", pos.Value, 5f, 0.4f, 0, new Color(255, 255, 255));
+                    NAPI.Marker.CreateMarker(1, pos.Value - new Vector3(0, 0, 1), new Vector3(), new Vector3(), 1f, new Color(255, 0, 0, 120), false, 0);
                 }
                 #endregion
 
@@ -322,7 +334,7 @@ namespace Golemo.Fractions
             {
                 if (!vehicle.HasData("ACCESS") || !Main.Players.ContainsKey(player)) return;
                 var fraction = Main.Players[player].FractionID;
-                switch ((string)vehicle.GetData<string>("ACCESS"))
+                switch (vehicle.GetData<string>("ACCESS"))
                 {
                     case "GANGDELIVERY":
                         if (fraction == 7 || fraction == 9)
@@ -337,7 +349,7 @@ namespace Golemo.Fractions
                         }
                         else
                         {
-                            var end = (int)vehicle.GetData<int>("ENDPOINT");
+                            var end = vehicle.GetData<int>("ENDPOINT");
                             Trigger.ClientEvent(player, "createWaypoint", GangEndDelivery[end].X, GangEndDelivery[end].Y);
                             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, "Доставьте машину в точку, отмеченную на карте", 3000);
                         }
@@ -355,7 +367,7 @@ namespace Golemo.Fractions
                         }
                         else
                         {
-                            var end = (int)vehicle.GetData<int>("ENDPOINT");
+                            var end = vehicle.GetData<int>("ENDPOINT");
                             Trigger.ClientEvent(player, "createWaypoint", MafiaEndDelivery[end].X, MafiaEndDelivery[end].Y);
                             Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, "Доставьте машину в точку, отмеченную на карте", 3000);
                         }
@@ -364,7 +376,7 @@ namespace Golemo.Fractions
             }
             catch (Exception e) { Log.Write("EnterVehicle: " + e.Message, nLog.Type.Error); }
         }
-        
+
         public static void Event_PlayerDisconnected(Player player)
         {
             if (player.HasData("DELIVERY_CAR"))
@@ -489,8 +501,8 @@ namespace Golemo.Fractions
                         break;
                 }
 
-                
-                var vehicle = NAPI.Vehicle.CreateVehicle(vehicleHash, MafiaStartDelivery[i] + new Vector3(0, 0, 1), MafiaStartDeliveryRot[i], 0, 0);
+                var vehicle = NAPI.Vehicle.CreateVehicle(vehicleHash, MafiaStartDeliverySpawns[i][0] + new Vector3(0, 0, 1), new Vector3(), 0, 0);
+                NAPI.Entity.SetEntityRotation(vehicle, MafiaStartDeliverySpawns[i][1]);
                 vehicle.CustomPrimaryColor = new Color(0, 0, 0);
                 vehicle.CustomSecondaryColor = new Color(0, 0, 0);
                 NAPI.Vehicle.SetVehicleNumberPlate(vehicle, "xxxxx");
@@ -505,7 +517,7 @@ namespace Golemo.Fractions
                 player.SetData("DELIVERY_CAR", vehicle);
 
                 NextDelivery[fraction] = DateTime.Now.AddMinutes(5);
-                Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы получили фургон с {text} для транспортировки. Отвезите его в указанное на карте место", 3000);
+                Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы получили фургон с {text} для транспортировки. Отвезите его в указанное на карте место", 3500);
                 Trigger.ClientEvent(player, "createWaypoint", MafiaEndDelivery[end].X, MafiaEndDelivery[end].Y);
                 player.SetIntoVehicle(vehicle, 0);
                 return;

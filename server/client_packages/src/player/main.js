@@ -12,16 +12,15 @@ var Peds = [
     { Hash: 1161072059, Pos: new mp.Vector3(2887.687, 4387.17, 50.65578), Angle: 174.0 }, // Owen Nelson
     { Hash: -1398552374, Pos: new mp.Vector3(2192.614, 5596.246, 53.75177), Angle: 318.0 }, // Daniel Roberts
     { Hash: -459818001, Pos: new mp.Vector3(-215.4299, 6445.921, 31.30351), Angle: 262.0 }, // Michael Turner
-    { Hash: 0x9D0087A8, Pos: new mp.Vector3(480.9385, -1302.576, 29.24353), Angle: 224.0 }, // jimmylishman
     { Hash: 1706635382, Pos: new mp.Vector3(-220.18721, -1617.6295, 34.869278), Angle: -13.0 }, // Lamar_Davis families 
     { Hash: 588969535, Pos: new mp.Vector3(87.226234, -1957.0139, 20.749384), Angle: -47.0 }, // Carl_Ballard ballas
     { Hash: -812470807, Pos: new mp.Vector3(890.4026, -2174.7583, 30.519348), Angle: 130.0 }, // Chiraq_Bloody bloods
     { Hash: 653210662, Pos: new mp.Vector3(491.2033, -1523.0101, 29.291018), Angle: 90.0 }, // Riki_Veronas vagos
     { Hash: 663522487, Pos: new mp.Vector3(1412.5626, -1491.3118, 60.65692), Angle: 80.0 }, // Santano_Amorales marabunte
-    { Hash: 645279998, Pos: new mp.Vector3(-113.9224, 985.793, 235.754), Angle: 110.9234 }, // Vladimir_Medvedev
-    { Hash: -236444766, Pos: new mp.Vector3(-1811.368, 438.4105, 128.7074), Angle: 348.107 }, // Kaha_Panosyan
-    { Hash: -1427838341, Pos: new mp.Vector3(-1549.287, -89.35114, 54.92917), Angle: 7.874235 }, // Jotaro_Josuke
-    { Hash: -2034368986, Pos: new mp.Vector3(1392.098, 1155.892, 114.4433), Angle: 82.24557 }, // Solomon_Gambino
+    { Hash: 645279998, Pos: new mp.Vector3(-112.040825, 982.55206, 235.75682), Angle: 131.7 }, // Vladimir_Medvedev rus mafia
+    { Hash: -236444766, Pos: new mp.Vector3(-1797.5902, 407.63324, 113.438324), Angle: -177.0 }, // Kaha_Panosyan armenian mafia
+    { Hash: -1427838341, Pos: new mp.Vector3(-1542.9265, -90.335915, 54.330566), Angle: -16.6 }, // Jotaro_Josuke yakuza mafia
+    { Hash: -2034368986, Pos: new mp.Vector3(1459.002, 1131.8071, 114.33403), Angle: -172.1 }, // Solomon_Gambino lcn mafia
     { Hash: -1920001264, Pos: new mp.Vector3(452.2527, -993.119, 30.68958), Angle: 357.7483 }, // Alonzo_Harris
     { Hash: 368603149, Pos: new mp.Vector3(441.169, -978.3074, 30.6896), Angle: 160.1411 }, // Nancy_Spungen
     { Hash: 1581098148, Pos: new mp.Vector3(454.121, -980.0575, 30.68959), Angle: 86.12 }, // Bones_Bulldog
