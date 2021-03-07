@@ -75,7 +75,15 @@ namespace Golemo.Fractions
             { 13, DateTime.Now },
         };
 
-        private static Vector3 GangStartDelivery = new Vector3(480.9385, -1302.576, 28.12353);
+        private static List<Vector3> GangStartDelivery = new List<Vector3>() 
+        {
+            new Vector3(-220.0348, -1616.9259, 34),   //families
+            new Vector3(87.51017, -1956.686, 20),    //ballas
+            new Vector3(490.6381, -1523.0183, 29),     //vagos
+            new Vector3(1412.1239, -1491.2795, 60),   //marabunte
+            new Vector3(889.83075, -2175.2188, 30),  //bloods
+
+        };
         private static List<Vector3> GangSpawnAutos = new List<Vector3>()
         {
             new Vector3(814.4807, -747.8201, 26.8163),
@@ -164,23 +172,33 @@ namespace Golemo.Fractions
         {
             try
             {
-                var colShape = NAPI.ColShape.CreateCylinderColShape(GangStartDelivery, 2, 3, NAPI.GlobalDimension);
-                colShape.OnEntityEnterColShape += (s, e) => {
-                    try
-                    {
-                        e.SetData("INTERACTIONCHECK", 52);
-                    }
-                    catch (Exception ex) { Log.Write("start_colShape.OnEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
-                };
-                colShape.OnEntityExitColShape += (s, e) => {
-                    try
-                    {
-                        e.SetData("INTERACTIONCHECK", 0);
-                    }
-                    catch (Exception ex) { Log.Write("start_colShape.OnEntityExitColShape: " + ex.Message, nLog.Type.Error); }
-                };
-
-                NAPI.TextLabel.CreateTextLabel("~g~Jimmy Lishman", GangStartDelivery + new Vector3(0, 0, 2.5), 5f, 0.4f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+                ColShape colShape = null;
+                int gangID = 1;
+                #region GangStartDelivery
+                foreach (Vector3 pos in GangStartDelivery)
+                {
+                    NAPI.Marker.CreateMarker(1, pos - new Vector3(0, 0, 1f), new Vector3(), new Vector3(), 1f, new Color(200, 200, 200, 100), false, 0);
+                    colShape = NAPI.ColShape.CreateCylinderColShape(pos, 1, 3, 0);
+                    colShape.SetData("GANG_ID", gangID);
+                    colShape.OnEntityEnterColShape += (s, e) => {
+                        try
+                        {
+                            if (!Main.Players.ContainsKey(e)) return;
+                            if (s.HasData("GANG_ID") && s.GetData<int>("GANG_ID") == Main.Players[e].FractionID)
+                                e.SetData("INTERACTIONCHECK", 52);
+                        }
+                        catch (Exception ex) { Log.Write("start_colShape.OnEntityEnterColShape: " + ex.Message, nLog.Type.Error); }
+                    };
+                    colShape.OnEntityExitColShape += (s, e) => {
+                        try
+                        {
+                            e.SetData("INTERACTIONCHECK", 0);
+                        }
+                        catch (Exception ex) { Log.Write("start_colShape.OnEntityExitColShape: " + ex.Message, nLog.Type.Error); }
+                    };
+                    gangID++;
+                }
+                #endregion
 
                 #region MafiaStartDelivery
                 var i = 0;
@@ -381,7 +399,8 @@ namespace Golemo.Fractions
             try
             {
                 if (!Main.Players.ContainsKey(player) || player.IsInVehicle) return;
-                if (player.Position.DistanceTo(GangStartDelivery) > 5) return;
+                if (Manager.FractionTypes[Main.Players[player].FractionID] != 1) return;
+                if (player.Position.DistanceTo(GangStartDelivery[Main.Players[player].FractionID - 1]) > 5) return;
 
                 var fraction = Main.Players[player].FractionID;
                 switch (id)

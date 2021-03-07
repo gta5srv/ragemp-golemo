@@ -13,11 +13,11 @@ var Peds = [
     { Hash: -1398552374, Pos: new mp.Vector3(2192.614, 5596.246, 53.75177), Angle: 318.0 }, // Daniel Roberts
     { Hash: -459818001, Pos: new mp.Vector3(-215.4299, 6445.921, 31.30351), Angle: 262.0 }, // Michael Turner
     { Hash: 0x9D0087A8, Pos: new mp.Vector3(480.9385, -1302.576, 29.24353), Angle: 224.0 }, // jimmylishman
-    { Hash: 1706635382, Pos: new mp.Vector3(-222.5464, -1617.449, 34.86932), Angle: 309.2058 }, // Lamar_Davis
-    { Hash: 588969535, Pos: new mp.Vector3(85.79006, -1957.156, 20.74745), Angle: 320.4474 }, // Carl_Ballard
-    { Hash: -812470807, Pos: new mp.Vector3(892.2745, -2172.252, 32.28627), Angle: 180.0 }, // Chiraq_Bloody
-    { Hash: 653210662, Pos: new mp.Vector3(485.6168, -1529.195, 29.28829), Angle: 0.0 }, // Riki_Veronas
-    { Hash: 663522487, Pos: new mp.Vector3(1408.224, -1486.415, 60.65733), Angle: 172.3141 }, // Santano_Amorales
+    { Hash: 1706635382, Pos: new mp.Vector3(-220.18721, -1617.6295, 34.869278), Angle: -13.0 }, // Lamar_Davis families 
+    { Hash: 588969535, Pos: new mp.Vector3(87.226234, -1957.0139, 20.749384), Angle: -47.0 }, // Carl_Ballard ballas
+    { Hash: -812470807, Pos: new mp.Vector3(890.4026, -2174.7583, 30.519348), Angle: 130.0 }, // Chiraq_Bloody bloods
+    { Hash: 653210662, Pos: new mp.Vector3(491.2033, -1523.0101, 29.291018), Angle: 90.0 }, // Riki_Veronas vagos
+    { Hash: 663522487, Pos: new mp.Vector3(1412.5626, -1491.3118, 60.65692), Angle: 80.0 }, // Santano_Amorales marabunte
     { Hash: 645279998, Pos: new mp.Vector3(-113.9224, 985.793, 235.754), Angle: 110.9234 }, // Vladimir_Medvedev
     { Hash: -236444766, Pos: new mp.Vector3(-1811.368, 438.4105, 128.7074), Angle: 348.107 }, // Kaha_Panosyan
     { Hash: -1427838341, Pos: new mp.Vector3(-1549.287, -89.35114, 54.92917), Angle: 7.874235 }, // Jotaro_Josuke
@@ -239,11 +239,11 @@ const checkConditions = () => {
     );
 }
 
-mp.keys.bind(0x77, true, function () {  //F8-Key
-    var date = new Date();
-    var name = "sanstreetlife-" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + "-" + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".png";
-    mp.gui.takeScreenshot(name, 1, 100, 0);
-});
+// mp.keys.bind(0x77, true, function () {  //F8-Key
+//     var date = new Date();
+//     var name = "sanstreetlife-" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + "-" + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".png";
+//     mp.gui.takeScreenshot(name, 1, 100, 0);
+// });
 
 mp.keys.bind(Keys.VK_X, false, function () { // X key
     if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('fraction') == 0 || localplayer.vehicle || localplayer.getVariable('InDeath')) return;
