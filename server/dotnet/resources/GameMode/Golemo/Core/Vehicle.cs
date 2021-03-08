@@ -184,26 +184,11 @@ namespace Golemo.Core
             });
         }
 
-        [ServerEvent(Event.PlayerEnterVehicleAttempt)]
-        public void onPlayerEnterVehicleAttemptHandler(Player player, Vehicle vehicle, sbyte seatid)
-        {
-            try
-            {
-                if (SpawnVeh == vehicle) player.StopAnimation();
-            }
-            catch { }
-        }
-
         [ServerEvent(Event.PlayerEnterVehicle)]
         public void onPlayerEnterVehicleHandler(Player player, Vehicle vehicle, sbyte seatid)
         {
             try
             {
-                if (SpawnVeh == vehicle)
-                {
-                    player.WarpOutOfVehicle();
-                    return;
-                }
                 if (!vehicle.HasData("OCCUPANTS"))
                 {
                     List<Player> occupantsList = new List<Player>();
