@@ -156,7 +156,9 @@ const checkConditions = () => {
 		localplayer.isShooting() || 
 		localplayer.isReloading() ||
 		localplayer.isFalling() ||
-        localplayer.getIsTaskActive(4)                  //TaskAimGunOnFoot
+        localplayer.getIsTaskActive(4) ||               //TaskAimGunOnFoot
+        localplayer.getIsTaskActive(160) ||
+        localplayer.getIsTaskActive(2)
     );
 }
 
