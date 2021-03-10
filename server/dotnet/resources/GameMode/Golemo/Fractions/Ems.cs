@@ -275,7 +275,11 @@ namespace Golemo.Fractions
             try
             {
                 if (!Main.Players.ContainsKey(player)) return;
-
+                if(player.HasData("CARROOMID") && player.HasData("LAST_HP"))
+                {
+                    player.Health = player.GetData<int>("LAST_HP");
+                    return;
+                } 
                 Log.Debug($"{player.Name} is died by {weapon}");
 
                 FractionCommands.onPlayerDeathHandler(player, entityKiller, weapon);

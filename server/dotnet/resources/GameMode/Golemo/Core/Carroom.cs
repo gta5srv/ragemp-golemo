@@ -97,6 +97,7 @@ namespace Golemo.Core
                 VehicleStreaming.SetEngineState(veh, true);
                 player.SetIntoVehicle(veh, 0);
                 player.SetData("CARROOMTEST", veh);
+                player.SetData("LAST_HP", player.Health);
             }
             catch (Exception e)
             {
@@ -262,6 +263,7 @@ namespace Golemo.Core
                 NAPI.Entity.SetEntityDimension(player, 0);
                 Dimensions.DismissPrivateDimension(player);
                 player.ResetData("CARROOMID");
+                player.ResetData("LAST_HP");
 
                 if (!player.HasData("CARROOMTEST")) Trigger.ClientEvent(player, "destroyCamera");
             }
