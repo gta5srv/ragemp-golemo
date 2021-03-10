@@ -3,7 +3,7 @@ const UseAutoVolume = false;
 const MaxRange = 10.0;
 
 const enableMicrophone = () => {
-    if (global.chatActive || !global.loggedin) return;
+    if (global.chatActive || !global.loggedin || localplayer.getVariable('InDeath')) return;
 
     if (localplayer.getVariable('voice.muted') == true) return;
 
