@@ -1066,6 +1066,8 @@ mp.events.add('auto', (act, value) => {
             auto.entity.setCustomSecondaryColour(colors[autoColors[value]][0], colors[autoColors[value]][1], colors[autoColors[value]][2])
             break;
     }
+    auto.entity.setDeformationFixed();
+    auto.entity.setDirtLevel(0);
 });
 mp.events.add('buyAuto', () => {
 	if(new Date().getTime() - global.lastCheck < 50) return; 
@@ -1133,6 +1135,10 @@ mp.events.add('openAuto', (models, prices) => {
     auto.entity.setRotation(0, 0, -136.246, 2, true);
     auto.color = "Черный";
     auto.model = autoModels[0];
+    setTimeout(() => {
+        auto.entity.setDeformationFixed();
+        auto.entity.setDirtLevel(0);
+    }, 100);
     //
 
     global.menuOpen();
