@@ -10,12 +10,14 @@
 	#Приватная репозитория на github
 	https://github.com/JJiGolem/rage-custom-weapon-damage
 */
+
 //дефолтные проценты, которые мы будем отнимать от входящего урона
 let defaultPercent = {"max": 85, "min": 60};
+
 //список оружий и их процент, который мы будем снимать с входящего урона
 const weaponDamages = {
 	// Пистолеты
-	//хеш оружия
+	// хеш оружия
 	3249783761: {
 		//название оружия, это для нас, чтобы в будущем смогли быстро найти нужное нам оружие
 		"name": "Heavy Revolver",
@@ -72,28 +74,40 @@ const weaponDamages = {
 		"min": 40
 	}
 };
+
+//Если какое-либо оружие окажется в этом списке, мы не выполним скрипт
+const ignoreWeapons = {
+	911657153: "Stun Gun",
+};
+
 //функция генерации рандомного числа
 let randomInt = (min, max) => Math.random() * (max - min) + min;
+
 //Событие принятия входящего попадания игроком
 mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
-	if(targetEntity.type === 'player' && sourcePlayer){
+	if(targetEntity.type === 'player' && sourcePlayer && !(weapon in ignoreWeapons)){
+		//Если у игрока поставлена админская неуязвимость не выполняем скрипт
 		if(global.admingm) return true;
+		//Задаем игроку неуязвимость, чтобы урон самой игры не прошел
 		targetEntity.setInvincible(true);
-		let max = defaultPercent.max/100;
-		let min = defaultPercent.min/100;
+		//Ставим стандартный процент гасения урона
+		let max = defaultPercent.max;
+		let min = defaultPercent.min;
+		//Если оружие, с которого стреляли, есть у нас в списке, то берем его процент гасения
 		if(weapon in weaponDamages){
-			max = weaponDamages[weapon].max/100;
-			min = weaponDamages[weapon].min/100;
+			max = weaponDamages[weapon].max;
+			min = weaponDamages[weapon].min;
 		}
-		let cDamage = 0;
-		let percent = randomInt(min, max);
-		//если попадание в голову
+		//Полученный значения используем для генерации случайного значения в их диапазоне
+		let percent = randomInt(min, max)/100;
+		//Получаем кастомный урон, который будем применять
+		let cDamage = damage - (damage * percent);
+		//если попадание в голову, делим урон ещё на 10, дабы уменьшить ещё, так как в голову идет очень большой урон
 		if(boneIndex === 20)
-			cDamage = (damage - (damage * percent))/10; //чтобы урон не был слишком большой
-		//если в другое любое место
-		else 
-			cDamage = damage - (damage * percent);
+			cDamage = cDamage/10;
+		//Применяем к игроку полученный урон
 		targetEntity.applyDamageTo(cDamage, true);
+		//После нанесения урона неуязвимость будет отключена
 		setTimeout(() => {targetEntity.setInvincible(false);}, 25);
 		return true;
 	}
