@@ -4,6 +4,7 @@ using GTANetworkAPI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Golemo.MoneySystem;
 
 namespace Golemo.Jobs
 {
@@ -271,7 +272,7 @@ namespace Golemo.Jobs
             player.SetData("W_LASTTIME", DateTime.Now);
 
             var x = WorkManager.rnd.Next(0, MoneySystem.ATM.ATMs.Count - 1); ;
-            while (x == 36 || MoneySystem.ATM.ATMs[x].DistanceTo2D(player.Position) < 200)
+            while (ATM.ignoreAtmIndex.Contains(x) || MoneySystem.ATM.ATMs[x].DistanceTo2D(player.Position) < 200)
                 x = WorkManager.rnd.Next(0, MoneySystem.ATM.ATMs.Count - 1);
             player.SetData("WORKCHECK", x);
             if (Main.Players[player].Gender)
@@ -313,7 +314,7 @@ namespace Golemo.Jobs
                 player.SetData("COLLECTOR_BAGS", 15);
 
                 var x = WorkManager.rnd.Next(0, MoneySystem.ATM.ATMs.Count - 1);
-                while (x == 36 || MoneySystem.ATM.ATMs[x].DistanceTo2D(player.Position) < 200)
+                while (ATM.ignoreAtmIndex.Contains(x) || MoneySystem.ATM.ATMs[x].DistanceTo2D(player.Position) < 200)
                     x = WorkManager.rnd.Next(0, MoneySystem.ATM.ATMs.Count - 1);
 
                 player.SetData("W_LASTPOS", player.Position);
@@ -368,7 +369,7 @@ namespace Golemo.Jobs
                 else
                 {
                     var x = WorkManager.rnd.Next(0, MoneySystem.ATM.ATMs.Count - 1); ;
-                    while (x == 36 || x == player.GetData<int>("WORKCHECK") || MoneySystem.ATM.ATMs[x].DistanceTo2D(player.Position) < 200)
+                    while (ATM.ignoreAtmIndex.Contains(x) || x == player.GetData<int>("WORKCHECK") || MoneySystem.ATM.ATMs[x].DistanceTo2D(player.Position) < 200)
                         x = WorkManager.rnd.Next(0, MoneySystem.ATM.ATMs.Count - 1);
                     player.SetData("WORKCHECK", x);
                     Trigger.ClientEvent(player, "createCheckpoint", 16, 29, MoneySystem.ATM.ATMs[x] + new Vector3(0, 0, 1.12), 1, 0, 220, 220, 0);
