@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using Newtonsoft.Json;
 using GTANetworkAPI;
 using Golemo.Core;
-using Newtonsoft.Json;
 using GolemoSDK;
+using Golemo.VehicleHandlers;
 
 namespace Golemo.Fractions
 {
@@ -388,7 +389,7 @@ namespace Golemo.Fractions
                     {
                         spawner.SpawnedCars.Contains(item.Key),
                         item.Value.Item4,
-                        item.Value.Item1,
+                        VehiclesName.GetRealVehicleName(item.Value.Item1),
                         item.Key,
                     };
                     data.Add(vehdata);
