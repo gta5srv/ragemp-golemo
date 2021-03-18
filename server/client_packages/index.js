@@ -306,6 +306,10 @@ require('./src/vehicle/autopilot');
 require('./src/vehicle/SpeedCheck');
 //==============================
 
+//weapon========================
+require('./src/weapon');
+//==============================
+
 //world=========================
 require('./src/world/doormanager');
 //==============================
