@@ -4,6 +4,7 @@ var lastdirt;
 mp.game.vehicle.defaultEngineBehaviour = false;
 localplayer.setConfigFlag(241, true); //Disable Stopping Engine When Leave Vehicle
 localplayer.setConfigFlag(429, true); //Disable Starting Engine When Enter Vehicle
+localplayer.setConfigFlag(35, false); //Put On Motorcycle Helmet
 
 /*
 if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freight"))) mp.game.streaming.requestModel(mp.game.joaat("freight"));
