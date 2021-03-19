@@ -112,6 +112,17 @@ namespace Golemo.Core
 
         #region AdminCommands
 
+        [Command("tpp", GreedyArg = true)]
+        public static void CMD_tpAtCoordString(Player player, string coords)
+        {
+            if (!Group.CanUseCmd(player, "tpp")) return;
+            double[] elem = coords.Split(',', ' ').
+                      Where(x => !string.IsNullOrWhiteSpace(x)).
+                      Select(x => double.Parse(x.Replace('.', ','))).ToArray();
+            if (elem.Length != 3) return;
+            NAPI.Entity.SetEntityPosition(player, new Vector3(elem[0], elem[1], elem[2]));
+        }
+
         [Command("showworkstat")]
         public static void CMD_ShowWorkStats(Player player, int workid = 0)
         {
