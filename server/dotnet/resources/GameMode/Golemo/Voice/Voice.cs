@@ -221,12 +221,12 @@ namespace Golemo.Voice
                                 player.StopAnimation();
                             else
                                 player.SetData("ToResetAnimPhone", true);
-                            Core.BasicSync.DetachObject(player);
 
                             player.SetData("PhoneVoip", pPhoneMeta);
                             target.SetData("PhoneVoip", tPhoneMeta);
 
-                            player.ResetData("AntiAnimDown");
+                            Main.OffAntiAnim(player);
+                            Core.BasicSync.DetachObject(player);
 
                             Notify.Send(player, NotifyType.Alert, NotifyPosition.BottomCenter, $"{targetName} не отвечает", 3000);
                             Notify.Send(target, NotifyType.Alert, NotifyPosition.BottomCenter, $"{playerName} завершил вызов", 3000);
@@ -346,19 +346,20 @@ namespace Golemo.Voice
                 if (!player.IsInVehicle) player.StopAnimation();
                 if (!target.IsInVehicle) target.StopAnimation();
 
-                player.ResetData("AntiAnimDown");
-                target.ResetData("AntiAnimDown");
                 if (player.IsInVehicle) player.SetData("ToResetAnimPhone", true);
                 if (player.IsInVehicle) target.SetData("ToResetAnimPhone", true);
-
-                Core.BasicSync.DetachObject(player);
-                Core.BasicSync.DetachObject(target);
 
                 Trigger.ClientEvent(player, "voice.phoneStop");
                 Trigger.ClientEvent(target, "voice.phoneStop");
 
                 player.SetData("PhoneVoip", playerPhoneMeta);
                 target.SetData("PhoneVoip", targetPhoneMeta);
+
+                Main.OffAntiAnim(player);
+                Main.OffAntiAnim(target);
+
+                Core.BasicSync.DetachObject(player);
+                Core.BasicSync.DetachObject(target);
             }
             catch (Exception e)
             {

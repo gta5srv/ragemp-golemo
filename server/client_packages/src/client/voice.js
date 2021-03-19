@@ -62,10 +62,12 @@ var PHONE = {
 mp.events.add('voice.mute', () => {
     disableMicrophone();
 })
+global.talkingOnThePhone = false;
 mp.events.add('voice.phoneCall', (target) => {
     if (!PHONE.target) {
         PHONE.target = target;
         PHONE.status = true;
+		global.talkingOnThePhone = true;
         mp.events.callRemote("add_voice_listener", target);
         target.voiceVolume = 1.0;
         target.voice3d = false;
@@ -83,6 +85,7 @@ mp.events.add("voice.phoneStop", () => {
         } else mp.events.callRemote("remove_voice_listener", PHONE.target);
         PHONE.target = null;
         PHONE.status = false;
+		global.talkingOnThePhone = false;
     }
 });
 

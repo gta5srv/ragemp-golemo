@@ -213,7 +213,7 @@ mp.keys.bind(Keys.VK_M, false, function () {
         mp.events.callRemote("closePlayerMenu");
         global.phoneOpen = 0;
     }
-    else if (!checkConditions())
+    else if (!checkConditions() || global.talkingOnThePhone)
     {
         mp.events.callRemote('openPlayerMenu');
         lastCheck = new Date().getTime();
