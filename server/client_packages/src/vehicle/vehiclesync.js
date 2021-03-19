@@ -735,6 +735,7 @@ mp.events.add("entityStreamIn", (entity) => {
                 entity.setDisablePetrolTankDamage(true);    //disable fueltank damage
                 entity.setDisablePetrolTankFires(true);     //disable fire fuel
                 entity.setDoorsLockedForAllPlayers(true);   //locked door
+				entity.setOnGroundProperly();				//
                 entity.freezePosition(true);                //freeze
                 entity.setInvincible(true);                 //godmode
                 entity.setDoorsLocked(2);					//door locked
