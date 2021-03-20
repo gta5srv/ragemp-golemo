@@ -81,6 +81,38 @@ mp.events.add("VehStream_SetSirenSound", (veh, status) => {
     } catch (e) { }
 });
 
+function vehicleSetLightsWhenDoorAreLocked(veh, state) {
+    try {
+        let lightState = [2, 0, 2, 0];
+        let activeIndex = 0;
+        let setLightingInterval;
+        if(state) {
+            setLightingInterval = setInterval(() => {
+				if(veh && mp.vehicles.exists(veh) && activeIndex < 4) {
+                    veh.setLights(lightState[activeIndex]);
+                    activeIndex++;
+                } else {
+                    clearInterval(setLightingInterval);
+                }
+            }, 100);
+        } else {
+            setLightingInterval = setInterval(() => {
+                if(veh && mp.vehicles.exists(veh) && activeIndex < 2) {
+                    veh.setLights(lightState[activeIndex]);
+                    if(activeIndex == 1) { 
+                        veh.setIndicatorLights(1, false);
+                    }
+                    activeIndex++;
+                } else {
+                    clearInterval(setLightingInterval);
+                }
+            }, 100);
+        }
+    } catch (error) {
+        mp.console.logError(error)
+    }
+}
+
 mp.events.add("VehStream_SetLockStatus", (veh, status) => {
     try {
         if (veh && mp.vehicles.exists(veh)) {
@@ -88,32 +120,15 @@ mp.events.add("VehStream_SetLockStatus", (veh, status) => {
                 if (status) {
                     veh.setDoorsLocked(2);
 					mp.game.audio.playSoundFromEntity(1, "Remote_Control_Close", veh.handle, "PI_Menu_Sounds", true, 0);
-                    veh.setLights(2); 
-                    setTimeout(() => {
-						if(veh != null) veh.setLights(0);
-                        setTimeout(() => {
-							if(veh != null) veh.setLights(2); 
-                            setTimeout(() => {
-								if(veh != null) veh.setLights(0); 
-                            }, 100)
-                        }, 100)
-                    }, 100) 
                 } else {
                     veh.setDoorsLocked(1);
 					mp.game.audio.playSoundFromEntity(1, "Remote_Control_Open", veh.handle, "PI_Menu_Sounds", true, 0);
-                    veh.setLights(2); 
-                    setTimeout(() => {
-						if(veh != null) {
-							veh.setLights(0); 
-							veh.setIndicatorLights(1, false);
-						}
-                    }, 100)
 				}
+                vehicleSetLightsWhenDoorAreLocked(veh, status);
             }
         }
     } catch (e) { }
 });
-
 
 mp.events.add("VehStream_PlayerExitVehicle", (entity) => {
     setTimeout(() => {
