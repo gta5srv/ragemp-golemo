@@ -248,13 +248,13 @@
                                 </div>
                             </div>
                             <div v-if="job.level <= level">
-                                <div v-if="job.jobid == jobid">
-                                    <div class="buttongetsettledred" v-on:click="selectJob(-1)">
+                                <div v-if="job.jobid == jobid" v-on:click="selectJob(-1)">
+                                    <div class="buttongetsettledred">
                                         <p сlass="buttontxtgetsettled">Уволиться</p>
                                     </div>
                                 </div>
-                                <div v-else>
-                                    <div class="buttongetsettled" v-on:click="selectJob(job.jobid)">
+                                <div v-else v-on:click="selectJob(job.jobid)">
+                                    <div class="buttongetsettled">
                                         <p сlass="buttontxtgetsettled">Устроиться</p>
                                     </div>
                                 </div>
