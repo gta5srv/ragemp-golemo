@@ -273,6 +273,7 @@ require('./src/house/realtor');
 //jobs==========================
 require('./src/jobs/farmer');
 require('./src/jobs/market');
+require('./src/jobs/truckers');
 //==============================
 
 //modules=======================

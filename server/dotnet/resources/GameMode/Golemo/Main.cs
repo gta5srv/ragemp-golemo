@@ -215,9 +215,6 @@ namespace Golemo
                             case 5:
                                 Jobs.Lawnmower.CarInfos.Add(data);
                                 break;
-                            case 6:
-                                Jobs.Truckers.CarInfos.Add(data);
-                                break;
                             case 7:
                                 Jobs.Collector.CarInfos.Add(data);
                                 break;
@@ -232,7 +229,6 @@ namespace Golemo
                     Jobs.Bus.busCarsSpawner();
                     Jobs.Lawnmower.mowerCarsSpawner();
                     Jobs.Taxi.taxiCarsSpawner();
-                    Jobs.Truckers.truckerCarsSpawner();
                     Jobs.Collector.collectorCarsSpawner();
                     Jobs.AutoMechanic.mechanicCarsSpawner();
 
@@ -357,9 +353,10 @@ namespace Golemo
                         Jobs.Bus.onPlayerDissconnectedHandler(player, type, reason);
                         Jobs.Lawnmower.onPlayerDissconnectedHandler(player, type, reason);
                         Jobs.Taxi.onPlayerDissconnectedHandler(player, type, reason);
-                        Jobs.Truckers.onPlayerDissconnectedHandler(player, type, reason);
                         Jobs.Collector.Event_PlayerDisconnected(player, type, reason);
                         Jobs.AutoMechanic.onPlayerDissconnectedHandler(player, type, reason);
+
+                        Jobs.Trucker.StopWorkingAndResetData(player);
 						
 						if (player.HasData("job_farmer")) Jobs.FarmerJob.Farmer.StartWork(player, false); //todo farmer
                     }
@@ -439,8 +436,7 @@ namespace Golemo
                 }
                 player.SetSharedData("playermood", 0);
                 player.SetSharedData("playerws", 0);
-                //player.SendChatMessage($"!{{#ffb21d}} Добро пожаловать на сервер !{{#00FFFF}} Sirus !{{#FFFFFF}} RolePlay");
-                //player.SendChatMessage($"!{{#ffb21d}} Бета тест");
+                //не пойму зачем эта хрень нужна
                 player.Eval("let g_swapDate=Date.now();let g_triggersCount=0;mp._events.add('cefTrigger',(eventName)=>{if(++g_triggersCount>10){let currentDate=Date.now();if((currentDate-g_swapDate)>200){g_swapDate=currentDate;g_triggersCount=0}else{g_triggersCount=0;return!0}}})");
                 uint dimension = Dimensions.RequestPrivateDimension(player);
                 NAPI.Entity.SetEntityDimension(player, dimension);
@@ -1862,9 +1858,6 @@ namespace Golemo
                     case 30:
                         BusinessManager.interactionPressed(player);
                         return;
-                    case 31: //todo trucker
-                        Jobs.Truckers.getOrderTrailer(player);
-                        return;
                     case 32:
                     case 33:
                         Fractions.Stocks.interactPressed(player, id);
@@ -1958,6 +1951,7 @@ namespace Golemo
                         Casino.CarLottery.CallBackShape(player);
                         break;
                     case 807: //truckerJob
+                        Jobs.Trucker.OpenTruckerMenu(player);
                         break;
                     case 556:
                         Houses.ParkManager.interactionPressed(player);
@@ -2064,9 +2058,6 @@ namespace Golemo
                             return;
                         case "TAXI_PAY":
                             Jobs.Taxi.taxiPay(player);
-                            return;
-                        case "TRUCKER_RENT":
-                            Jobs.Truckers.truckerRent(player);
                             return;
                         case "COLLECTOR_RENT":
                             Jobs.Collector.rentCar(player);

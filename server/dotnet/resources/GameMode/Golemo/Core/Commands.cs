@@ -447,9 +447,6 @@ namespace Golemo.Core
                         case 5:
                             Jobs.Lawnmower.CarInfos = new List<CarInfo>();
                             break;
-                        case 6:
-                            Jobs.Truckers.CarInfos = new List<CarInfo>();
-                            break;
                         case 7:
                             Jobs.Collector.CarInfos = new List<CarInfo>();
                             break;
@@ -483,9 +480,6 @@ namespace Golemo.Core
                             case 5:
                                 Jobs.Lawnmower.CarInfos.Add(data);
                                 break;
-                            case 6:
-                                Jobs.Truckers.CarInfos.Add(data);
-                                break;
                             case 7:
                                 Jobs.Collector.CarInfos.Add(data);
                                 break;
@@ -518,9 +512,6 @@ namespace Golemo.Core
                                     break;
                                 case 5:
                                     Jobs.Lawnmower.mowerCarsSpawner();
-                                    break;
-                                case 6:
-                                    Jobs.Truckers.truckerCarsSpawner();
                                     break;
                                 case 7:
                                     Jobs.Collector.collectorCarsSpawner();
@@ -4541,16 +4532,6 @@ namespace Golemo.Core
             try
             {
                 Jobs.Taxi.callTaxi(player);
-            }
-            catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
-        }
-
-        [Command("orders")]
-        public static void CMD_orders(Player player)
-        {
-            try
-            {
-                Jobs.Truckers.truckerOrders(player);
             }
             catch (Exception e) { Log.Write("EXCEPTION AT \"CMD\":\n" + e.ToString(), nLog.Type.Error); }
         }

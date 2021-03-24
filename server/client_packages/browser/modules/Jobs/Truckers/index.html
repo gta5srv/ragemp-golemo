@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/trucker.css">
+  <link rel="stylesheet" href="../../assets/css/font.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+  <title>Truckers - Golemo-Mode</title>
+</head>
+
+<body>
+  <div id="app" v-if="active" v-cloak>
+    <div class="container">
+      <header>
+        <i class="fa fa-truck" aria-hidden="true"></i>
+        <h1>{{header[page]}}</h1>
+        <span>
+          <i @click="closePanel()" class="fa fa-times-circle-o" aria-hidden="true"></i>
+        </span>
+      </header>
+
+      <div class="main">
+
+        <div class="trucks" v-if="page == 0">
+          <h2>Выберите транспорт</h2>
+          <div class="items">
+            <div class="item" v-for="(truck, index) in trucks">
+              <div :style="{background: 'left / cover no-repeat url(./images/' +truck+'.png)'}">
+                <h3><b>{{truck}}</b></h3>
+                <h4>
+                  Нужен {{index}} уровень
+                </h4>
+              </div>
+              <button class="btnModal mt-10"
+              :class="{btnDisable: index > playerLevel}"
+              @click="selectTruck(truck)"
+              >Выбрать</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="orders" v-if="page == 1">
+          <div class="items">
+            <div class="item" v-for="(order, index) in orders" v-if="order.level <= getTruckAccessLevel()">
+              <div class="order_logo">
+                <img :src="`./images/orders/`+order.type+`.png`">
+              </div>
+              <div class="order_info">
+                <h3>Товар: {{order.name}}</h3>
+                <span>
+                  <h4>Тип заказа #{{order.type + 1}}</h4>
+                  <h4>Количество: {{order.count * generateNumber(1, order.max) * generateNumber(1, getTruckAccessLevel())}}</h4>
+                </span>
+              </div>
+              <div class="order_interaction">
+                <button class="btnModal"
+                :class="{btnDisable: getTruckAccessLevel() > playerLevel}"
+                @click="takeOrder(order.type)"
+                >Взять заказ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <h6>текущий уровень: {{playerLevel}}</h6>
+      </footer>
+
+    </div>
+  </div>
+
+  <script src="js/trucker.js"></script>
+</body>
+
+</html>

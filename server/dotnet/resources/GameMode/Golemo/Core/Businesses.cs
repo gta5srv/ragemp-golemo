@@ -6067,9 +6067,9 @@ namespace Golemo.Core
                 BusinessManager.Orders.Add(o.UID, ID);
             }
 
-            truckerShape = NAPI.ColShape.CreateCylinderColShape(UnloadPoint - new Vector3(0, 0, 1), 8, 10, NAPI.GlobalDimension);
+            truckerShape = NAPI.ColShape.CreateCylinderColShape(UnloadPoint - new Vector3(0, 0, 1), 3, 10, NAPI.GlobalDimension);
             truckerShape.SetData("BIZID", ID);
-            truckerShape.OnEntityEnterColShape += Jobs.Truckers.onEntityEnterDropTrailer;
+            truckerShape.OnEntityEnterColShape += Jobs.Trucker.onEntityEnterDropTrailer;
 
             float range;
             if (Type == 1) range = 10f;

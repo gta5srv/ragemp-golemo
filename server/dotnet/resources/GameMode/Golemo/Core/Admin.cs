@@ -1090,9 +1090,6 @@ namespace Golemo.Core
                 case "TAXI":
                     Jobs.Taxi.respawnCar(vehicle);
                     break;
-                case "TRUCKER":
-                    Jobs.Truckers.respawnCar(vehicle);
-                    break;
                 case "COLLECTOR":
                     Jobs.Collector.respawnCar(vehicle);
                     break;

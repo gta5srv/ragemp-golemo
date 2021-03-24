@@ -4659,3 +4659,24 @@ CREATE TABLE `whitelist` (
 -- ----------------------------
 -- Records of whitelist
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `truckeremployments`
+-- ----------------------------
+
+CREATE TABLE `truckeremployments` (
+  `id` int(11) NOT NULL,
+  `position` text DEFAULT NULL,
+  `finishworkposition` text DEFAULT NULL,
+  `finishworkrotation` text DEFAULT NULL,
+  `truckspawnpositions` text DEFAULT NULL,
+  `truckspawnrotations` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of truckeremployments
+-- ----------------------------
+
+INSERT INTO `truckeremployments` (`id`, `position`, `finishworkposition`, `finishworkrotation`, `truckspawnpositions`, `truckspawnrotations`) VALUES
+(1, '{\"x\":174.08849,\"y\":2778.3599,\"z\":46.077293}', '{\"x\":214.84087,\"y\":2804.3464,\"z\":46.222057}', '{\"x\":0.31472728,\"y\":0.026912516,\"z\":-80.0158}', '[{\"x\":211.5676,\"y\":2792.1487,\"z\":46.222706},{\"x\":211.83301,\"y\":2787.0896,\"z\":46.22257},{\"x\":163.99867,\"y\":2746.173,\"z\":44.04367},{\"x\":163.0421,\"y\":2751.5364,\"z\":43.959248},{\"x\":162.45723,\"y\":2757.2869,\"z\":43.887386}]', '[{\"x\":0.3012233,\"y\":0.034776453,\"z\":98.707016},{\"x\":0.30643532,\"y\":0.037178617,\"z\":99.33826},{\"x\":-0.69619507,\"y\":-0.9077161,\"z\":-82.76666},{\"x\":0.08094881,\"y\":-0.6761876,\"z\":-80.21704},{\"x\":1.1659149,\"y\":-0.23870341,\"z\":-84.899284}]');

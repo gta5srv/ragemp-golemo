@@ -32,18 +32,10 @@ namespace Golemo.Jobs
                 NAPI.Blip.CreateBlip(198, new Vector3(1791.82837, 4586.595, 36.2361145), 1, 46, Main.StringToU16("Такси"), 255, 0, true, 0, 0);
                 NAPI.Blip.CreateBlip(513, new Vector3(462.6476, -605.5295, 27.49518), 1, 46, Main.StringToU16("Автобусная станция"), 255, 0, true, 0, 0);
                 NAPI.Blip.CreateBlip(512, new Vector3(-1331.475, 53.58579, 53.53268), 1, 2, Main.StringToU16("Газонокосилка"), 255, 0, true, 0, 0);
-                NAPI.Blip.CreateBlip(477, new Vector3(588.2037, -3037.641, 6.303829), 1, 3, Main.StringToU16("Дальнобойщики"), 255, 0, true, 0, 0);
-                NAPI.Blip.CreateBlip(477, new Vector3(338.9279, 3417.426, 35.38838), 1, 3, Main.StringToU16("Дальнобойщики"), 255, 0, true, 0, 0);
-                NAPI.Blip.CreateBlip(477, new Vector3(-2212.77, 4249.193, 46.17959), 1, 3, Main.StringToU16("Дальнобойщики"), 255, 0, true, 0, 0);
                 NAPI.Blip.CreateBlip(67, new Vector3(915.9069, -1265.255, 25.52912), 1, 25, Main.StringToU16("Инкассаторы"), 255, 0, true, 0, 0);
                 NAPI.Blip.CreateBlip(67, new Vector3(-1481.75537, -508.08847, 31.6868382), 1, 25, Main.StringToU16("Инкассаторы"), 255, 0, true, 0, 0);
                 NAPI.Blip.CreateBlip(67, new Vector3(-144.374817, 6354.90869, 30.3706112), 1, 25, Main.StringToU16("Инкассаторы"), 255, 0, true, 0, 0);
                 NAPI.Blip.CreateBlip(544, new Vector3(473.9508, -1275.597, 29.60513), 1, 40, Main.StringToU16("Автомеханики"), 255, 0, true, 0, 0);
-
-                NAPI.Blip.CreateBlip(478, Truckers.getProduct[0], 1, 84, Main.StringToU16("Склад продуктов"), 255, 0, true, 0, 0);
-                NAPI.Blip.CreateBlip(478, Truckers.getProduct[1], 1, 36, Main.StringToU16("Склад бензина"), 255, 0, true, 0, 0);
-                NAPI.Blip.CreateBlip(478, Truckers.getProduct[2], 1, 15, Main.StringToU16("Автосклад"), 255, 0, true, 0, 0);
-                NAPI.Blip.CreateBlip(478, Truckers.getProduct[3], 1, 62, Main.StringToU16("Склад оружия"), 255, 0, true, 0, 0);
 
                 // markers
                 NAPI.Marker.CreateMarker(1, new Vector3(105.4633, -1568.843, 28.60269) - new Vector3(0, 0, 0.7), new Vector3(), new Vector3(), 1f, new Color(255, 255, 255, 220));
@@ -140,7 +132,7 @@ namespace Golemo.Jobs
             { 3, 7 },  //таксист
             { 4, 7 },  //водитель автобуса
             { 5, 2 },  //газонокосильщик
-            { 6, 11 },  //дальнобойщик
+            { 6, 47 },  //дальнобойщик
             { 7, 13 },  //инкассатор
             { 8, 9 },  //автомеханик
         };
@@ -420,147 +412,7 @@ namespace Golemo.Jobs
             }
         }
         #endregion
-        #region Truckers Job
-        public static void OpenTruckersOrders(Player player)
-        {
-            Menu menu = new Menu("truckersorders", false, false);
-            menu.Callback += callback_truckersorders;
-
-            Menu.Item menuItem = new Menu.Item("header", Menu.MenuItem.Header);
-            menuItem.Text = "Заказы";
-            menu.Add(menuItem);
-
-            Order order = null;
-            List<string> ordersIDs = new List<string>();
-            foreach (var o in BusinessManager.Orders)
-            {
-                var biz = BusinessManager.BizList[o.Value];
-                var temp_order = biz.Orders.FirstOrDefault(or => or.UID == o.Key);
-                if (temp_order == null || temp_order.Taked) continue;
-                if (order == null) order = temp_order;
-                ordersIDs.Add(o.Key.ToString());
-            }
-
-            if (ordersIDs.Count == 0)
-            {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Нет свободных заказов", 3000);
-                return;
-            }
-
-            menuItem = new Menu.Item("products", Menu.MenuItem.List);
-            menuItem.Elements = ordersIDs;
-            menu.Add(menuItem);
-
-            menuItem = new Menu.Item("Name", Menu.MenuItem.Card);
-            menuItem.Text = $"Продукт: {order.Name}";
-            menu.Add(menuItem);
-
-            var youGet = Convert.ToInt32(order.Amount * BusinessManager.ProductsOrderPrice[order.Name] * 0.1);
-            var max = Convert.ToInt32(2000 * Group.GroupPayAdd[Main.Accounts[player].VipLvl]);
-            var min = Convert.ToInt32(500 * Group.GroupPayAdd[Main.Accounts[player].VipLvl]);
-            if (youGet > max) youGet = max;
-            else if (youGet < min) youGet = min;
-            menuItem = new Menu.Item("youget", Menu.MenuItem.Card);
-            menuItem.Text = $"Вы получите: {youGet}$";
-            menu.Add(menuItem);
-
-            menuItem = new Menu.Item("take", Menu.MenuItem.Button);
-            menuItem.Text = "Взять заказ";
-            menu.Add(menuItem);
-
-            menuItem = new Menu.Item("close", Menu.MenuItem.Button);
-            menuItem.Text = "Закрыть";
-            menu.Add(menuItem);
-
-            menu.Open(player);
-        }
-
-        public static List<Vector3> getProduct = new List<Vector3>()
-        {
-            new Vector3(95.82169, 6363.628, 30.37586), // 24/7 products
-            new Vector3(2786.021, 1575.39, 23.50065), // petrol products
-            new Vector3(148.6672, 6362.376, 30.52923), // autos
-            new Vector3(148.6672, 6362.376, 30.52923),
-            new Vector3(148.6672, 6362.376, 30.52923),
-            new Vector3(148.6672, 6362.376, 30.52923),
-            new Vector3(2710.076, 3454.989, 55.31736), // gun products
-            new Vector3(95.82169, 6363.628, 30.37586), // clothes
-            new Vector3(95.82169, 6363.628, 30.37586), // burgershot
-            new Vector3(95.82169, 6363.628, 30.37586), // tattoo-salon
-            new Vector3(95.82169, 6363.628, 30.37586), // barber-shop
-            new Vector3(95.82169, 6363.628, 30.37586), // mask-shop
-            new Vector3(95.82169, 6363.628, 30.37586), // ls customs
-            new Vector3(95.82169, 6363.628, 30.37586), // car wash
-            new Vector3(95.82169, 6363.628, 30.37586), // petshop
-        };
-
-        private static void callback_truckersorders(Player client, Menu menu, Menu.Item item, string eventName, dynamic data)
-        {
-            List<Order> orders = client.GetData<List<Order>>("TRUCKERORDERLIST");
-            switch (eventName)
-            {
-                case "listChangeright":
-                case "listChangeleft":
-                    {
-                        var uid = Convert.ToInt32(data["1"]["Value"].ToString());
-                        if (!BusinessManager.Orders.ContainsKey(uid)) return;
-
-                        Business biz = BusinessManager.BizList[BusinessManager.Orders[uid]];
-                        var order = biz.Orders.FirstOrDefault(o => o.UID == uid);
-
-                        menu.Items[2].Text = $"Продукт: {order.Name}";
-                        menu.Change(client, 2, menu.Items[2]);
-
-                        var youGet = Convert.ToInt32(order.Amount * BusinessManager.ProductsOrderPrice[order.Name] * 0.1);
-                        var max = Convert.ToInt32(2000 * Group.GroupPayAdd[Main.Accounts[client].VipLvl]);
-                        var min = Convert.ToInt32(500 * Group.GroupPayAdd[Main.Accounts[client].VipLvl]);
-                        if (youGet > max) youGet = max;
-                        else if (youGet < min) youGet = min;
-                        menu.Items[3].Text = $"Вы получите: {youGet}$";
-                        menu.Change(client, 3, menu.Items[3]);
-                        return;
-                    }
-                case "button":
-                    {
-                        if (item.ID == "close")
-                            MenuManager.Close(client);
-                        else
-                        {
-                            if (client.HasData("ORDER"))
-                            {
-                                Notify.Send(client, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы уже взяли заказ", 3000);
-                                return;
-                            }
-                            var uid = Convert.ToInt32(data["1"]["Value"].ToString());
-                            if (!BusinessManager.Orders.ContainsKey(uid))
-                            {
-                                Notify.Send(client, NotifyType.Error, NotifyPosition.BottomCenter, $"Такого заказа больше не существует", 3000);
-                                return;
-                            };
-
-                            Business biz = BusinessManager.BizList[BusinessManager.Orders[uid]];
-                            var order = biz.Orders.FirstOrDefault(o => o.UID == uid);
-                            if (order == null || order.Taked)
-                            {
-                                Notify.Send(client, NotifyType.Error, NotifyPosition.BottomCenter, $"Этот заказ уже взял кто-то другой", 3000);
-                                return;
-                            }
-
-                            order.Taked = true;
-
-                            client.SetData("ORDERDATE", DateTime.Now.AddMinutes(6));
-
-                            Notify.Send(client, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы взяли заказ по доставке {order.Name} в {BusinessManager.BusinessTypeNames[biz.Type]}. Сначала закупите товар", 3000);
-                            var pos = getProduct[biz.Type];
-                            Trigger.ClientEvent(client, "createWaypoint", pos.X, pos.Y);
-                            client.SetData("ORDER", uid);
-                            MenuManager.Close(client);
-                        }
-                        return;
-                    }
-            }
-        }
-        #endregion
+        
         #endregion
     }
 }

@@ -380,6 +380,8 @@ namespace Golemo.Fractions
                             Main.Players[player].IsAlive = true;
                             Main.OffAntiAnim(player);
                             NAPI.Entity.SetEntityDimension(player, dimension);
+
+                            Jobs.Trucker.StopWorkingAndResetData(player);
                         }
                         catch { }
                     }, 4000);

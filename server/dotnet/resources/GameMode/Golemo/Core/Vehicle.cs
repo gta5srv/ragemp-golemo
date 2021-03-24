@@ -1063,10 +1063,6 @@ namespace Golemo.Core
                             case "TAXI":
                                 Jobs.Lawnmower.respawnCar(vehicle);
                                 return;
-                            case "TRUCKER":
-                                if (player != null) Jobs.Truckers.cancelOrder(player);
-                                Jobs.Truckers.respawnCar(vehicle);
-                                return;
                             case "COLLECTOR":
                                 Jobs.Collector.respawnCar(vehicle);
                                 return;
