@@ -5107,13 +5107,13 @@ namespace Golemo.Core
                 Timers.StartOnce($"{Main.Players[pl].UUID}_ordertime_{order.UID}", 180000, () => { //3  minutes 180.000
                     if (!BusinessManager.Orders.ContainsKey(order.UID))
                     {
-                        Timers.Stop($"{Main.Players[pl].UUID}_ordertime");
+                        Timers.Stop($"{Main.Players[pl].UUID}_ordertime_{order.UID}");
                         return;
                     }
                     Business biz = BusinessManager.BizList[BusinessManager.Orders[order.UID]];
                     if (order == null)
                     {
-                        Timers.Stop($"{Main.Players[pl].UUID}_ordertime");
+                        Timers.Stop($"{Main.Players[pl].UUID}_ordertime_{order.UID}");
                         return;
                     }
                     var ow = NAPI.Player.GetPlayerFromName(biz.Owner);
@@ -5130,7 +5130,7 @@ namespace Golemo.Core
                     biz.Orders.Remove(order);
                     BusinessManager.Orders.Remove(order.UID);
 
-                    Timers.Stop($"{Main.Players[pl].UUID}_ordertime");
+                    Timers.Stop($"{Main.Players[pl].UUID}_ordertime_{order.UID}");
                 });
             }
             catch (Exception e)
@@ -5659,7 +5659,7 @@ namespace Golemo.Core
                             }
                             biz.Orders.Remove(order);
                             p.Ordered = false;
-
+                            Timers.Stop($"{Main.Players[pl].UUID}_ordertime_{order.UID}");
                             MoneySystem.Wallet.Change(client, order.Amount * ProductsOrderPrice[prodName]);
                             GameLog.Money($"server", $"player({Main.Players[client].UUID})", order.Amount * ProductsOrderPrice[prodName], $"orderCancel");
                             Notify.Send(client, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы отменили заказ на {prodName}", 3000);
