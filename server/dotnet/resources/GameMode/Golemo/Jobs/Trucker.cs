@@ -282,15 +282,15 @@ namespace Golemo.Jobs
         #region Stop Work
         public static void StopWorkingAndResetData(Player player)
         {
-            if (player.HasData("TRUCK"))
+            if (player.HasData("WORK"))
             {
-                if (player.IsInVehicle && player.Vehicle == player.GetData<Vehicle>("TRUCK"))
+                if (player.IsInVehicle && player.Vehicle == player.GetData<Vehicle>("WORK"))
                 {
                     Core.VehicleManager.WarpPlayerOutOfVehicle(player);
                 }
                 NAPI.Task.Run(() => {
-                    player.GetData<Vehicle>("TRUCK").Delete();
-                    player.ResetData("TRUCK");
+                    player.GetData<Vehicle>("WORK").Delete();
+                    player.ResetData("WORK");
                     player.ResetData("TRUCKNAME");
                 }, 1000);
             }
@@ -315,7 +315,7 @@ namespace Golemo.Jobs
                 if (NAPI.Data.GetEntityData(vehicle, "TYPE") == "TRUCKER" &&
                 Main.Players[player].WorkID == 6 &&
                 NAPI.Data.GetEntityData(player, "ON_WORK") &&
-                NAPI.Data.GetEntityData(player, "TRUCK") == vehicle)
+                NAPI.Data.GetEntityData(player, "WORK") == vehicle)
                 {
                     Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, $"Если Вы не сядете в транспорт через {_timerSeconds} секунд, то рабочий день закончится", 3000);
                     NAPI.Data.SetEntityData(player, "IN_WORK_CAR", false);
@@ -366,7 +366,7 @@ namespace Golemo.Jobs
             if (NAPI.Data.GetEntityData(truck, "TYPE") != "TRUCKER") return;
             if (player.VehicleSeat == 0)
             {
-                if(player.HasData("TRUCK") && player.GetData<Vehicle>("TRUCK") == truck)
+                if(player.HasData("WORK") && player.GetData<Vehicle>("WORK") == truck)
                 {
                     player.SetData("IN_WORK_CAR", true);
                 }
@@ -422,10 +422,10 @@ namespace Golemo.Jobs
                     Notify.Error(player, "Выйдете из машины", 3500);
                     canWork = false;
                 }
-                else if (player.HasData("TRUCK") && truck != null)
+                else if (player.HasData("WORK") && truck != null)
                 {
                     VehicleHash hash = (VehicleHash)NAPI.Util.GetHashKey(truck);
-                    Vehicle ptruck = player.GetData<Vehicle>("TRUCK");
+                    Vehicle ptruck = player.GetData<Vehicle>("WORK");
                     if((VehicleHash)ptruck.Model == hash) canWork = true;
                     else
                     {
@@ -511,7 +511,7 @@ namespace Golemo.Jobs
             NAPI.Data.SetEntityData(veh, "ON_WORK", true);
             NAPI.Data.SetEntityData(veh, "DRIVER", player);
             veh.SetSharedData("PETROL", Core.VehicleManager.VehicleTank[veh.Class]);
-            player.SetData("TRUCK", veh);
+            player.SetData("WORK", veh);
             player.SetData("TRUCKNAME", truck);
             player.SetData("ON_WORK", true);
             player.SetData("IN_WORK_CAR", true);
@@ -528,10 +528,10 @@ namespace Golemo.Jobs
             {
                 if (e.IsInVehicle)
                 {
-                    if (e.HasData("TRUCK"))
+                    if (e.HasData("WORK"))
                     {
                         if (e.HasData("ORDER_BIZ") || e.HasData("ORDER_LOADED") && e.GetData<bool>("ORDER_LOADED")) return;
-                        if(e.GetData<Vehicle>("TRUCK") == e.Vehicle)
+                        if(e.GetData<Vehicle>("WORK") == e.Vehicle)
                         {
                             Trigger.ClientEvent(e, "JOBS::TRUCKER_START_FINISHING_PROCESS", ExitWorkPosition, ExitWorkRotation, true);
                         }
@@ -542,7 +542,7 @@ namespace Golemo.Jobs
             {
                 if (!Main.Players.ContainsKey(e)) return;
                 if (Main.Players[e].WorkID != 6) return; 
-                if (!e.HasData("TRUCK")) return;
+                if (!e.HasData("WORK")) return;
                 Trigger.ClientEvent(e, "JOBS::TRUCKER_START_FINISHING_PROCESS", ExitWorkPosition, ExitWorkRotation, false);
             };
         }
