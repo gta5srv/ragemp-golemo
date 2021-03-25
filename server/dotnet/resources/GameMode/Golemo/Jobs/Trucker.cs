@@ -111,7 +111,7 @@ namespace Golemo.Jobs
                 return;
             }
             //Если игрок ещё не брал грузовика, то спавним ему грузовик
-            if (!player.HasData("TRUCK"))
+            if (!(player.HasData("WORK") && player.GetData<Vehicle>("WORK") != null))
             {
                 //Заспавнить грузовик у данного места трудоустройства
                 employment.CreateTruck(player, truck);
@@ -129,7 +129,7 @@ namespace Golemo.Jobs
         public static void onEnterLoadProductColshape(Player player)
         {
             if (!player.IsInVehicle) return;
-            if (player.HasData("ORDER_LOADED") && !player.GetData<bool>("ORDER_LOADED") && player.Vehicle == player.GetData<Vehicle>("TRUCK"))
+            if (player.HasData("ORDER_LOADED") && !player.GetData<bool>("ORDER_LOADED") && player.Vehicle == player.GetData<Vehicle>("WORK"))
             {
                 LoadingProducts(player);
             }
@@ -207,7 +207,7 @@ namespace Golemo.Jobs
                     Notify.Error(player, "Вы должны находится в вашем рабочем грузовике", 3500);
                     return;
                 }
-                Vehicle truck = player.GetData<Vehicle>("TRUCK");
+                Vehicle truck = player.GetData<Vehicle>("WORK");
                 if (truck != player.Vehicle)
                 {
                     Notify.Error(player, "Вы должны находится в вашем рабочем грузовике", 3500);
@@ -282,7 +282,7 @@ namespace Golemo.Jobs
         #region Stop Work
         public static void StopWorkingAndResetData(Player player)
         {
-            if (player.HasData("WORK"))
+            if (player.HasData("WORK") && player.GetData<Vehicle>("WORK") != null)
             {
                 if (player.IsInVehicle && player.Vehicle == player.GetData<Vehicle>("WORK"))
                 {
@@ -422,7 +422,7 @@ namespace Golemo.Jobs
                     Notify.Error(player, "Выйдете из машины", 3500);
                     canWork = false;
                 }
-                else if (player.HasData("WORK") && truck != null)
+                else if (player.HasData("WORK") && player.GetData<Vehicle>("WORK") != null && truck != null)
                 {
                     VehicleHash hash = (VehicleHash)NAPI.Util.GetHashKey(truck);
                     Vehicle ptruck = player.GetData<Vehicle>("WORK");
@@ -528,7 +528,7 @@ namespace Golemo.Jobs
             {
                 if (e.IsInVehicle)
                 {
-                    if (e.HasData("WORK"))
+                    if (e.HasData("WORK") && e.GetData<Vehicle>("WORK") != null)
                     {
                         if (e.HasData("ORDER_BIZ") || e.HasData("ORDER_LOADED") && e.GetData<bool>("ORDER_LOADED")) return;
                         if(e.GetData<Vehicle>("WORK") == e.Vehicle)
@@ -541,8 +541,8 @@ namespace Golemo.Jobs
             _exitShape.OnEntityExitColShape += (s, e) =>
             {
                 if (!Main.Players.ContainsKey(e)) return;
-                if (Main.Players[e].WorkID != 6) return; 
-                if (!e.HasData("WORK")) return;
+                if (Main.Players[e].WorkID != 6) return;
+                if (!(e.HasData("WORK") && e.GetData<Vehicle>("WORK") != null)) return;
                 Trigger.ClientEvent(e, "JOBS::TRUCKER_START_FINISHING_PROCESS", ExitWorkPosition, ExitWorkRotation, false);
             };
         }
