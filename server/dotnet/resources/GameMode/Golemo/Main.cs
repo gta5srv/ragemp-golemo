@@ -601,10 +601,17 @@ namespace Golemo
 
                 player.SetData("spmode", false);
                 player.SetSharedData("InDeath", false);
-                if (Players[player].AdminLVL > 0)
-                {
-                    NAPI.Task.Run(() => { ReportSys.onAdminLoad(player); }, 5000);
-                }
+                NAPI.Task.Run(() => {
+                    if (Players[player].AdminLVL > 0)
+                    {
+                        ReportSys.onAdminLoad(player);
+                    }
+                    if (Players[player].FractionID == 15)
+                    {
+                        Trigger.ClientEvent(player, "enableadvert", true);
+                        Fractions.LSNews.onLSNPlayerLoad(player);
+                    }
+                }, 5000);
             } catch (Exception e) { Log.Write($"ClientEvent_Spawn/{where}: " + e.Message, nLog.Type.Error); }
         }
 
