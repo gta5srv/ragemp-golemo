@@ -875,10 +875,10 @@ namespace Golemo.Fractions
             if (Main.Players[player].FractionID == 18)
             {
                 var message = "";
-                Police.is_warg = !Police.is_warg;
-                if (Police.is_warg) message = $"{NAPI.Player.GetPlayerName(player)} объявил режим ЧП!!!";
+                Sheriff.is_warg = !Sheriff.is_warg;
+                if (Sheriff.is_warg) message = $"{NAPI.Player.GetPlayerName(player)} объявил режим ЧП!!!";
                 else message = $"{NAPI.Player.GetPlayerName(player)} отключил режим ЧП.";
-                Manager.sendFractionMessage(7, message);
+                Manager.sendFractionMessage(18, message);
             }
             if (Main.Players[player].FractionID == 7)
             {
