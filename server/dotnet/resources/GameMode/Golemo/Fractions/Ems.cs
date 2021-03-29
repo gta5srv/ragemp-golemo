@@ -859,14 +859,19 @@ namespace Golemo.Fractions
             GameLog.Money($"player({Main.Players[client].UUID})", $"server", 600, $"tattooRemove");
             Fractions.Stocks.fracStocks[6].Money += 600;
 
-            foreach (var tattoo in Customization.CustomPlayerData[Main.Players[client].UUID].Tattoos[Convert.ToInt32(zone)])
-            {
-                var decoration = new Decoration();
-                decoration.Collection = NAPI.Util.GetHashKey(tattoo.Dictionary);
-                decoration.Overlay = NAPI.Util.GetHashKey(tattoo.Hash);
-                client.RemoveDecoration(decoration);
-            }
+            client.ClearDecorations();
             Customization.CustomPlayerData[Main.Players[client].UUID].Tattoos[Convert.ToInt32(zone)] = new List<Tattoo>();
+            foreach (var list in Customization.CustomPlayerData[Main.Players[client].UUID].Tattoos.Values)
+            {
+                foreach (var t in list)
+                {
+                    if (t == null) continue;
+                    var decoration = new Decoration();
+                    decoration.Collection = NAPI.Util.GetHashKey(t.Dictionary);
+                    decoration.Overlay = NAPI.Util.GetHashKey(t.Hash);
+                    client.SetDecoration(decoration);
+                }
+            }
             client.SetSharedData("TATTOOS", Newtonsoft.Json.JsonConvert.SerializeObject(Customization.CustomPlayerData[Main.Players[client].UUID].Tattoos));
 
             Notify.Send(client, NotifyType.Success, NotifyPosition.BottomCenter, "Вы свели татуировки с " + TattooZonesNames[Convert.ToInt32(zone)], 3000);
