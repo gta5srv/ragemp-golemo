@@ -5660,7 +5660,7 @@ namespace Golemo.Core
                             biz.Orders.Remove(order);
                             p.Ordered = false;
                             Timers.Stop($"{Main.Players[client].UUID}_ordertime_{order.UID}");
-                            MoneySystem.Wallet.Change(client, order.Amount * ProductsOrderPrice[prodName]);
+                            MoneySystem.Wallet.ChangeBank(client, order.Amount * ProductsOrderPrice[prodName]);
                             GameLog.Money($"server", $"player({Main.Players[client].UUID})", order.Amount * ProductsOrderPrice[prodName], $"orderCancel");
                             Notify.Send(client, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы отменили заказ на {prodName}", 3000);
                         }
