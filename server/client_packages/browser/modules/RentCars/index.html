@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/rentcars.css">
+  <link rel="stylesheet" href="../../assets/css/font.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+  <title>RentCars - Golemo-Mode</title>
+</head>
+
+<body>
+  <div id="app" v-if="active" v-cloak>
+    <div class="container">
+      <header>
+        <i class="fa fa-car" aria-hidden="true"></i>
+        <h1>{{header}}</h1>
+        <span>
+          <i @click="closePanel()" class="fa fa-times-circle-o" aria-hidden="true"></i>
+        </span>
+      </header>
+
+      <div class="main pageBuys">
+        <h2>Список транспорта</h2>
+        <div class="items">
+          <div @click="selectModel(name)" class="item" v-for="(price, name) in vehicles">
+            <img :src="`../../assets/images/vehicles/min/`+ name + `.png`">
+            <p>
+              <b>{{name}}</b>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div>
+          <h3>Всего: {{Object.keys(vehicles).length}}</h3>
+        </div>
+      </footer>
+
+      <transition name="modal">
+        <div class="modal-window" v-if="isModalOpen">
+          <header>
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            <h2>Баланс: {{money}}</h2>
+          </header>
+          <div>
+            <p>
+              <i class="fa fa-tag"></i>{{vehicle}}
+            </p>
+            <p>
+              <i class="fa fa-users"></i>{{maxPassengers}} мест
+            </p>
+            <p>
+              <i class="fa fa-bolt"></i>{{maxSpeed}} км/ч
+            </p>
+            <p>
+              <i class="fa fa-usd" aria-hidden="true"></i>{{vehicles[vehicle] * (rentMinutes/10)}}
+            </p>
+            <p>
+              <i class="fa fa-hourglass-half"></i>на
+              <i @click="changeRentTimeMinutes('substract')" class="fa fa-caret-left fz-11"></i>
+              <input type="number" v-model="rentMinutes" disabled>
+              <i @click="changeRentTimeMinutes('add')" class="fa fa-caret-right fz-11"></i>
+               минут
+            </p>
+          </div>
+          <footer>
+            <a :class="{btnDisable: needMoney}" class="btnModal mg-center btnGps" @click="rentVehicle()">Арендовать</a>
+            <a class="btnModal mg-center btnCancel" @click="modalClose()">Отмена</a>
+          </footer>
+        </div>
+      </transition>
+
+      <transition name="fade">
+        <div class="fade" v-if="isModalOpen"></div>
+      </transition>
+
+    </div>
+  </div>
+
+  <script src="js/rentcars.js"></script>
+</body>
+
+</html>

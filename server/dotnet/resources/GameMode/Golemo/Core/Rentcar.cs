@@ -12,65 +12,35 @@ namespace Golemo.Core
     class Rentcar : Script
     {
         private static nLog Log = new nLog("Rentcar");
+        private static List<RentArea> _rentAreas = new List<RentArea>();
 
-        public static List<CarInfo> CarInfos = new List<CarInfo>();
-
-        private static List<Vector3> RentAreas = new List<Vector3>()
+        [ServerEvent(Event.ResourceStart)]
+        public static void OnResourceStart()
         {
-            new Vector3(-80.102, 6344.091, 31.48188),
-            new Vector3(1691.532, 4778.648, 41.91788),
-            new Vector3(2779.626, 3482.937, 55.25394),
-            new Vector3(572.2574, 2721.229, 42.05919),
-            new Vector3(-2194.362, 4267.641, 48.60411),
-            new Vector3(-3146.301, 1106.419, 20.77486),
-            new Vector3(-2145.544, -379.614, 13.24884),
-            new Vector3(-1401.284, 36.33679, 53.16653),
-            new Vector3(-581.241, -244.2824, 36.00377),
-            new Vector3(393.4708, -644.4418, 28.56614),
-        };
-
-        public static Vector3 GetNearestRentArea(Vector3 position)
-        {
-            Vector3 nearesetArea = RentAreas[0];
-            foreach (var v in RentAreas)
+            try
             {
-                if (v == new Vector3(237.3785, 217.7914, 106.2868)) continue;
-                if (position.DistanceTo(v) < position.DistanceTo(nearesetArea))
-                    nearesetArea = v;
+                var result = MySQL.QueryRead($"SELECT * FROM `rentareas`");
+                if (result == null || result.Rows.Count == 0)
+                {
+                    Log.Write("DB rentareas return null result.", nLog.Type.Warn);
+                    return;
+                }
+                foreach (DataRow Row in result.Rows)
+                {
+                    Vector3 position = JsonConvert.DeserializeObject<Vector3>(Row["position"].ToString());
+                    List<Vector3> spawnPos = JsonConvert.DeserializeObject<List<Vector3>>(Row["spawnpositions"].ToString());
+                    List<Vector3> spawnRot = JsonConvert.DeserializeObject<List<Vector3>>(Row["spawnrotations"].ToString());
+                    Dictionary<string, int> vehicles = JsonConvert.DeserializeObject<Dictionary<string, int>>(Row["vehicles"].ToString());
+                    RentArea area = new RentArea(Convert.ToInt32(Row["id"]), Convert.ToInt32(Row["type"]), position, spawnPos, spawnRot);
+                    area.LoadVehicles(vehicles);
+                    _rentAreas.Add(area);
+                }
+                Log.Write($"Загружено {_rentAreas.Count} площадок аренды транспорта");
             }
-            return nearesetArea;
-        }
-
-        public static void rentCarsSpawner()
-        {
-            var random = new Random();
-            var i = 0;
-            foreach (var c in CarInfos)
+            catch (Exception e)
             {
-                var veh = NAPI.Vehicle.CreateVehicle(c.Model, c.Position, c.Rotation, random.Next(0, 130), random.Next(0, 130));
-                NAPI.Data.SetEntityData(veh, "ACCESS", "RENT");
-                NAPI.Data.SetEntityData(veh, "NUMBER", i);
-                NAPI.Data.SetEntityData(veh, "DRIVER", null);
-                Core.VehicleStreaming.SetEngineState(veh, false);
-                Core.VehicleStreaming.SetLockStatus(veh, false);
-                i++;
+                Log.Write(e.Message, nLog.Type.Error);
             }
-        }
-
-        public static void RespawnCar(Vehicle vehicle)
-        {
-            var number = vehicle.GetData<int>("NUMBER");
-            var random = new Random();
-            NAPI.Entity.SetEntityPosition(vehicle, CarInfos[number].Position);
-            NAPI.Entity.SetEntityRotation(vehicle, CarInfos[number].Rotation);
-            VehicleManager.RepairCar(vehicle);
-
-            NAPI.Data.SetEntityData(vehicle, "ACCESS", "RENT");
-            NAPI.Data.SetEntityData(vehicle, "NUMBER", number);
-            NAPI.Data.SetEntityData(vehicle, "DRIVER", null);
-            NAPI.Data.SetEntitySharedData(vehicle, "PETROL", 50);
-            Core.VehicleStreaming.SetEngineState(vehicle, false);
-            Core.VehicleStreaming.SetLockStatus(vehicle, false);
         }
 
         [ServerEvent(Event.PlayerEnterVehicle)]
@@ -84,50 +54,6 @@ namespace Golemo.Core
                     Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Этот транспорт уже арендован", 3000);
                     VehicleManager.WarpPlayerOutOfVehicle(player);
                     return;
-                }
-
-                int number = vehicle.GetData<int>("NUMBER");
-                if (vehicle.GetData<Player>("DRIVER") == null)
-                {
-                    if (player.HasData("RENTED_CAR"))
-                    {
-                        Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "У Вас уже оплачена аренда другого транспорта", 3000);
-                        VehicleManager.WarpPlayerOutOfVehicle(player);
-                        return;
-                    }
-                    if (CarInfos[number].Model == VehicleHash.Cruiser && Main.Players[player].LVL >= 2)
-                    {
-                        Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Эти велосипеды предназначены только для новичков", 3000);
-                        VehicleManager.WarpPlayerOutOfVehicle(player);
-                        return;
-                    }
-                    int price = CarInfos[number].Price;
-                    switch (Main.Accounts[player].VipLvl)
-                    {
-                        case 0:
-                            price = CarInfos[number].Price;
-                            break;
-                        case 1:
-                            price = Convert.ToInt32(CarInfos[number].Price * 0.95);
-                            break;
-                        case 2:
-                            price = Convert.ToInt32(CarInfos[number].Price * 0.9);
-                            break;
-                        case 3:
-                            price = Convert.ToInt32(CarInfos[number].Price * 0.85);
-                            break;
-                        case 4:
-                            price = Convert.ToInt32(CarInfos[number].Price * 0.8);
-                            break;
-                        default:
-                            price = CarInfos[number].Price;
-                            break;
-                    }
-                    Trigger.ClientEvent(player, "openDialog", "RENT_CAR", $"Вы хотите арендовать этот транспорт за ${price}?");
-                }
-                else
-                {
-                    player.SetData("IN_RENT_CAR", true);
                 }
             }
             catch (Exception e) { Log.Write("PlayerEnterVehicle: " + e.Message, nLog.Type.Error); }
@@ -145,94 +71,236 @@ namespace Golemo.Core
                     return;
                 }
                 if (!vehicle.HasData("ACCESS") || vehicle.GetData<string>("ACCESS") != "RENT" || vehicle.GetData<Player>("DRIVER") != player) return;
-                Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, $"Через 3 минуты аренда транспорта закончится, если вы снова не сядете в т/с", 3000);
-                NAPI.Data.SetEntityData(player, "IN_RENT_CAR", false);
-                NAPI.Data.SetEntityData(player, "RENT_EXIT_TIMER_COUNT", 0);
-                NAPI.Data.SetEntityData(player, "RENT_CAR_EXIT_TIMER", Timers.Start(1000, () => timer_playerExitRentVehicle(player, vehicle)));
             }
             catch (Exception e) { Log.Write("PlayerExitVehicle: " + e.Message, nLog.Type.Error); }
         }
-
-        private void timer_playerExitRentVehicle(Player player, Vehicle vehicle)
-        {
-            NAPI.Task.Run(() =>
-            {
-                try
-                {
-                    if (!player.HasData("RENT_CAR_EXIT_TIMER")) return;
-                    if (NAPI.Data.GetEntityData(player, "IN_RENT_CAR"))
-                    {
-                        Timers.Stop(NAPI.Data.GetEntityData(player, "RENT_CAR_EXIT_TIMER"));
-                        NAPI.Data.ResetEntityData(player, "RENT_CAR_EXIT_TIMER");
-                        return;
-                    }
-                    if (NAPI.Data.GetEntityData(player, "RENT_EXIT_TIMER_COUNT") > 1800)
-                    {
-                        Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Срок аренды автомобиля закончился", 3000);
-                        RespawnCar(vehicle);
-                        player.ResetData("RENTED_CAR");
-                        Timers.Stop(NAPI.Data.GetEntityData(player, "RENT_CAR_EXIT_TIMER"));
-                        NAPI.Data.ResetEntityData(player, "RENT_CAR_EXIT_TIMER");
-                        return;
-                    }
-                    NAPI.Data.SetEntityData(player, "RENT_EXIT_TIMER_COUNT", NAPI.Data.GetEntityData(player, "RENT_EXIT_TIMER_COUNT") + 1);
-                }
-                catch (Exception e) { Log.Write("timerExitRentVehicle: " + e.Message, nLog.Type.Error); }
-            });
-        }
-
-        public static void Event_OnPlayerDisconnected(Player player)
+        public static void OpenMenuRentVehicles(Player player)
         {
             try
             {
-                if (player.HasData("RENTED_CAR"))
-                    RespawnCar(player.GetData<Vehicle>("RENTED_CAR"));
-                if (player.HasData("RENT_CAR_EXIT_TIMER"))
-                    Timers.Stop(player.GetData<string>("RENT_CAR_EXIT_TIMER"));
+                if (!Main.Players.ContainsKey(player)) return;
+                if (!player.HasData("RENTAREAID")) return;
+                RentArea area = _rentAreas.Find(x => x.ID == player.GetData<int>("RENTAREAID"));
+                if (area == null) return;
+                area.OpenMenuForPlayer(player);
             }
-            catch (Exception e) { Log.Write("PlayerDisconnected: " + e.Message, nLog.Type.Error); }
+            catch (Exception e)
+            {
+                Log.Write(e.Message, nLog.Type.Error);
+            }
         }
 
-        public static void RentCar(Player player)
+        [RemoteEvent("SERVER:::RENT::BUY_RENT_CAR")]
+        public static void RentCar(Player player, string vname, int minutes = 10)
         {
-            if (!player.IsInVehicle || !player.Vehicle.HasData("ACCESS") || player.Vehicle.GetData<string>("ACCESS") != "RENT" || player.Vehicle.GetData<Player>("DRIVER") != null)
+            if (!Main.Players.ContainsKey(player)) return;
+            if (!player.HasData("RENTAREAID")) return;
+            if (player.HasData("RENTED_TIME") || player.HasData("RENTED_CAR"))
             {
-                VehicleManager.WarpPlayerOutOfVehicle(player);
+                Notify.Error(player, "У вас уже есть арендованный транспорт", 4500);
                 return;
             }
-            int price = CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price;
-            switch (Main.Accounts[player].VipLvl)
+
+            RentArea area = _rentAreas.Find(x => x.ID == player.GetData<int>("RENTAREAID"));
+            if (area == null) return;
+
+            if (!area.ContainsVehicle(vname)) return;
+
+            int price = area.GetPriceThisRentCar(vname, minutes);
+            if (!MoneySystem.Wallet.Change(player, -price))
             {
-                case 0:
-                    price = CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price;
-                    break;
-                case 1:
-                    price = Convert.ToInt32(CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price * 0.95);
-                    break;
-                case 2:
-                    price = Convert.ToInt32(CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price * 0.9);
-                    break;
-                case 3:
-                    price = Convert.ToInt32(CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price * 0.85);
-                    break;
-                case 4:
-                    price = Convert.ToInt32(CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price * 0.8);
-                    break;
-                default:
-                    price = CarInfos[player.Vehicle.GetData<int>("NUMBER")].Price;
-                    break;
-            }
-            if (Main.Players[player].Money < price)
-            {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно средств на аренду", 3000);
-                VehicleManager.WarpPlayerOutOfVehicle(player);
+                Notify.Error(player, "Недостаточно средств", 3500);
                 return;
             }
-            player.Vehicle.SetData("DRIVER", player);
-            player.SetData("RENTED_CAR", player.Vehicle);
-            player.SetData("IN_RENT_CAR", true);
-            MoneySystem.Wallet.Change(player, -price);
-            GameLog.Money($"player({Main.Players[player].UUID})", $"server", price, $"rentCar");
+            area.SpawnRentCar(player, vname, minutes);
         }
+
+        public static Vector3 GetNearestRentArea(Vector3 position)
+        {
+            Vector3 nearesetArea = _rentAreas[0].Position;
+            foreach (var area in _rentAreas)
+            {
+                if (position.DistanceTo(area.Position) < position.DistanceTo(nearesetArea))
+                    nearesetArea = area.Position;
+            }
+            return nearesetArea;
+
+        }
+    }
+
+    class RentArea
+    {
+        #region Properties
+        public int ID { get; set; }
+        private int Type { get; set; }
+        public Vector3 Position { get; set; }
+        [JsonIgnore] private Blip _blip { get; set; }
+        [JsonIgnore] private ColShape _shape { get; set; }
+        [JsonIgnore] private Marker _marker { get; set; }
+        [JsonIgnore] private TextLabel _textLabel { get; set; }
+        private Dictionary<string, int> _vehicles = new Dictionary<string, int>();
+        private List<Vector3> _spawnPositions { get; set; }
+        private List<Vector3> _spawnRotations { get; set; }
+
+        private int _lastSpawnPointIndex = 0;
+        #endregion
+
+        public RentArea(int iD, int type, Vector3 position, List<Vector3> spawnPositions, List<Vector3> spawnRotations)
+        {
+            ID = iD;
+            Position = position;
+            Type = type;
+            _spawnPositions = spawnPositions;
+            _spawnRotations = spawnRotations;
+
+            _blip = NAPI.Blip.CreateBlip(RentAreaBlipSprites[(RentAreaType)Type], Position, 1f, 84, RentAreaBlipNames[(RentAreaType)Type], 255, 0, true, 0, 0);
+            _shape = NAPI.ColShape.CreateCylinderColShape(Position, 1, 2, 0);
+            _marker = NAPI.Marker.CreateMarker(1, Position - new Vector3(0, 0, 1.5f), new Vector3(), new Vector3(), 1, new Color(255, 255, 255, 140), false, 0);
+            _textLabel = NAPI.TextLabel.CreateTextLabel(RentAreaBlipNames[(RentAreaType)Type], Position, 10f, 5f, 4, new Color(255, 255, 255), false, 0);
+
+            _shape.OnEntityEnterColShape += (s, e) =>
+            {
+                NAPI.Data.SetEntityData(e, "INTERACTIONCHECK", 808);
+                NAPI.Data.SetEntityData(e, "RENTAREAID", ID);
+            };
+            _shape.OnEntityExitColShape += (s, e) =>
+            {
+                NAPI.Data.SetEntityData(e, "INTERACTIONCHECK", 0);
+                NAPI.Data.ResetEntityData(e, "RENTAREAID");
+            };
+        }
+        public void OpenMenuForPlayer(Player player)
+        {
+            try
+            {
+                if (_vehicles.Count <= 0)
+                {
+                    Notify.Warn(player, "В данный момент площадка для аренды не работает", 2500);
+                    return;
+                }
+                Dictionary<string, object> data = new Dictionary<string, object>()
+                {
+                    {"header", RentAreaBlipNames[(RentAreaType)Type] },
+                    {"money", Main.Players[player].Money },
+                    {"vehicles", _vehicles }
+                };
+                string json = JsonConvert.SerializeObject(data);
+                Trigger.ClientEvent(player, "RENT::OPEN_RENT_MENU", json);
+            }
+            catch (Exception) { }
+        }
+        private int LastSpawnPointIndex()
+        {
+            try
+            {
+                _lastSpawnPointIndex++;
+                if (_lastSpawnPointIndex >= _spawnPositions.Count) _lastSpawnPointIndex = 0;
+                return _lastSpawnPointIndex;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+        private Vector3[] GetSpawnPosition()
+        {
+            Vector3[] pos = new Vector3[2];
+            int index = this.LastSpawnPointIndex();
+            pos[0] = _spawnPositions[index];
+            pos[1] = _spawnRotations[index];
+            return pos;
+        }
+        public void LoadVehicles(Dictionary<string, int> vehnames)
+        {
+            try
+            {
+                foreach (var item in vehnames)
+                {
+                    if (!isRentAreaTypeClassEqualsToVehicleClass(item.Key)) continue;
+                    _vehicles.Add(item.Key, item.Value);
+                }
+            }
+            catch (Exception) { }
+        }
+        public bool isRentAreaTypeClassEqualsToVehicleClass(string vehname)
+        {
+            try
+            {
+                VehicleHash vhash = (VehicleHash)NAPI.Util.GetHashKey(vehname);
+                int vclass = NAPI.Vehicle.GetVehicleClass(vhash);
+                if ((RentAreaType)Type != (RentAreaType)vclass) return false;
+                else return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool ContainsVehicle(string vname)
+        {
+            return this._vehicles.ContainsKey(vname);
+        }
+        public int GetPriceThisRentCar(string vname, int minutes)
+        {
+            return _vehicles[vname] * minutes / 10;
+        }
+        public void SpawnRentCar(Player player, string vname, int minutes)
+        {
+            VehicleHash vhash = (VehicleHash)NAPI.Util.GetHashKey(vname);
+            Vector3[] pos = GetSpawnPosition();
+            Vehicle vehicle = NAPI.Vehicle.CreateVehicle(vhash, pos[0], pos[1].Z, 0, 0, "RENT", 255, false, false, 0);
+            NAPI.Entity.SetEntityRotation(vehicle, pos[1]);
+            NAPI.Data.SetEntityData(vehicle, "ACCESS", "RENT");
+            NAPI.Data.SetEntityData(vehicle, "DRIVER", player);
+            NAPI.Data.SetEntitySharedData(vehicle, "PETROL", 50);
+            Core.VehicleStreaming.SetEngineState(vehicle, false);
+            Core.VehicleStreaming.SetLockStatus(vehicle, false);
+
+            player.SetData("RENTED_CAR", vehicle);
+            player.SetData("RENTED_TIME", DateTime.Now.AddMinutes(minutes));
+            player.SetIntoVehicle(vehicle, 0);
+            Trigger.ClientEvent(player, "RENT::CLOSE_RENT_MENU");
+        }
+
+        #region IEnum
+        private enum RentAreaType : int
+        {
+            Boats = 14,
+            Compacts = 0,
+            Coupes = 3,
+            Cycles = 13,
+            Helicopters = 15,
+            Motorcycles = 8,
+            Muscle = 4,
+            OffRoad = 9,
+            Planes = 16,
+            SUVs = 2,
+            Sedans = 1,
+            Sports = 6,
+            Super = 7
+        }
+        private static Dictionary<RentAreaType, uint> RentAreaBlipSprites = new Dictionary<RentAreaType, uint>()
+        {
+            { RentAreaType.Boats, 427},
+            { RentAreaType.Helicopters, 43},
+            { RentAreaType.Motorcycles, 522},
+            { RentAreaType.Cycles, 559},
+            { RentAreaType.Planes, 579},
+            { RentAreaType.Sedans, 523},
+            { RentAreaType.Sports, 669},
+            { RentAreaType.OffRoad, 757}
+        };
+        private static Dictionary<RentAreaType, string> RentAreaBlipNames = new Dictionary<RentAreaType, string>()
+        {
+            { RentAreaType.Boats, "Аренда лодок" },
+            { RentAreaType.Helicopters, "Аренда вертолетов" },
+            { RentAreaType.Motorcycles, "Аренда мотоциклов" },
+            { RentAreaType.Cycles, "Аренда велосипедов" },
+            { RentAreaType.Planes, "Аренда самолетов" },
+            { RentAreaType.Sedans, "Аренда машин" },
+            { RentAreaType.Sports, "Аренда люкс-авто" },
+            { RentAreaType.OffRoad, "Аренда внедорожников" },
+        };
+        #endregion
     }
 }

@@ -203,9 +203,6 @@ namespace Golemo
 
                         switch (type)
                         {
-                            case 0:
-                                Rentcar.CarInfos.Add(data); //todo rentcar
-                                break;
                             case 3:
                                 Jobs.Taxi.CarInfos.Add(data);
                                 break;
@@ -343,7 +340,6 @@ namespace Golemo
                         VehicleManager.API_onPlayerDisconnected(player, type, reason);
                         CarRoom.onPlayerDissonnectedHandler(player, type, reason);
                         DrivingSchool.onPlayerDisconnected(player, type, reason);
-                        Rentcar.Event_OnPlayerDisconnected(player);
                     }
                     catch (Exception e) { Log.Write("EXCEPTION AT \"UnLoad:Unloading Neptune.core\":\n" + e.ToString()); }
                     Log.Debug("STAGE 4 (SAFE-VEHICLES)");
@@ -1960,6 +1956,9 @@ namespace Golemo
                     case 807: //truckerJob
                         Jobs.Trucker.OpenTruckerMenu(player);
                         break;
+                    case 808:
+                        Core.Rentcar.OpenMenuRentVehicles(player);
+                        break;
                     case 556:
                         Houses.ParkManager.interactionPressed(player);
                         return;
@@ -2237,9 +2236,6 @@ namespace Golemo
                             return;
                         case "ROOM_INVITE":
                             Houses.HouseManager.acceptRoomInvite(player);
-                            return;
-                        case "RENT_CAR":
-                            Rentcar.RentCar(player);
                             return;
                         case "DEATH_CONFIRM":
                             Fractions.Ems.DeathConfirm(player, true);
@@ -2706,6 +2702,31 @@ namespace Golemo
                             var hour = date.Hour;
                             var min = date.Minute;
                             Trigger.ClientEvent(p, "UpdateLastBonus", $"{hour}ч. {min}м."); //todo lastbonus
+                        }
+
+                        //Rentcar Check
+                        if (p.HasData("RENTED_CAR") && p.HasData("RENTED_TIME"))
+                        {
+                            if (p.GetData<DateTime>("RENTED_TIME").Minute - DateTime.Now.Minute == 5)
+                            {
+                                Notify.Alert(p, "Через 5 минут закончится время аренды транспорта", 6000);
+                            }
+                            if (p.GetData<DateTime>("RENTED_TIME") < DateTime.Now)
+                            {
+                                Notify.Alert(p, "Время аренды вашего транспорта закончилось, транспорт будет возвращен", 5000);
+                                if (p.IsInVehicle && p.Vehicle == p.GetData<Vehicle>("RENTED_CAR"))
+                                    Core.VehicleManager.WarpPlayerOutOfVehicle(p);
+                                Vehicle veh = p.GetData<Vehicle>("RENTED_CAR");
+                                veh.SetData<Player>("DRIVER", null);
+                                veh.ResetData("ACCESS");
+                                Core.VehicleStreaming.SetLockStatus(veh, false);
+                                NAPI.Task.Run(() =>
+                                {
+                                    veh.Delete();
+                                    p.ResetData("RENTED_CAR");
+                                    p.ResetData("RENTED_TIME");
+                                }, 1500);
+                            }
                         }
                     }
                     catch (Exception e) { Log.Write($"PlayedMinutesTrigger: " + e.Message, nLog.Type.Error); }

@@ -255,6 +255,10 @@ require('./src/admin/reportpanel');
 require('./src/admin/tpwp');
 //==============================
 
+//buildings=====================
+require('./src/buildings/rentcar');
+//==============================
+
 //casino========================
 require('./src/casino/luckywheel');
 require('./src/casino/carlottery');
