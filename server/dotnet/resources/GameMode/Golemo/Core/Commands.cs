@@ -435,9 +435,6 @@ namespace Golemo.Core
 
                     switch (number)
                     {
-                        case 0:
-                            Rentcar.CarInfos = new List<CarInfo>();
-                            break;
                         case 3:
                             Jobs.Taxi.CarInfos = new List<CarInfo>();
                             break;
@@ -468,9 +465,6 @@ namespace Golemo.Core
 
                         switch (number)
                         {
-                            case 0:
-                                Rentcar.CarInfos.Add(data);
-                                break;
                             case 3:
                                 Jobs.Taxi.CarInfos.Add(data);
                                 break;
@@ -2066,8 +2060,8 @@ namespace Golemo.Core
             {
                 if (!Group.CanUseCmd(player, "newjobveh")) return;
                 VehicleHash vh = (VehicleHash)NAPI.Util.GetHashKey(model);
-                if (vh == 0) throw null;
-                int typeIdJob = 999;
+                if (vh == 0) return;
+                int typeIdJob = -1;
                 switch (typejob)
                 {
                     case "Taxi":
@@ -2079,21 +2073,17 @@ namespace Golemo.Core
                     case "Lawnmower":
                         typeIdJob = 5;
                         break;
-                    case "Truckers":
-                        typeIdJob = 6;
-                        break;
                     case "Collector":
                         typeIdJob = 7;
                         break;
                     case "AutoMechanic":
                         typeIdJob = 8;
                         break;
+                    default:
+                        player.SendChatMessage("Выберите один тип работы из: Taxi, Bus, Lawnmower, Collector, AutoMechanic");
+                        break;
                 }
-                if (typeIdJob == 999)
-                {
-                    player.SendChatMessage("Выберите один тип работы из: Taxi, Bus, Lawnmower, Truckers, Collector, AutoMechanic");
-                    throw null;
-                }
+                if (typeIdJob == -1) return;
                 var veh = NAPI.Vehicle.CreateVehicle(vh, player.Position, player.Rotation.Z, 0, 0);
                 VehicleStreaming.SetEngineState(veh, true);
                 veh.Dimension = player.Dimension;

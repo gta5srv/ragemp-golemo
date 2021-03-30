@@ -2339,14 +2339,21 @@ namespace Golemo.Core
             var clothes = custom.Clothes;
             for (int i = 0; i <= 8; i++) player.ClearAccessory(i);
 
-            int torsoV, torsoT = 0;
-            var noneGloves = CorrectTorso[gender][clothes.Top.Variation];
-            if (clothes.Gloves.Variation == 0)
-                torsoV = noneGloves;
-            else
+            int torsoV = 0;
+            int torsoT = 0;
+            if (CorrectTorso[gender].ContainsKey(clothes.Top.Variation))
             {
-                torsoV = CorrectGloves[gender][clothes.Gloves.Variation][noneGloves];
-                torsoT = clothes.Gloves.Texture;
+                var noneGloves = CorrectTorso[gender][clothes.Top.Variation];
+                if (clothes.Gloves.Variation == 0)
+                    torsoV = noneGloves;
+                else
+                {
+                    if(CorrectGloves[gender].ContainsKey(clothes.Gloves.Variation) && CorrectGloves[gender][clothes.Gloves.Variation].ContainsKey(noneGloves))
+                    {
+                        torsoV = CorrectGloves[gender][clothes.Gloves.Variation][noneGloves];
+                        torsoT = clothes.Gloves.Texture;
+                    }
+                }
             }
 
             if (!MaskTypes.ContainsKey(clothes.Mask.Variation) || !MaskTypes[clothes.Mask.Variation].Item1) player.SetClothes(2, custom.Hair.Hair, 0); NAPI.Player.SetPlayerHairColor(player, (byte)custom.Hair.Color, (byte)custom.Hair.HighlightColor);
