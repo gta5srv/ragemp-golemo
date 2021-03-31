@@ -2529,6 +2529,7 @@ namespace Golemo
             foreach (Player p in Players.Keys.ToList())
             {
                 if (!Players.ContainsKey(p)) continue;
+                if (!Accounts.ContainsKey(p)) continue;
 
                 NAPI.Task.Run(() =>
                 {
