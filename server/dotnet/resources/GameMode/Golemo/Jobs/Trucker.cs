@@ -282,29 +282,40 @@ namespace Golemo.Jobs
         #region Stop Work
         public static void StopWorkingAndResetData(Player player)
         {
-            if (player.HasData("WORK") && player.GetData<Vehicle>("WORK") != null)
+            try
             {
-                if (player.IsInVehicle && player.Vehicle == player.GetData<Vehicle>("WORK"))
+                if (player.HasData("WORK") && player.GetData<Vehicle>("WORK") != null)
                 {
-                    Core.VehicleManager.WarpPlayerOutOfVehicle(player);
+                    if (player.IsInVehicle && player.Vehicle == player.GetData<Vehicle>("WORK"))
+                    {
+                        Core.VehicleManager.WarpPlayerOutOfVehicle(player);
+                    }
+                    NAPI.Task.Run(() => {
+                        if (player.HasData("WORK"))
+                        {
+                            Vehicle veh = player.GetData<Vehicle>("WORK");
+                            if (veh != null) veh.Delete();
+                        }
+                        player.ResetData("TRUCKNAME");
+                        player.ResetData("WORK");
+                    }, 1000);
                 }
-                NAPI.Task.Run(() => {
-                    player.GetData<Vehicle>("WORK").Delete();
-                    player.ResetData("WORK");
-                    player.ResetData("TRUCKNAME");
-                }, 1000);
+                TruckerEmployment employment = GetTruckerEmployment(player);
+                if (employment != null) employment.SetBlipShortRange(player, false);
+
+                player.ResetData("ORDERTYPE");
+                player.ResetData("ORDER_BIZ");
+                player.ResetData("ORDER_LOADED");
+                player.SetData("ON_WORK", false);
+                player.SetData("IN_WORK_CAR", false);
+                player.ResetData("TRUCKEREMPLOYMENTNUMBER");
+
+                Trigger.ClientEvent(player, "JOBS::TRUCKER_START_WORK", false);
             }
-            TruckerEmployment employment = GetTruckerEmployment(player);
-            if (employment != null) employment.SetBlipShortRange(player, false);
-
-            player.ResetData("ORDERTYPE");
-            player.ResetData("ORDER_BIZ");
-            player.ResetData("ORDER_LOADED");
-            player.SetData("ON_WORK", false);
-            player.SetData("IN_WORK_CAR", false);
-            player.ResetData("TRUCKEREMPLOYMENTNUMBER");
-
-            Trigger.ClientEvent(player, "JOBS::TRUCKER_START_WORK", false);
+            catch (Exception e)
+            {
+                Log.Write(e.Message, nLog.Type.Error);
+            }
         }
 
         [ServerEvent(Event.PlayerExitVehicle)]
