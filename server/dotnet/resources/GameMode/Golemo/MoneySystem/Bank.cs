@@ -399,11 +399,12 @@ namespace Golemo.MoneySystem
         public static Vector3 GetNearestATM(Player player)
         {
             Vector3 nearesetATM = ATMs[0];
-            foreach (var v in ATMs)
+            for (int i = 0; i < ATMs.Count; i++)
             {
-                if (v == new Vector3(237.3785, 217.7914, 106.2868)) continue;
-                if (player.Position.DistanceTo(v) < player.Position.DistanceTo(nearesetATM))
-                    nearesetATM = v;
+                if (ignoreAtmIndex.Contains(i)) continue;
+                Vector3 pos = ATMs[i];
+                if (player.Position.DistanceTo(pos) < player.Position.DistanceTo(nearesetATM))
+                    nearesetATM = pos;
             }
             return nearesetATM;
         }
