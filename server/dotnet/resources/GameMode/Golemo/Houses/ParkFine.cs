@@ -19,16 +19,34 @@ namespace Golemo.Houses
 {
     class ParkManager : Script
     {
-
+        // 0x5719786D = NPC
         private static nLog Log = new nLog("ParkManager");
+        private static Random rnd = new Random();
+        private static List<ParkFine> _parkFines = new List<ParkFine>();
 
         [ServerEvent(Event.ResourceStart)]
         public void onResourceStart()
         {
             try
             {
-                var colsp = new ParkBuy(new Vector3(-1167.416, -700.0884, 21.29));
-                Log.Write("Create ParkFine point.", nLog.Type.Success);
+                var result = MySQL.QueryRead($"SELECT * FROM `parkfines`");
+                if (result == null || result.Rows.Count == 0)
+                {
+                    Log.Write("DB parkfines return null result.", nLog.Type.Warn);
+                    return;
+                }
+                foreach (DataRow Row in result.Rows)
+                {
+                    ParkFine employment = new ParkFine(
+                        Convert.ToInt32(Row["id"]),
+                        Convert.ToInt32(Row["price"]),
+                        Convert.ToSingle(Row["heading"]),
+                        JsonConvert.DeserializeObject<Vector3>(Row["position"].ToString()),
+                        JsonConvert.DeserializeObject<List<Vector3>>(Row["spawnpositions"].ToString()),
+                        JsonConvert.DeserializeObject<List<Vector3>>(Row["spawnrotations"].ToString())
+                        );
+                    _parkFines.Add(employment);
+                }
             }
             catch (Exception e)
             {
@@ -36,20 +54,21 @@ namespace Golemo.Houses
             }
         }
 
-        public static List<Vector3> ParkList = new List<Vector3>()
-        {
-            new Vector3(-1183.132, -679.4572, 25.98754), // 1
-            new Vector3(-1186.957, -675.3882, 25.9874), // 2
-            new Vector3(-1191.759, -669.8932, 25.98754), // 3
-            new Vector3(-1199.971, -659.928, 25.98724), // 4
-            new Vector3(-1204.201, -654.2341, 25.988), // 5
-            new Vector3(-1217.204, -688.3877, 25.98716), // 6
-            new Vector3(-1220.613, -684.1316, 25.98973), // 7
-            new Vector3(-1227.106, -676.4997, 25.98831), // 8
-        };
         public static void BuyParkPlace(Player player)
         {
-            var costcar = 350;
+            if (!Main.Players.ContainsKey(player)) return;
+            if (!player.HasData("PARKFINE"))
+            {
+                Notify.Alert(player, "Вы должны находится рядом с парковщиком", 4500);
+                return;
+            }
+            ParkFine park = _parkFines.Find(x => x.ID == player.GetData<int>("PARKFINE"));
+            if (park == null)
+            {
+                Notify.Error(player, "Непредвиденная ошибка. Код ошибки: 455", 5000);
+                return;
+            }
+            int costcar = park.Price;
             if (Main.Players[player].Money < costcar)
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Недостаточно средств, цена: [{costcar}$]", 3000);
@@ -61,13 +80,7 @@ namespace Golemo.Houses
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У вас уже есть дом!", 3000);
                 return;
             }
-            var targetVehicles = VehicleManager.getAllPlayerVehicles(player.Name.ToString());
-            var vehicle = "";
-            foreach (var num in targetVehicles)
-            {
-                vehicle = num;
-                break;
-            }
+            var vehicle = FindFirstCarNum(player);
             if (vehicle == "" || vehicle == null)
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У вас нет машины", 3000);
@@ -87,14 +100,22 @@ namespace Golemo.Houses
 
         public static string FindFirstCarNum(Player player)
         {
-            var targetVehicles = VehicleManager.getAllPlayerVehicles(player.Name.ToString());
-            var vehicle = "";
-            foreach (string num in targetVehicles)
+            try
             {
-                vehicle = num;
-                break;
+                var targetVehicles = VehicleManager.getAllPlayerVehicles(player.Name.ToString());
+                var vehicle = "";
+                foreach (string num in targetVehicles)
+                {
+                    vehicle = num;
+                    break;
+                }
+                return vehicle;
             }
-            return vehicle;
+            catch (Exception e)
+            {
+                Log.Write(e.Message, nLog.Type.Error);
+                return null;
+            }
         }
         public static void interactionPressed(Player player)
         {
@@ -109,44 +130,64 @@ namespace Golemo.Houses
         }
         public static void SetCarInFreeParkPlace(Player player, string number)
         {
-            var rnd = new Random();
-            var id = rnd.Next(0, ParkList.Count);
-            var vehdata = VehicleManager.Vehicles[number];
-            var veh = NAPI.Vehicle.CreateVehicle((VehicleHash)NAPI.Util.GetHashKey(vehdata.Model), ParkList[id], new Vector3(0, 0, 309.6527), 0, 0);
-
-            VehicleStreaming.SetEngineState(veh, false);
-            VehicleStreaming.SetLockStatus(veh, true);
-            vehdata.Holder = player.Name;
-            veh.SetData("ACCESS", "PERSONAL");
-            veh.SetData("ITEMS", vehdata.Items);
-            veh.SetData("OWNER", player);
-            veh.SetSharedData("PETROL", vehdata.Fuel);
-            NAPI.Vehicle.SetVehicleNumberPlate(veh, number);
-            Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Парковочное место: №{id+1}", 3000);
-            VehicleManager.ApplyCustomization(veh);
+            if (!player.HasData("PARKFINE"))
+            {
+                Notify.Alert(player, "Вы должны находится рядом с парковщиком", 4500);
+                return;
+            }
+            ParkFine park = _parkFines.Find(x => x.ID == player.GetData<int>("PARKFINE"));
+            if(park == null)
+            {
+                Notify.Error(player, "Непредвиденная ошибка. Код ошибки: 455", 5000);
+                return;
+            }
+            park.SpawnPlayerVehicle(player, number);
         }
 
-        internal class ParkBuy
+        internal class ParkFine
         {
+            public int ID { get; }
+            public int Price { get; }
+            public float Heading { get; }
             public Vector3 Position { get; }
 
             [JsonIgnore]
-            private Blip blip = null;
+            private Blip blip;
             [JsonIgnore]
-            private ColShape shape = null;
+            private ColShape shape;
             [JsonIgnore]
-            private Marker marker = null;
+            private Marker marker;
+            [JsonIgnore]
+            private TextLabel label;
+            [JsonIgnore]
+            private Ped ped;
 
-            public ParkBuy(Vector3 pos)
+            private List<Vector3> _spawnPositions = new List<Vector3>();
+            private List<Vector3> _spawnRotations = new List<Vector3>();
+
+            private int _lastSpawnIndex = 0;
+
+            public ParkFine(int id, int price, float heading, Vector3 position,  List<Vector3> spawnPositions, List<Vector3> spawnRotations)
             {
-                Position = pos;
-                blip = NAPI.Blip.CreateBlip(50, pos, 1, 47, "Парковка", 255, 0, true);
-                shape = NAPI.ColShape.CreateCylinderColShape(pos, 2f, 2, 0);
+                ID = id;
+                Price = price;
+                Heading = heading;
+                Position = position;
+                _spawnPositions = spawnPositions;
+                _spawnRotations = spawnRotations;
+
+                marker = NAPI.Marker.CreateMarker(1, Position - new Vector3(0, 0, 1.12f), new Vector3(), new Vector3(), 1f, new Color(0, 175, 250, 220), false, 0);
+                label = NAPI.TextLabel.CreateTextLabel("[Парковщик]", Position + new Vector3(0,0,1.12f), 3f, 5f, 4, new Color(252, 70, 38), false, 0);
+                shape = NAPI.ColShape.CreateCylinderColShape(Position - new Vector3(0, 0, 1f), 2f, 2f, 0);
+                ped = NAPI.Ped.CreatePed(0x5719786D, Position, heading, false, true, true, true, 0);
+                blip = NAPI.Blip.CreateBlip(267, Position, 0.7f, 83, "Парковка", 255, 0, true);
+
                 shape.OnEntityEnterColShape += (s, entity) =>
                 {
                     try
                     {
                         entity.SetData("INTERACTIONCHECK", 556);
+                        entity.SetData("PARKFINE", id);
                     }
                     catch (Exception e) { Console.WriteLine("shape.OnEntityEnterColshape: " + e.Message); }
                 };
@@ -158,34 +199,52 @@ namespace Golemo.Houses
                     }
                     catch (Exception e) { Console.WriteLine("shape.OnEntityEnterColshape: " + e.Message); }
                 };
-                marker = NAPI.Marker.CreateMarker(1, pos - new Vector3(0, 0, 1f), new Vector3(), new Vector3(), 1f, new Color(0, 175, 250, 220), false, 0);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #1", new Vector3(-1183.132, -679.4572, 25.98754), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #2", new Vector3(-1186.957, -675.3882, 25.9874), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #3", new Vector3(-1191.759, -669.8932, 25.98754), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #4", new Vector3(-1199.971, -659.928, 25.98724), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #5", new Vector3(-1204.201, -654.2341, 25.988), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #6", new Vector3(-1217.204, -688.3877, 25.98716), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #7", new Vector3(-1220.613, -684.1316, 25.98973), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~b~Место #8", new Vector3(-1227.106, -676.4997, 25.98831), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
-                NAPI.TextLabel.CreateTextLabel("~w~Парковщик", new Vector3(-1167.388, -700.1123, 23.0), 5f, 0.3f, 0, new Color(255, 255, 255), true, NAPI.GlobalDimension);
+
+                InitSpawnPositions();
             }
-        }
 
-
-
-        internal class ParkPlace
-        {
-            public int ID { get; set; }
-            public Vector3 Position { get; }
-            public double Heading { get; }
-            public bool Using { get; }
-
-            public ParkPlace(int id, Vector3 pos, double rot, bool usin)
+            public void InitSpawnPositions()
             {
-                Position = pos;
-                Heading = rot;
-                ID = id;
-                Using = usin;
+                if (_spawnPositions == null) return;
+                for (int i = 0; i < _spawnPositions.Count; i++)
+                {
+                    NAPI.TextLabel.CreateTextLabel($"[Место: {i + 1}]", _spawnPositions[i], 10f, 3f, 4, new Color(252, 70, 38), false, 0);
+                }
+            }
+
+            internal void SpawnPlayerVehicle(Player player, string number)
+            {
+                if (!Main.Players.ContainsKey(player))
+                {
+                    Log.Write($"Несуществуешийся игрок попытался вызвать машину на парковке {ID} с номером {number}", nLog.Type.Error);
+                    return;
+                }
+                if(!Vehicles.ContainsKey(number))
+                {
+                    Log.Write($"Игрок {Main.Players[player].UUID} попытался вызвать несуществующееся авто {number}", nLog.Type.Error);
+                    return;
+                }
+                var vehdata = VehicleManager.Vehicles[number];
+                int spawnIndex = GetSpawnIndex();
+                var veh = NAPI.Vehicle.CreateVehicle((VehicleHash)NAPI.Util.GetHashKey(vehdata.Model), _spawnPositions[spawnIndex], _spawnRotations[spawnIndex], 0, 0);
+                NAPI.Entity.SetEntityRotation(veh, _spawnRotations[spawnIndex]);
+
+                VehicleStreaming.SetEngineState(veh, false);
+                VehicleStreaming.SetLockStatus(veh, true);
+                vehdata.Holder = player.Name;
+                veh.SetData("ACCESS", "PERSONAL");
+                veh.SetData("ITEMS", vehdata.Items);
+                veh.SetData("OWNER", player);
+                veh.SetSharedData("PETROL", vehdata.Fuel);
+                NAPI.Vehicle.SetVehicleNumberPlate(veh, number);
+                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Парковочное место: №{spawnIndex + 1}", 3000);
+                VehicleManager.ApplyCustomization(veh);
+            }
+
+            private int GetSpawnIndex()
+            {
+                if (_lastSpawnIndex >= _spawnPositions.Count) _lastSpawnIndex = 0;
+                return _lastSpawnIndex++;
             }
         }
 
@@ -305,39 +364,10 @@ namespace Golemo.Houses
         private static void callback_selectedcar(Player player, Menu menu, Menu.Item item, string eventName, dynamic data)
         {
             MenuManager.Close(player);
+            if (!Vehicles.ContainsKey(menu.Items[0].Text)) return;
+            VehicleData vData = Vehicles[menu.Items[0].Text];
             switch (item.ID)
             {
-                case "sell":
-                    player.SetData("CARSELLGOV", menu.Items[0].Text);
-                    VehicleManager.VehicleData vData = VehicleManager.Vehicles[menu.Items[0].Text];
-                    int price = 0;
-                    if (BusinessManager.ProductsOrderPrice.ContainsKey(vData.Model))
-                    {
-                        switch (Main.Accounts[player].VipLvl)
-                        {
-                            case 0: // None
-                                price = Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.5);
-                                break;
-                            case 1: // Bronze
-                                price = Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.6);
-                                break;
-                            case 2: // Silver
-                                price = Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.7);
-                                break;
-                            case 3: // Gold
-                                price = Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.8);
-                                break;
-                            case 4: // Platinum
-                                price = Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.9);
-                                break;
-                            default:
-                                price = Convert.ToInt32(BusinessManager.ProductsOrderPrice[vData.Model] * 0.5);
-                                break;
-                        }
-                    }
-                    Trigger.ClientEvent(player, "openDialog", "CAR_SELL_TOGOV", $"Вы действительно хотите продать государству {VehicleHandlers.VehiclesName.GetRealVehicleName(vData.Model)} ({menu.Items[0].Text}) за ${price}?");
-                    MenuManager.Close(player);
-                    return;
                 case "repair":
                     vData = VehicleManager.Vehicles[menu.Items[0].Text];
                     if (vData.Health > 0)
