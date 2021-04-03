@@ -2526,41 +2526,43 @@ namespace Golemo
         {
             Log.Write("Saving Database...");
 
-            foreach (Player p in Players.Keys.ToList())
+            try
             {
-                if (!Players.ContainsKey(p)) continue;
-                if (!Accounts.ContainsKey(p)) continue;
-
-                NAPI.Task.Run(() =>
+                foreach (Player p in Players.Keys.ToList())
                 {
-                    Accounts[p].Save(p).Wait();
+                    if (!Players.ContainsKey(p)) continue;
+                    if (!Accounts.ContainsKey(p)) continue;
+
+                    Accounts[p].Save().Wait();
                     Players[p].Save(p).Wait();
-                });
+                }
+                Log.Debug("Players Saved");
+            }
+            catch (Exception e)
+            {
+                Log.Write($"Save Accounts Exeption: {e.Message}", nLog.Type.Error);
             }
 
             BusinessManager.SavingBusiness();
             Log.Debug("Business Saved");
-            Fractions.GangsCapture.SavingRegions();
-            Log.Debug("GangCapture Saved");
+
             Houses.HouseManager.SavingHouses();
             Log.Debug("Houses Saved");
+
             Houses.FurnitureManager.Save();
             Log.Debug("Furniture Saved");
+
             nInventory.SaveAll();
             Log.Debug("Inventory saved Saved");
+
             Fractions.Stocks.saveStocksDic();
             Log.Debug("Stock Saved Saved");
+
             Weapons.SaveWeaponsDB();
             Log.Debug("Weapons Saved");
-            Fractions.AlcoFabrication.SaveAlco();
-            Log.Debug("Alco Saved");
-            foreach (int acc in MoneySystem.Bank.Accounts.Keys.ToList())
-            {
-                if (!MoneySystem.Bank.Accounts.ContainsKey(acc)) continue;
-                MoneySystem.Bank.Save(acc);
-            }
-            Log.Debug("Bank Saved");
-            Log.Write("Database was saved");
+
+            MoneySystem.Bank.SaveDataBase();
+            Log.Debug("Bank Accounts Saved");
         }
 
         private static DateTime NextWeatherChange = DateTime.Now.AddMinutes(rnd.Next(30, 70));

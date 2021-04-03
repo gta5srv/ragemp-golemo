@@ -228,6 +228,22 @@ namespace Golemo.MoneySystem
             public string Holder { get; set; }
             public long Balance { get; set; }
         }
+
+        public static void SaveDataBase()
+        {
+            try
+            {
+                foreach (int acc in MoneySystem.Bank.Accounts.Keys.ToList())
+                {
+                    if (!Accounts.ContainsKey(acc)) continue;
+                    Save(acc);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Write($"SaveDataBase Expeption: {e.Message}", nLog.Type.Error);
+            }
+        }
     }
 
     class ATM : Script

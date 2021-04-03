@@ -122,7 +122,7 @@ namespace Golemo.Core.nAccount
                 return LoginEvent.Error;
             }
         }
-        public async Task<bool> Save(Player player)
+        public async Task<bool> Save(Player player = null)
         {
             try
             {
