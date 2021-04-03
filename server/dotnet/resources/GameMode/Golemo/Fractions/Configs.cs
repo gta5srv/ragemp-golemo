@@ -188,48 +188,55 @@ namespace Golemo.Fractions
 
         private static void DeleteSpawnedCar(Player player, string vnumber)
         {
-            if (Main.Players[player].FractionID <= 0) return;
-            int fractionid = Main.Players[player].FractionID;
-            CarSpawner spawner = CarSpawner.carSpawners.Find(x => x.FractionID == fractionid);
+            try
+            {
+                if (Main.Players[player].FractionID <= 0) return;
+                int fractionid = Main.Players[player].FractionID;
+                CarSpawner spawner = CarSpawner.carSpawners.Find(x => x.FractionID == fractionid);
 
-            var vehicle = FractionVehicles[fractionid][vnumber];
-            if (vehicle == null) return;
-            if (!spawner.SpawnedCars.Contains(vnumber))
-            {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Машина не заспавнена", 2500);
-                return;
-            }
-            if (vehicle.Item4 > Main.Players[player].FractionLVL)
-            {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно уровня", 2500);
-                return;
-            }
-
-            foreach (Vehicle item in NAPI.Pools.GetAllVehicles())
-            {
-                if (item.NumberPlate == vnumber)
+                var vehicle = FractionVehicles[fractionid][vnumber];
+                if (vehicle == null) return;
+                if (!spawner.SpawnedCars.Contains(vnumber))
                 {
-                    if (item.HasData("FRACTION") && item.GetData<int>("FRACTION") == fractionid)
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Машина не заспавнена", 2500);
+                    return;
+                }
+                if (vehicle.Item4 > Main.Players[player].FractionLVL)
+                {
+                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "Недостаточно уровня", 2500);
+                    return;
+                }
+
+                foreach (Vehicle item in NAPI.Pools.GetAllVehicles())
+                {
+                    if (item.NumberPlate == vnumber)
                     {
-                        if(item.Position.DistanceTo2D(spawner.Position) > 15)
+                        if (item.HasData("FRACTION") && item.GetData<int>("FRACTION") == fractionid)
                         {
-                            Notify.Error(player, "Машина слишком далеко", 2000);
-                            break;
-                        }
-                        if (item.Occupants.Count != 0)
-                        {
-                            foreach (Player p in item.Occupants)
+                            if (item.Position.DistanceTo2D(spawner.Position) > 50)
                             {
-                                VehicleManager.WarpPlayerOutOfVehicle(p);
+                                Notify.Error(player, "Машина слишком далеко", 2000);
+                                break;
                             }
+                            if (item.Occupants.Count != 0)
+                            {
+                                foreach (Player p in item.Occupants)
+                                {
+                                    VehicleManager.WarpPlayerOutOfVehicle(p);
+                                }
+                            }
+                            NAPI.Task.Run(() => {
+                                int index = spawner.SpawnedCars.FindIndex(x => x == vnumber);
+                                if (index > -1 && index < spawner.SpawnedCars.Count) spawner.SpawnedCars.RemoveAt(index);
+                                NAPI.Entity.DeleteEntity(item);
+                            });
                         }
-                        NAPI.Task.Run(() => {
-                            NAPI.Entity.DeleteEntity(item);
-                            int index = spawner.SpawnedCars.FindIndex(x => x == vnumber);
-                            spawner.SpawnedCars.RemoveAt(index);
-                        });
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Log.Write($"Delete Fraction Spawned Car: {e.Message}", nLog.Type.Error);
             }
         }
 
