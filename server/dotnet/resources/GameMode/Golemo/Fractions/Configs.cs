@@ -373,7 +373,6 @@ namespace Golemo.Fractions
             foreach (var item in FractionsCarSpawnerCoords)
             {
                 CarSpawner spawner = new CarSpawner(item.Key, item.Value);
-                spawner.Create();
                 carSpawners.Add(spawner);
             }
 
