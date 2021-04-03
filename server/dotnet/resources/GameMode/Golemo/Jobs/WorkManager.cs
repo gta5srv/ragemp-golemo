@@ -74,7 +74,7 @@ namespace Golemo.Jobs
             {3, new Vector3(903.3215,-191.7,73.40494) },      // Taxi job
             {4, new Vector3(406.2858, -649.6152, 28.49641) }, // Bus driver job
             {5, new Vector3(-1331.475, 53.58579, 53.53268) },  // Lawnmower job
-            {6, new Vector3(588.2037, -3037.641, 6.303829) },  // Trucker job
+            {6, new Vector3(174.08849, 2778.3599, 46.0772) },  // Trucker job
             {7, new Vector3(915.9069, -1265.255, 25.52912) },  // Collector job
             {8, new Vector3(473.9508, -1275.597, 29.60513) },  // AutoMechanic job
         };
