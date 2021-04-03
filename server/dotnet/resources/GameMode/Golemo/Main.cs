@@ -444,6 +444,16 @@ namespace Golemo
         }
 
         #endregion Player
+		
+		[RemoteEvent("AFK::KICK_PLAYER")]
+        public void ClientEvent_Kick(Player player)
+        {
+            try
+            {
+                NAPI.Player.KickPlayer(player, "AFK");
+            }
+            catch (Exception e) { Log.Write("kickclient: " + e.Message, nLog.Type.Error); }
+        }
 
         #region ClientEvents
         [RemoteEvent("deletearmor")]

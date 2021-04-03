@@ -7,8 +7,8 @@ setInterval(function () {
         if (afkSecondsCount >= 900) {
 			if(localplayer.getVariable('IS_ADMIN') == true) afkSecondsCount = 0;
 			else {
-				mp.gui.chat.push('Has sido excluido del juego por AFK durante más de 15 minutos.');
-				mp.events.callRemote('kickclient');
+				mp.gui.chat.push('Вы были исключены с сервера за афк. Сделайте переподключение.');
+				mp.events.callRemote('AFK::KICK_PLAYER');
 			}
         }
     }
