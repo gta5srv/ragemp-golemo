@@ -22,10 +22,13 @@ namespace Golemo.Core
         {
             try
             {
-                if (!player.HasData("CARROOMTEST")) return;
+                NAPI.Task.Run(() =>
+                {
+                    if (!player.HasData("CARROOMTEST")) return;
 
-                var veh = player.GetData<Vehicle>("CARROOMTEST");
-                veh.Delete();
+                    Vehicle veh = player.GetData<Vehicle>("CARROOMTEST");
+                    veh.Delete();
+                });
 
                 RemoteEvent_carroomCancel(player);
 
@@ -160,7 +163,7 @@ namespace Golemo.Core
                 return vNumber;
             }
             //Если тип бизнеса мотосалон и нет лицензии на вождение мотоциклов
-            if(Main.Players[player].Licenses[0] == false && biz.Type == 5)
+            if (Main.Players[player].Licenses[0] == false && biz.Type == 5)
             {
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, "У вас нет лицензии на управление транспорта категории [A]", 2500);
                 return vNumber;
