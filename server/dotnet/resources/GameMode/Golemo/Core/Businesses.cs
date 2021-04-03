@@ -4601,13 +4601,11 @@ namespace Golemo.Core
                 var zone = Convert.ToInt32(arguments[0].ToString());
                 var tattooID = Convert.ToInt32(arguments[1].ToString());
                 var tattoo = BusinessTattoos[zone][tattooID];
-                //player.SendChatMessage("zone " + zone + " tattooID " + tattooID + " tattoo" + tattoo);
                 Log.Debug($"buyTattoo zone: {zone} | id: {tattooID}");
 
                 Business biz = BizList[player.GetData<int>("BODY_SHOP")];
 
                 var prod = biz.Products.FirstOrDefault(p => p.Name == "Татуировки");
-                player.SendChatMessage(" prod" + prod);
                 double price = tattoo.Price / 100.0 * prod.Price;
                 if (Main.Players[player].Money < Convert.ToInt32(price))
                 {
@@ -5232,10 +5230,12 @@ namespace Golemo.Core
         public static void deleteBusinessCommand(Player player, int id)
         {
             if (!Group.CanUseCmd(player, "deletebusiness")) return;
-            MySQL.Query($"DELETE FROM businesses WHERE id={id}");
-            Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы удалили бизнес", 3000);
             Business biz = BusinessManager.BizList.FirstOrDefault(b => b.Value.ID == id).Value;
-
+            if(biz == null)
+            {
+                Notify.Error(player, "Вы ввели несуществующий ID бизнеса", 4500);
+                return;
+            }
             if (biz.Type == 6)
             {
                 MySQL.Query($"DELETE FROM `weapons` WHERE id={id}");
@@ -5263,6 +5263,8 @@ namespace Golemo.Core
             }
             biz.Destroy();
             BizList.Remove(biz.ID);
+            MySQL.Query($"DELETE FROM businesses WHERE id={id}");
+            Notify.Succ(player, $"Вы удалили бизнес №{id}", 3000);
         }
 
         public static void sellBusinessCommand(Player player, Player target, int price)
