@@ -216,7 +216,7 @@ namespace Golemo.Jobs
                 Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны начать рабочий день", 3000);
                 return;
             }
-            if (player.GetData<Player>("WORK") != null)
+            if (player.GetData<Vehicle>("WORK") != null)
             {
                 NAPI.Entity.DeleteEntity(player.GetData<Vehicle>("WORK"));
                 player.SetData<Vehicle>("WORK", null);
