@@ -54,6 +54,16 @@ namespace Golemo.Core
             OpenCarromMenu(player, BusinessManager.BizList[player.GetData<int>("CARROOMID")].Type);
         }
 
+		[ServerEvent(Event.PlayerExitVehicle)]
+        public void Event_OnPlayerExitVehicle(Player player, Vehicle vehicle)
+        {
+            if (!player.HasData("CARROOMID")) return;
+            if (player.HasData("CARROOMTEST"))
+            {
+                player.ResetData("CARROOMTEST");
+                return;
+            }
+        }
 
         [ServerEvent(Event.PlayerExitVehicleAttempt)]
         public void Event_OnPlayerExitVehicleAttempt(Player player, Vehicle vehicle)

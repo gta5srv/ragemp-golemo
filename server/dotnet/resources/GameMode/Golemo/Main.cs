@@ -2718,29 +2718,7 @@ namespace Golemo
                         }
 
                         //Rentcar Check
-                        if (p.HasData("RENTED_CAR") && p.HasData("RENTED_TIME"))
-                        {
-                            if (p.GetData<DateTime>("RENTED_TIME").Minute - DateTime.Now.Minute == 5)
-                            {
-                                Notify.Alert(p, "Через 5 минут закончится время аренды транспорта", 6000);
-                            }
-                            if (p.GetData<DateTime>("RENTED_TIME") < DateTime.Now)
-                            {
-                                Notify.Alert(p, "Время аренды вашего транспорта закончилось, транспорт будет возвращен", 5000);
-                                if (p.IsInVehicle && p.Vehicle == p.GetData<Vehicle>("RENTED_CAR"))
-                                    Core.VehicleManager.WarpPlayerOutOfVehicle(p);
-                                Vehicle veh = p.GetData<Vehicle>("RENTED_CAR");
-                                veh.SetData<Player>("DRIVER", null);
-                                veh.ResetData("ACCESS");
-                                Core.VehicleStreaming.SetLockStatus(veh, false);
-                                NAPI.Task.Run(() =>
-                                {
-                                    veh.Delete();
-                                    p.ResetData("RENTED_CAR");
-                                    p.ResetData("RENTED_TIME");
-                                }, 1500);
-                            }
-                        }
+                        Core.Rentcar.CheckRentCarTime(p);
                     }
                     catch (Exception e) { Log.Write($"PlayedMinutesTrigger: " + e.Message, nLog.Type.Error); }
                 }

@@ -14,6 +14,10 @@ namespace Golemo.Core
         private static nLog Log = new nLog("Rentcar");
         private static List<RentArea> _rentAreas = new List<RentArea>();
 
+        #region Constants
+        private const int MINUTE_WHEN_SEND_NOTIFY_FOR_RENT_TIME = 5;
+        #endregion
+
         [ServerEvent(Event.ResourceStart)]
         public static void OnResourceStart()
         {
@@ -55,6 +59,7 @@ namespace Golemo.Core
                     VehicleManager.WarpPlayerOutOfVehicle(player);
                     return;
                 }
+                Trigger.ClientEvent(player, "RENT::RENT_CAR_BLIP_DELETE");
             }
             catch (Exception e) { Log.Write("PlayerEnterVehicle: " + e.Message, nLog.Type.Error); }
         }
@@ -64,15 +69,31 @@ namespace Golemo.Core
         {
             try
             {
-                if (!player.HasData("CARROOMID")) return;
-                if (player.HasData("CARROOMTEST"))
+                if (player.HasData("RENTED_CAR") && player.GetData<Vehicle>("RENTED_CAR") == vehicle)
                 {
-                    player.ResetData("CARROOMTEST");
-                    return;
+                    if (vehicle.HasData("DRIVER") && vehicle.GetData<Player>("DRIVER") == player)
+                    {
+                        Trigger.ClientEvent(player, "RENT::CAR_CREATE_BLIP", vehicle, RentArea.RentAreaBlipSprites[(RentArea.RentAreaType)vehicle.Class]);
+                    }
                 }
-                if (!vehicle.HasData("ACCESS") || vehicle.GetData<string>("ACCESS") != "RENT" || vehicle.GetData<Player>("DRIVER") != player) return;
             }
             catch (Exception e) { Log.Write("PlayerExitVehicle: " + e.Message, nLog.Type.Error); }
+        }
+
+        [Command("findrentcar")]
+        public static void CMD_CreateBlipForRentedCar(Player player)
+        {
+            if (!Main.Players.ContainsKey(player)) return;
+            if (!player.HasData("RENTED_CAR"))
+            {
+                Notify.Alert(player, "У вас нет арендованного транспорта");
+                return;
+            }
+            Vehicle rentCar = player.GetData<Vehicle>("RENTED_CAR");
+            if (rentCar != null)
+            {
+                Trigger.ClientEvent(player, "RENT::CAR_CREATE_BLIP", rentCar, RentArea.RentAreaBlipSprites[(RentArea.RentAreaType)rentCar.Class]);
+            }
         }
         public static void OpenMenuRentVehicles(Player player)
         {
@@ -114,7 +135,6 @@ namespace Golemo.Core
             }
             area.SpawnRentCar(player, vname, minutes);
         }
-
         public static Vector3 GetNearestRentArea(Vector3 position)
         {
             Vector3 nearesetArea = _rentAreas[0].Position;
@@ -124,7 +144,41 @@ namespace Golemo.Core
                     nearesetArea = area.Position;
             }
             return nearesetArea;
+        }
+        public static void CheckRentCarTime(Player player)
+        {
+            try
+            {
+                if (player.HasData("RENTED_CAR") && player.HasData("RENTED_TIME"))
+                {
+                    if (player.GetData<DateTime>("RENTED_TIME").Minute - DateTime.Now.Minute == MINUTE_WHEN_SEND_NOTIFY_FOR_RENT_TIME)
+                    {
+                        Notify.Alert(player, $"Через {MINUTE_WHEN_SEND_NOTIFY_FOR_RENT_TIME} минут закончится время аренды транспорта", 6000);
+                    }
+                    if (player.GetData<DateTime>("RENTED_TIME") < DateTime.Now)
+                    {
+                        Notify.Alert(player, "Время аренды вашего транспорта закончилось, транспорт будет возвращен", 5000);
 
+                        if (player.IsInVehicle && player.Vehicle == player.GetData<Vehicle>("RENTED_CAR"))
+                            Core.VehicleManager.WarpPlayerOutOfVehicle(player);
+
+                        Vehicle veh = player.GetData<Vehicle>("RENTED_CAR");
+                        veh.SetData<Player>("DRIVER", null);
+                        veh.ResetData("ACCESS");
+
+                        NAPI.Task.Run(() =>
+                        {
+                            veh.Delete();
+                            player.ResetData("RENTED_CAR");
+                            player.ResetData("RENTED_TIME");
+                        }, 1500);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Write($"RENT_CHECK_TIME: {e.Message}", nLog.Type.Error);
+            }
         }
     }
 
@@ -263,7 +317,7 @@ namespace Golemo.Core
         }
 
         #region IEnum
-        private enum RentAreaType : int
+        public enum RentAreaType : int
         {
             Boats = 14,
             Compacts = 0,
@@ -279,7 +333,7 @@ namespace Golemo.Core
             Sports = 6,
             Super = 7
         }
-        private static Dictionary<RentAreaType, uint> RentAreaBlipSprites = new Dictionary<RentAreaType, uint>()
+        public static Dictionary<RentAreaType, uint> RentAreaBlipSprites = new Dictionary<RentAreaType, uint>()
         {
             { RentAreaType.Boats, 427},
             { RentAreaType.Helicopters, 43},
