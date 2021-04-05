@@ -172,6 +172,8 @@ namespace Golemo.Core
                             player.ResetData("RENTED_CAR");
                             player.ResetData("RENTED_TIME");
                         }, 1500);
+						
+						Trigger.ClientEvent(player, "RENT::RENT_CAR_BLIP_DELETE");
                     }
                 }
             }
