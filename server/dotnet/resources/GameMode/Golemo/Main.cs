@@ -340,6 +340,8 @@ namespace Golemo
                         VehicleManager.API_onPlayerDisconnected(player, type, reason);
                         CarRoom.onPlayerDissonnectedHandler(player, type, reason);
                         DrivingSchool.onPlayerDisconnected(player, type, reason);
+
+                        Rentcar.onPlayerDisconnectHandler(player);
                     }
                     catch (Exception e) { Log.Write("EXCEPTION AT \"UnLoad:Unloading Neptune.core\":\n" + e.ToString()); }
                     Log.Debug("STAGE 4 (SAFE-VEHICLES)");
@@ -2542,6 +2544,7 @@ namespace Golemo
                 {
                     if (!Players.ContainsKey(p)) continue;
                     if (!Accounts.ContainsKey(p)) continue;
+                    if (!LoggedIn.ContainsKey(Accounts[p].Login)) continue;
 
                     Accounts[p].Save().Wait();
                     Players[p].Save(p).Wait();
@@ -2555,6 +2558,9 @@ namespace Golemo
 
             BusinessManager.SavingBusiness();
             Log.Debug("Business Saved");
+
+            Fractions.GangsCapture.SavingRegions();
+            Log.Debug("GangCapture Saved");
 
             Houses.HouseManager.SavingHouses();
             Log.Debug("Houses Saved");
@@ -2570,6 +2576,9 @@ namespace Golemo
 
             Weapons.SaveWeaponsDB();
             Log.Debug("Weapons Saved");
+
+            Fractions.AlcoFabrication.SaveAlco();
+            Log.Debug("Alco Saved");
 
             MoneySystem.Bank.SaveDataBase();
             Log.Debug("Bank Accounts Saved");

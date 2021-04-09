@@ -162,24 +162,55 @@ namespace Golemo.Core
                         if (player.IsInVehicle && player.Vehicle == player.GetData<Vehicle>("RENTED_CAR"))
                             Core.VehicleManager.WarpPlayerOutOfVehicle(player);
 
-                        Vehicle veh = player.GetData<Vehicle>("RENTED_CAR");
-                        veh.SetData<Player>("DRIVER", null);
-                        veh.ResetData("ACCESS");
+                        DeleteRentedCar(player);
 
-                        NAPI.Task.Run(() =>
-                        {
-                            veh.Delete();
-                            player.ResetData("RENTED_CAR");
-                            player.ResetData("RENTED_TIME");
-                        }, 1500);
-						
-						Trigger.ClientEvent(player, "RENT::RENT_CAR_BLIP_DELETE");
+                        Trigger.ClientEvent(player, "RENT::RENT_CAR_BLIP_DELETE");
                     }
                 }
             }
             catch (Exception e)
             {
                 Log.Write($"RENT_CHECK_TIME: {e.Message}", nLog.Type.Error);
+            }
+        }
+
+        private static void DeleteRentedCar(Player player, Vehicle veh = null)
+        {
+            if(player.HasData("RENTED_CAR") && veh == null)
+            {
+                Vehicle car = player.GetData<Vehicle>("RENTED_CAR");
+                car.SetData<Player>("DRIVER", null);
+                car.ResetData("ACCESS");
+
+                NAPI.Task.Run(() =>
+                {
+                    car.Delete();
+                    player.ResetData("RENTED_CAR");
+                    player.ResetData("RENTED_TIME");
+                }, 1500);
+            }
+            else if (veh != null)
+            {
+                foreach (var item in veh.GetAllData())
+                {
+                    veh.ResetData(item);
+                }
+                NAPI.Task.Run(() =>
+                {
+                    veh.Delete();
+                });
+            }
+        }
+
+        public static void onPlayerDisconnectHandler(Player player)
+        {
+            if(player.HasData("RENTED_CAR"))
+            {
+                Vehicle veh = player.GetData<Vehicle>("RENTED_CAR");
+                if(veh != null)
+                {
+                    DeleteRentedCar(player, veh);
+                }
             }
         }
     }
