@@ -30,8 +30,6 @@ namespace Golemo.Core
                     veh.Delete();
                 });
 
-                RemoteEvent_carroomCancel(player);
-
                 player.ResetData("CARROOMTEST");
 
             }
@@ -45,7 +43,6 @@ namespace Golemo.Core
             NAPI.Entity.SetEntityDimension(player, dim);
             Main.Players[player].ExteriorPos = player.Position;
             NAPI.Entity.SetEntityPosition(player, new Vector3(CamPosition.X, CamPosition.Y - 2, CamPosition.Z));
-            //player.FreezePosition = true;
             Trigger.ClientEvent(player, "freeze", true);
 
             player.SetData("INTERACTIONCHECK", 0);
@@ -77,7 +74,6 @@ namespace Golemo.Core
 
                 uint dim = Dimensions.RequestPrivateDimension(player);
                 NAPI.Entity.SetEntityDimension(player, dim);
-                Main.Players[player].ExteriorPos = player.Position;
                 NAPI.Entity.SetEntityPosition(player, new Vector3(CamPosition.X, CamPosition.Y - 2, CamPosition.Z));
 
                 Trigger.ClientEvent(player, "carRoom");
@@ -226,7 +222,6 @@ namespace Golemo.Core
                 Business biz = BusinessManager.BizList[player.GetData<int>("CARROOMID")];
                 NAPI.Entity.SetEntityPosition(player, new Vector3(biz.EnterPoint.X, biz.EnterPoint.Y, biz.EnterPoint.Z + 1.5));
                 Trigger.ClientEvent(player, "freeze", false);
-                //player.FreezePosition = false;
 
                 Main.Players[player].ExteriorPos = new Vector3();
                 Trigger.ClientEvent(player, "destroyCamera");
@@ -272,7 +267,6 @@ namespace Golemo.Core
                 NAPI.Entity.SetEntityPosition(player, new Vector3(enterPoint.X, enterPoint.Y, enterPoint.Z + 1.5));
                 Main.Players[player].ExteriorPos = new Vector3();
                 Trigger.ClientEvent(player, "freeze", false);
-                //player.FreezePosition = false;
                 NAPI.Entity.SetEntityDimension(player, 0);
                 Dimensions.DismissPrivateDimension(player);
                 player.ResetData("CARROOMID");
