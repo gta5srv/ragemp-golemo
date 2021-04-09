@@ -551,6 +551,9 @@ namespace Golemo.Core
                 nInventory.Remove(player, ItemType.HealthKit, 1);
                 if (target.HasData("IS_DYING"))
                 {
+                    MenuManager.Close(player);
+                    Main.OnAntiAnim(player);
+                    player.StopAnimation();
                     player.PlayAnimation("amb@medic@standing@tendtodead@idle_a", "idle_a", 39);
                     Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы начали реанимирование игрока ({target.Value})", 3000);
                     Notify.Send(target, NotifyType.Info, NotifyPosition.BottomCenter, $"Игрок ({player.Value}) начал реанимировать Вас", 3000);
@@ -558,6 +561,7 @@ namespace Golemo.Core
                     {
                         try
                         {
+                            Main.OffAntiAnim(player);
                             player.StopAnimation();
                             NAPI.Entity.SetEntityPosition(player, player.Position + new Vector3(0, 0, 0.5));
 
