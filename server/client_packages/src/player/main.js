@@ -334,6 +334,8 @@ mp.events.add('render', () => {
         var secondsLeft = Math.trunc((deathTimer - new Date().getTime()) / 1000);
         var minutes = Math.trunc(secondsLeft / 60);
         var seconds = secondsLeft % 60;
+        minutes = minutes < 10 ? `0${minutes}` : minutes;
+        seconds  = seconds < 10 ? `0${seconds}` : seconds;
         mp.game.graphics.drawText(`До смерти осталось ${minutes}:${seconds}`, [0.5, 0.8], {
             font: 0,
             color: [255, 255, 255, 200],
