@@ -261,6 +261,8 @@ namespace Golemo.Jobs.FarmerJob
         private static void PlayFarmerAnimation(Player player)
         {
             //перенести реализацию анимации на клиент
+            GUI.MenuManager.Close(player);
+            player.StopAnimation();
             Main.OnAntiAnim(player);
             player.PlayAnimation("amb@world_human_gardener_plant@male@base", "base", 39);
             NAPI.Task.Run(() =>
