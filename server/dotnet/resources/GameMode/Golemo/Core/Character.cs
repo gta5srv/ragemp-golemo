@@ -49,6 +49,7 @@ namespace Golemo.Core.Character
                         Trigger.ClientEvent(player, "UpdateEat", Main.Players[player].Eat);
                         Trigger.ClientEvent(player, "UpdateWater", Main.Players[player].Water);
                         Trigger.ClientEvent(player, "UpdateBank", MoneySystem.Bank.Accounts[Bank].Balance);
+                        Trigger.ClientEvent(player, "freeze", false);
                         Trigger.ClientEvent(player, "initPhone");
                         Jobs.WorkManager.load(player);
 
