@@ -101,7 +101,6 @@ namespace Golemo.Core
         {
             try
             {
-                //fuelTimer = Main.StartT(30000, 30000, (o) => FuelControl(), "FUELCONTROL_TIMER");
                 Timers.StartTask("fuel", 30000, () => FuelControl());
 
                 Log.Write("Loading Vehicles...");
@@ -122,12 +121,11 @@ namespace Golemo.Core
                     data.Fuel = Convert.ToInt32(Row["fuel"]);
                     data.Price = Convert.ToInt32(Row["price"]);
                     data.Components = JsonConvert.DeserializeObject<VehicleCustomization>(Row["components"].ToString());
-                    //if (Row["components"].ToString() == "null") data.Components = new VehicleCustomization();
                     data.Items = JsonConvert.DeserializeObject<List<nItem>>(Row["items"].ToString());
                     data.Position = Convert.ToString(Row["position"]);
                     data.Rotation = Convert.ToString(Row["rotation"]);
                     data.KeyNum = Convert.ToInt32(Row["keynum"]);
-                    data.Dirt = (float)Row["dirt"];
+                    data.Dirt = Convert.ToSingle(Row["dirt"]);
                     Vehicles.Add(Convert.ToString(Row["number"]), data);
                 }
                 Log.Write($"Vehicles are loaded ({count})", nLog.Type.Success);
@@ -348,12 +346,13 @@ namespace Golemo.Core
             data.Components.SecColor = Color2;
             data.Components.NeonColor = Color3;
             data.Items = new List<nItem>();
+            data.KeyNum = 0;
             data.Dirt = 0.0F;
 
             string Number = GenerateNumber();
             Vehicles.Add(Number, data);
-            MySQL.Query("INSERT INTO `vehicles`(`number`, `holder`, `model`, `health`, `fuel`, `price`, `components`, `items`)" +
-                $" VALUES ('{Number}','{Holder}','{Model}',{Health},{Fuel},{Price},'{JsonConvert.SerializeObject(data.Components)}','{JsonConvert.SerializeObject(data.Items)}')");
+            MySQL.Query("INSERT INTO `vehicles`(`number`, `holder`, `model`, `health`, `fuel`, `price`, `components`, `items`, `keynum`, `dirt`)" +
+                $" VALUES ('{Number}','{Holder}','{Model}',{Health},{Fuel},{Price},'{JsonConvert.SerializeObject(data.Components)}','{JsonConvert.SerializeObject(data.Items)}'{data.KeyNum},{(byte)data.Dirt})");
             Log.Write("Created new vehicle with number: " + Number);
             return Number;
         }
