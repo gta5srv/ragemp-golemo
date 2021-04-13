@@ -363,9 +363,10 @@ namespace Golemo.Jobs
 
                         client.SetData("W_LASTPOS", client.Position);
                         client.SetData("W_LASTTIME", DateTime.Now);
-                        var next = Jobs.WorkManager.rnd.Next(0, Houses.HouseManager.Houses.Count - 1);
+                        var next = Jobs.WorkManager.rnd.Next(0, Houses.HouseManager.Houses.Count);
                         while (Houses.HouseManager.Houses[next].Position.DistanceTo2D(client.Position) < 200)
-                            next = Jobs.WorkManager.rnd.Next(0, Houses.HouseManager.Houses.Count - 1);
+                            next = Jobs.WorkManager.rnd.Next(0, Houses.HouseManager.Houses.Count);
+
                         client.SetData("NEXTHOUSE", Houses.HouseManager.Houses[next].ID);
 
                         Trigger.ClientEvent(client, "createCheckpoint", 1, 1, Houses.HouseManager.Houses[next].Position, 1, 0, 255, 0, 0);
