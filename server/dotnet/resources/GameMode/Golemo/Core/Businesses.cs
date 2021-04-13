@@ -5141,47 +5141,50 @@ namespace Golemo.Core
         {
             if (!player.HasData("BIZ_ID") || player.GetData<int>("BIZ_ID") == -1)
             {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы должны находиться около бизнеса", 3000);
+                Notify.Error(player, "Вы должны находиться около бизнеса");
                 return;
             }
             int id = player.GetData<int>("BIZ_ID");
             Business biz = BusinessManager.BizList[id];
             if (Main.Players[player].BizIDs.Count >= Group.GroupMaxBusinesses[Main.Accounts[player].VipLvl])
             {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Вы не можете приобрести больше {Group.GroupMaxBusinesses[Main.Accounts[player].VipLvl]} бизнесов", 3000);
+                Notify.Error(player, $"Вы не можете приобрести больше {Group.GroupMaxBusinesses[Main.Accounts[player].VipLvl]} бизнесов");
                 return;
             }
             if (biz.Owner == "Государство")
             {
                 if (!MoneySystem.Wallet.Change(player, -biz.SellPrice))
                 {
-                    Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"У Вас не хватает средств", 3000);
+                    Notify.Error(player, "У Вас не хватает средств");
                     return;
                 }
                 GameLog.Money($"player({Main.Players[player].UUID})", $"server", biz.SellPrice, $"buyBiz({biz.ID})");
-                Notify.Send(player, NotifyType.Success, NotifyPosition.BottomCenter, $"Поздравляем! Вы купили {BusinessManager.BusinessTypeNames[biz.Type]}, не забудьте внести налог за него в банкомате", 3000);
+                Notify.Succ(player, $"Поздравляем! Вы купили {BusinessManager.BusinessTypeNames[biz.Type]}, не забудьте внести налог за него в банкомате");
                 biz.Owner = player.Name.ToString();
             }
             else if (biz.Owner == player.Name.ToString())
             {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Этот бизнес принадлежит Вам", 3000);
+                Notify.Error(player, "Этот бизнес принадлежит Вам");
                 return;
             }
             else if (biz.Owner != player.Name.ToString())
             {
-                Notify.Send(player, NotifyType.Error, NotifyPosition.BottomCenter, $"Этот бизнес принадлежит другому игроку", 3000);
+                Notify.Error(player, "Этот бизнес принадлежит другому игроку");
                 return;
             }
 
             biz.UpdateLabel();
             foreach (var p in biz.Products)
-                p.Lefts = 0;
+            {
+                if (ProductsCapacity.ContainsKey(p.Name))
+                    p.Lefts += ProductsCapacity[p.Name];
+                else
+                    p.Lefts += 10;
+                p.Ordered = false;
+            }
             var newOrders = new List<Order>();
             foreach (var o in biz.Orders)
-            {
-                if (o.Taked) newOrders.Add(o);
-                else Orders.Remove(o.UID);
-            }
+                Orders.Remove(o.UID);
             biz.Orders = newOrders;
 
             Main.Players[player].BizIDs.Add(id);
@@ -5200,6 +5203,9 @@ namespace Golemo.Core
             pos.Z -= 1.12F;
             string productlist = "";
             List<Product> products_list = BusinessManager.fillProductList(type);
+            foreach (var item in products_list)
+                item.Lefts += 1000;
+
             productlist = JsonConvert.SerializeObject(products_list);
             lastBizID++;
 
@@ -5215,7 +5221,7 @@ namespace Golemo.Core
             {
                 MySQL.Query($"INSERT INTO `weapons`(`id`,`lastserial`) VALUES({biz.ID},0)");
             }
-            Notify.Send(player, NotifyType.Info, NotifyPosition.BottomCenter, $"Вы создали бизнес {BusinessManager.BusinessTypeNames[type]}", 3000);
+            Notify.Info(player, $"Вы создали бизнес {BusinessManager.BusinessTypeNames[type]}");
         }
 
         public static void createBusinessUnloadpoint(Player player, int bizid)
