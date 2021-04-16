@@ -1278,6 +1278,11 @@ namespace Golemo
                                     Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, "У Вас записано максимальное кол-во контактов", 3000);
                                     return;
                                 }
+								if (!SimCards.ContainsKey(num))
+                                {
+                                    Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, "Номер не существует", 3000);
+                                    return;
+                                }
                                 if (Players[player].Contacts.ContainsKey(num))
                                 {
                                     Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, "Контакт уже записан", 3000);
@@ -1363,9 +1368,9 @@ namespace Golemo
                                 Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, "Введите корректные данные", 3000);
                                 return;
                             }
-                            if (text.Contains('"'.ToString()) || text.Contains("'") || text.Contains("[") || text.Contains("]") || text.Contains(":") || text.Contains("|") || text.Contains("\"") || text.Contains("`") || text.Contains("$") || text.Contains("%") || text.Contains("@") || text.Contains("{") || text.Contains("}") || text.Contains("(") || text.Contains(")"))
+                            if (!text.All(Char.IsLetterOrDigit))
                             {
-                                Notify.Send(player, NotifyType.Warning, NotifyPosition.BottomCenter, "Имя содержит запрещенный символ.", 3000);
+                                Notify.Warn(player, "Можно использовать только буквы и цифры");
                                 return;
                             }
                             int num = player.GetData<int>("SMSNUM");
