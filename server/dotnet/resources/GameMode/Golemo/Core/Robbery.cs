@@ -181,8 +181,8 @@ namespace Golemo.Core
             int minutes = secondsLeft / 60;
             int seconds = 00;
             seconds = secondsLeft % 60;
-            label.Text = $"~r~{minutes}:{seconds}";
-
+			
+            label.Text = $"~r~{minutes.ToString().PadLeft(2, '0')}:{seconds.ToString().PadLeft(2, '0')}";
         }
 
         [ServerEvent(Event.PlayerEnterVehicle)]
