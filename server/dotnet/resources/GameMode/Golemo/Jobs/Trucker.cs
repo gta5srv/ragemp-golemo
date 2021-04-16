@@ -302,10 +302,13 @@ namespace Golemo.Jobs
                 }
                 TruckerEmployment employment = GetTruckerEmployment(player);
                 if (employment != null) employment.SetBlipShortRange(player, false);
+				if (player.HasData("ORDER_LOAD_TIMER") && !String.IsNullOrEmpty(player.GetData<string>("ORDER_LOAD_TIMER")))
+					Timers.Stop(player.GetData<string>("ORDER_LOAD_TIMER"));
 
                 player.ResetData("ORDERTYPE");
                 player.ResetData("ORDER_BIZ");
                 player.ResetData("ORDER_LOADED");
+				player.ResetData("ORDER_LOAD_TIMER");
                 player.SetData("ON_WORK", false);
                 player.SetData("IN_WORK_CAR", false);
                 player.ResetData("TRUCKEREMPLOYMENTNUMBER");
