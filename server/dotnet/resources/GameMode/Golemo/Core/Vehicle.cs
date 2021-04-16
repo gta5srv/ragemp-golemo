@@ -96,6 +96,7 @@ namespace Golemo.Core
             { 20, 1 }, // Commercial
             // 21 trains
         };
+		private const int MIN_ENGINE_HEALTH_AFTER_WHICH_ENGINE_NOT_START = 300;
 
         public VehicleManager()
         {
@@ -141,42 +142,33 @@ namespace Golemo.Core
                 if (allVehicles.Count == 0) return;
                 foreach (Vehicle veh in allVehicles)
                 {
-                    object f = null;
-                    float h;
+                    int fuel = 0;
+                    float engineHealth;
                     try
                     {
                         if (!veh.HasSharedData("PETROL")) continue;
                         if (!Core.VehicleStreaming.GetEngineState(veh)) continue;
 
-                        /*if(!Int32.TryParse(veh.GetSharedData<int>("PETROL"), out int fuel))
-                        {
-                            Log.Write($"Bad fuel data detected from car [{veh.NumberPlate}]", nLog.Type.Warn);
-                            return;
-                        }*/
+                        fuel = veh.GetSharedData<int>("PETROL");
+                        engineHealth = NAPI.Vehicle.GetVehicleEngineHealth(veh);
 
-                        f = veh.GetSharedData<int>("PETROL");
-                        h = NAPI.Vehicle.GetVehicleEngineHealth(veh);
-                        int fuel = (int)f;
-                        int hp = (int)h;
-                        if (hp == 800) continue;
-                        if (hp <= 800)
+                        if (engineHealth <= MIN_ENGINE_HEALTH_AFTER_WHICH_ENGINE_NOT_START)
                         {
-                            hp = 800;
                             VehicleStreaming.SetEngineState(veh, false);
                         }
-                        veh.Health = 800;
+
                         if (fuel == 0) continue;
-                        if (fuel - PetrolRate[veh.Class] <= 0)
+                        fuel -= PetrolRate[veh.Class];
+                        if (fuel <= 0)
                         {
                             fuel = 0;
                             Core.VehicleStreaming.SetEngineState(veh, false);
                         }
-                        else fuel -= PetrolRate[veh.Class];
                         veh.SetSharedData("PETROL", fuel);
                     }
                     catch (Exception e)
                     {
-                        Log.Write($"FUELCONTROL_TIMER: {veh.NumberPlate} {f.ToString()}\n{e.Message}", nLog.Type.Error);
+                        Log.Write($"FUELCONTROL_TIMER: {veh.NumberPlate} {fuel}\n{e.Message}", nLog.Type.Error);
                     }
                 }
             });
@@ -352,7 +344,7 @@ namespace Golemo.Core
             string Number = GenerateNumber();
             Vehicles.Add(Number, data);
             MySQL.Query("INSERT INTO `vehicles`(`number`, `holder`, `model`, `health`, `fuel`, `price`, `components`, `items`, `keynum`, `dirt`)" +
-                $" VALUES ('{Number}','{Holder}','{Model}',{Health},{Fuel},{Price},'{JsonConvert.SerializeObject(data.Components)}','{JsonConvert.SerializeObject(data.Items)}'{data.KeyNum},{(byte)data.Dirt})");
+                $" VALUES ('{Number}','{Holder}','{Model}',{Health},{Fuel},{Price},'{JsonConvert.SerializeObject(data.Components)}','{JsonConvert.SerializeObject(data.Items)}',{data.KeyNum},{(byte)data.Dirt})");
             Log.Write("Created new vehicle with number: " + Number);
             return Number;
         }
@@ -834,9 +826,9 @@ namespace Golemo.Core
                         Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, $"Топливный бак пуст, невозможно завести машину", 3000);
                         return;
                     }
-                    if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 800)
+                    if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= MIN_ENGINE_HEALTH_AFTER_WHICH_ENGINE_NOT_START)
                     {
-                        Notify.Send(sender, NotifyType.Error, NotifyPosition.BottomCenter, "Машина не заводится, вам нужно починить ее", 3000);
+                        Notify.Error(sender, "Двигатель сломан, нужно починить");
                         return;
                     }
             switch (NAPI.Data.GetEntityData(vehicle, "ACCESS"))
