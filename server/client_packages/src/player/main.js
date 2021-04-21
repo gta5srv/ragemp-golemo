@@ -244,7 +244,7 @@ const checkConditions = () => {
 // });
 
 mp.keys.bind(Keys.VK_X, false, function () { // X key
-    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('fraction') == 0 || localplayer.vehicle || localplayer.getVariable('InDeath')) return;
+    if (!loggedin || chatActive || editing || new Date().getTime() - lastCheck < 1000 || global.menuOpened || localplayer.getVariable('fraction') == 0 || localplayer.vehicle || localplayer.getVariable('IS_DYING') || checkConditions()) return;
     mp.events.callRemote('playerPressCuffBut');
     lastCheck = new Date().getTime();
 });
