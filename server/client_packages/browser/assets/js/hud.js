@@ -24,6 +24,7 @@
         doors: false,
         speed: 0,
         fuel: 0,
+        rpm: 0,
         hp: 0,
         stars: 5,
     },

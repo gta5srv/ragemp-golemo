@@ -409,6 +409,7 @@ mp.events.add('render', (nametags) => {
 			if (new Date().getTime() - hudstatus.updatespeedTimeout > 50) {
 				let speed = (veh.getSpeed() * 3.6).toFixed();
 				mp.gui.execute(`HUD.updateSpeed(${speed})`);
+                mp.gui.execute(`HUD.rpm=${veh.rpm.toFixed(3)}`);
 				hudstatus.updatespeedTimeout = new Date().getTime();
 
 				if (cruiseSpeed != -1) // kostyl'

@@ -1,5 +1,4 @@
-﻿const vehicleNames = {};//require('package://src/vehicle/RealCarNames');
-global.menuOpened = true;
+﻿global.menuOpened = true;
 global.menu = null;
 
 global.menuCheck = function () {
