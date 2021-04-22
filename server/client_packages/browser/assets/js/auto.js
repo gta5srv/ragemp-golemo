@@ -11,6 +11,9 @@ var auto = new Vue({
         prices: [19,199,1999],
         header: "Автосалон",
         donate: false,
+        getModelName(model) {
+            return RealCarNames[model.toLowerCase()] || model;
+        }
     },
     computed: {
         bizIncome: function() {

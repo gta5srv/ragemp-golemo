@@ -51,6 +51,9 @@
     <link rel="stylesheet" href="./assets/fonts/icons.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+
+    <script src="./assets/libs/RealCarNames.js"></script>
+
 </head>
 <body style="display:none">
     <div class="dial">
@@ -310,7 +313,7 @@
         <div class="list1">
           <ul>
             <li v-for="(value, index) in models" :key="index">
-              <div v-on:click="auto(index)">{{models[index]}}</div>
+              <div v-on:click="auto(index)">{{getModelName(models[index])}}</div>
             </li>
           </ul>
         </div>
