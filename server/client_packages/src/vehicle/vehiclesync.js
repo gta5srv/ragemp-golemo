@@ -6,61 +6,9 @@ localplayer.setConfigFlag(241, true); //Disable Stopping Engine When Leave Vehic
 localplayer.setConfigFlag(429, true); //Disable Starting Engine When Enter Vehicle
 localplayer.setConfigFlag(35, false); //Put On Motorcycle Helmet
 
-/*
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freight"))) mp.game.streaming.requestModel(mp.game.joaat("freight"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freight"))) mp.game.wait(0);
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightcar"))) mp.game.streaming.requestModel(mp.game.joaat("freightcar"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightcar")))mp.game.wait(0);
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightgrain"))) mp.game.streaming.requestModel(mp.game.joaat("freightgrain"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightgrain"))) mp.game.wait(0);
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightcont1"))) mp.game.streaming.requestModel(mp.game.joaat("freightcont1"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightcont1"))) mp.game.wait(0);
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightcont2"))) mp.game.streaming.requestModel(mp.game.joaat("freightcont2"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freightcont2"))) mp.game.wait(0);
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freighttrailer"))) mp.game.streaming.requestModel(mp.game.joaat("freighttrailer"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("freighttrailer"))) mp.game.wait(0);
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("tankercar"))) mp.game.streaming.requestModel(mp.game.joaat("tankercar"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("tankercar"))) mp.game.wait(0);
-if(!mp.game.streaming.hasModelLoaded(mp.game.joaat("metrotrain"))) mp.game.streaming.requestModel(mp.game.joaat("metrotrain"));
-while(!mp.game.streaming.hasModelLoaded(mp.game.joaat("metrotrain"))) mp.game.wait(0);
-
-var train = mp.game.vehicle.createMissionTrain(15, 1907.842, -758.90493, 96.14539, true);
-var train2 = mp.game.vehicle.createMissionTrain(15, 1904.756, -758.90493, 96.14539, true);
-var train3 = mp.game.vehicle.createMissionTrain(24, 40.2,-1201.3,31.0, true);
-var train4 = mp.game.vehicle.createMissionTrain(24, -618.0,-1476.8,16.2, true);
-
-mp.game.invoke('0xAA0BC91BE0B796E3', train, 0.0);
-mp.game.invoke('0x16469284DB8C62B5', train, 0.0);
-mp.game.invoke('0xAA0BC91BE0B796E3', train2, 0.0);
-mp.game.invoke('0x16469284DB8C62B5', train2, 0.0);
-mp.game.invoke('0xAA0BC91BE0B796E3', train3, 0.0);
-mp.game.invoke('0x16469284DB8C62B5', train3, 0.0);
-mp.game.invoke('0xAA0BC91BE0B796E3', train4, 0.0);
-mp.game.invoke('0x16469284DB8C62B5', train4, 0.0);
-
-mp.events.add("Train_SetPosition", (type, x, y, z) => {
-    try {
-        switch(type) {
-			case 0:
-			mp.game.invoke('0x591CA673AA6AB736', train, x, y, z);
-			break;
-			case 1:
-			mp.game.invoke('0x591CA673AA6AB736', train2, x, y, z);
-			break;
-			case 2:
-			mp.game.invoke('0x591CA673AA6AB736', train3, x, y, z);
-			break;
-			case 3:
-			mp.game.invoke('0x591CA673AA6AB736', train4, x, y, z);
-			break;
-		}
-    } catch (e) { }
-});
-*/
-
 mp.events.add("VehStream_SetEngineStatus", (veh, status, lights, left, right) => {
     try {
-        if (veh !== undefined) {
+        if (veh !== undefined && mp.vehicles.exists(veh)) {
             veh.setEngineOn(status, status, !status);
 			veh.setUndriveable(!status);
 			if(lights) {
@@ -132,6 +80,7 @@ mp.events.add("VehStream_SetLockStatus", (veh, status) => {
 
 mp.events.add("VehStream_PlayerExitVehicle", (entity) => {
     setTimeout(() => {
+        if(!entity && !mp.vehicles.exists(entity)) return; //todo check
         var Status = [];
         let y = 0;
         for (y = 0; y < 8; y++) {
@@ -314,17 +263,19 @@ mp.events.add({
 	
 mp.events.add("playerEnterVehicle", (entity, seat) => {
     try {
-        if (seat == 0) {
-            lastdirt = entity.getDirtLevel();
-            if (dirtt != null) clearInterval(dirtt);
-            dirtt = setInterval(function () {
-                dirtlevel(entity);
-            }, 20000);
-
-            if (entity.getVariable('BOOST') != undefined) {
-                var boost = entity.getVariable('BOOST');
-                entity.setEnginePowerMultiplier(boost);
-                entity.setEngineTorqueMultiplier(boost);
+        if(entity && mp.vehicles.exists(entity)) {
+            if (seat == 0) {
+                lastdirt = entity.getDirtLevel();
+                if (dirtt != null) clearInterval(dirtt);
+                dirtt = setInterval(function () {
+                    dirtlevel(entity);
+                }, 20000);
+    
+                if (entity.getVariable('BOOST') != undefined) {
+                    var boost = entity.getVariable('BOOST');
+                    entity.setEnginePowerMultiplier(boost);
+                    entity.setEngineTorqueMultiplier(boost);
+                }
             }
         }
     } catch (e) { }
@@ -379,7 +330,7 @@ mp.events.add("VehStream_SetVehicleDoorStatus", (...args) => {
 });
 
 mp.events.add("VehStream_FixStreamIn", (entity, data) => {
-    if (entity.type !== "vehicle") return;
+    if (!mp.vehicles.exists(entity) && entity.type !== "vehicle") return;
     if (entity && mp.vehicles.exists(entity)) {
         let typeor = typeof entity.getVariable('VehicleSyncData');
         let actualData = entity.getVariable('VehicleSyncData');
@@ -505,7 +456,7 @@ mp.events.add("VehStream_GetVehicleDirtLevel", (entity) => {
 });
 
 mp.events.add("VehStream_SetVehicleDoorStatus_Single", (veh, door, state) => {
-    if (veh !== undefined) {
+    if (veh !== undefined && mp.vehicles.exists(veh)) {
         if (state === 0) {
             veh.setDoorShut(door, false);
         }
@@ -519,7 +470,7 @@ mp.events.add("VehStream_SetVehicleDoorStatus_Single", (veh, door, state) => {
 });
 
 mp.events.add("VehStream_SetVehicleDoorStatus", (...args) => {
-    if (args[0] !== undefined) {
+    if (args[0] !== undefined && mp.vehicles.exists(args[0])) {
         let y = 0;
         for (y = 1; y < args.length; y++) {
             if (args[y] === 0) {
@@ -536,7 +487,7 @@ mp.events.add("VehStream_SetVehicleDoorStatus", (...args) => {
 });
 
 mp.events.add("VehStream_SetVehicleWindowStatus_Single", (veh, windw, state) => {
-    if (veh !== undefined) {
+    if (veh !== undefined && mp.vehicles.exists(veh)) {
         if (state === 1) {
             veh.rollDownWindow(windw);
         }
@@ -551,7 +502,7 @@ mp.events.add("VehStream_SetVehicleWindowStatus_Single", (veh, windw, state) => 
 });
 
 mp.events.add("VehStream_SetVehicleWindowStatus", (...args) => {
-    if (args[0] !== undefined) {
+    if (args[0] !== undefined && mp.vehicles.exists(args[0])) {
         let y = 0;
         for (y = 1; y < 4; y++) {
             if (args[y] === 1) {
@@ -569,7 +520,7 @@ mp.events.add("VehStream_SetVehicleWindowStatus", (...args) => {
 });
 
 mp.events.add("VehStream_SetVehicleWheelStatus_Single", (veh, wheel, state) => {
-    if (veh !== undefined) {
+    if (veh !== undefined && mp.vehicles.exists(veh)) {
         if (wheel === 9) {
             if (state === 1) {
                 veh.setTyreBurst(45, false, 1000);
@@ -607,7 +558,7 @@ mp.events.add("VehStream_SetVehicleWheelStatus_Single", (veh, wheel, state) => {
 });
 
 mp.events.add("VehStream_SetVehicleWheelStatus", (...args) => {
-    if (args[0] !== undefined) {
+    if (args[0] !== undefined && mp.vehicles.exists(args[0])) {
         let y = 0;
         for (y = 1; y < args.length; y++) {
             if (y === 9) {
@@ -650,7 +601,7 @@ mp.events.add("VehStream_SetVehicleWheelStatus", (...args) => {
 //Sync data on stream in
 mp.events.add("entityStreamIn", (entity) => {
     try {
-        if (entity.type !== "vehicle") return;
+        if (!mp.vehicles.exists(entity) && entity.type !== "vehicle") return;
         if (entity && mp.vehicles.exists(entity))
         {
             let typeor = typeof entity.getVariable('VehicleSyncData');
