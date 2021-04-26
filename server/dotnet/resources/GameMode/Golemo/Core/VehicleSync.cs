@@ -518,7 +518,7 @@ namespace Golemo.Core
         }
 
         //Used internally only but publicly available in case any of you need it
-        private static VehicleSyncData GetVehicleSyncData(Vehicle veh)
+        public static VehicleSyncData GetVehicleSyncData(Vehicle veh)
         {
             try
             {

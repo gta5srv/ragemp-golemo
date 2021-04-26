@@ -322,7 +322,13 @@ namespace Golemo.Core
         public static void RepairCar(Vehicle vehicle)
         {
             vehicle.Repair();
-            VehicleStreaming.UpdateVehicleSyncData(vehicle, new VehicleStreaming.VehicleSyncData());
+            VehicleStreaming.VehicleSyncData data = VehicleStreaming.GetVehicleSyncData(vehicle);
+            if (data == default(VehicleStreaming.VehicleSyncData))
+                data = new VehicleStreaming.VehicleSyncData();
+            data.BodyHealth = 1000.0f;
+            data.EngineHealth = 1000.0f;
+            data.Dirt = 0.0f;
+            VehicleStreaming.UpdateVehicleSyncData(vehicle, data);
         }
 
         public static string Create(string Holder, string Model, Color Color1, Color Color2, Color Color3, int Health = 1000, int Fuel = 100, int Price = 0)
