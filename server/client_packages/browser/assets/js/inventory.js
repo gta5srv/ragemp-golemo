@@ -258,7 +258,8 @@ var board = new Vue({
         aftertrans: null,
         fname: null,
         pause:0,
-        lname: null
+        lname: null,
+        properties: null,
     },
     methods: {
         context: function (event) {
@@ -343,6 +344,7 @@ var board = new Vue({
         },
 		pages: function(id){
             this.page = id;
+            if(id == 2) mp.trigger("BOARD::GET_ASSETS_INFO");
         },
 		statsid: function(id){
             this.statis = id;

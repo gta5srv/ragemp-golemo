@@ -983,6 +983,10 @@
 	#inv .menuStatics .blockLic .row__slot .lic_circle {
 		margin-left: 5px;
 	}
+
+	#inv .right-block .properties_info_block {
+		color: rgba(255, 255, 255, .9);
+	}
 	
 	
 	

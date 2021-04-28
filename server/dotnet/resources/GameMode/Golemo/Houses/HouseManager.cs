@@ -83,7 +83,7 @@ namespace Golemo.Houses
 
             #region Creating Blip
             blip = NAPI.Blip.CreateBlip(Position);
-            blip.Scale = 0.6f;
+            blip.Scale = 0.35f;
             blip.ShortRange = true;
             UpdateBlip();
             #endregion
@@ -146,6 +146,42 @@ namespace Golemo.Houses
                 blip.Scale = 1;
                 Console.WriteLine(ID.ToString() + e.ToString());
             }
+        }
+        public string GetHouseInfoToJson()
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>()
+            {
+                { "id", this.ID },
+                { "price", this.Price },
+                { "typeName", GetHouseType()?.Name },
+                { "position", this.Position },
+                { "MaxCars", GetGarageTypeOfGarage(GetGarage())?.MaxCars }
+            };
+
+            return JsonConvert.SerializeObject(data);
+        }
+        private HouseType GetHouseType()
+        {
+            if (HouseManager.HouseTypeList.Count > Type && Type >= 0)
+                return HouseManager.HouseTypeList[Type];
+            else
+                return null;
+
+        }
+        private Garage GetGarage()
+        {
+            if (GarageManager.Garages.ContainsKey(GarageID))
+                return GarageManager.Garages?[GarageID];
+            else
+                return null;
+        }
+        private GarageType GetGarageTypeOfGarage(Garage garage = null)
+        {
+            if (garage == null) return null;
+            if (GarageManager.GarageTypes.ContainsKey(garage.Type))
+                return GarageManager.GarageTypes?[garage.Type];
+            else
+                return null;
         }
         public void CreateAllFurnitures()
         {

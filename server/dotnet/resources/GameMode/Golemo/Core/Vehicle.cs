@@ -1098,6 +1098,19 @@ namespace Golemo.Core
             public string Rotation { get; set; }
             public int KeyNum { get; set; }
             public float Dirt { get; set; }
+
+            public string GetVehicleDataToJson(string vehnumber = null)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>()
+                {
+                    { "model", this.Model },
+                    { "number", vehnumber },
+                    { "price", this.Price },
+                    { "fuel", this.Fuel }
+                };
+
+                return JsonConvert.SerializeObject(data);
+            }
         }
 
         internal class VehicleCustomization

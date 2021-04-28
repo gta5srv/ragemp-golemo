@@ -112,15 +112,84 @@
 			 <transition name="fade">
 			<div class="stats" v-if="statis == 1">
 				<div class="left-block">
-					<p onclick="new Audio('./assets/audio/boardClick.mp3').play(); return false;" @click="statsid(0)">Осноная статистика</p>
+					<p onclick="new Audio('./assets/audio/boardClick.mp3').play(); return false;" @click="statsid(0)">Основная статистика</p>
 					<p onclick="new Audio('./assets/audio/boardClick.mp3').play(); return false;" class="active" @click="statsid(1)">Имущество</p>
 				</div>
+				
 				<div class="right-block">
-					<h1>Имущество</h1>
-					<a>Тут Вы можете просмотреть Ваше имущество на этом персонаже.</a>
+					<h1>ИФНФОРМАЦИЯ ОБ ВАШЕМ ИМУЩЕСТВЕ:</h1>
+					<a v-if="properties == null">
+						У вас нет имущества!
+					</a>
+					<div class="properties_info_block" v-else>
+						<div class="house_asset_info properties_element">
+							<h2>Недвижимость:</h2>
+							<div v-if="properties.House != null">
+								<p>
+									ID: {{properties.House.id}}
+								</p>
+								<p>
+									Цена: {{properties.House.price}}
+								</p>
+								<p>
+									Класс: {{properties.House.typeName}}
+								</p>
+								<p>
+									Гаражных мест: {{properties.House.MaxCars}}
+								</p>
+							</div>
+							<div v-else>
+								<span>У вас нет недвижимости!</span>
+							</div>
+						</div>
+						<hr>
+						<div class="business_asset_info properties_element">
+							<h2>Бизнес:</h2>
+							<div v-if="properties.Business != null">
+								<p>
+									ID: {{properties.Business.id}}
+								</p>
+								<p>
+									Цена: {{properties.Business.price}}
+								</p>
+								<p>
+									Тип: {{properties.Business.typeName}}
+								</p>
+							</div>
+							<div v-else>
+								<span>У вас нет бизнеса!</span>	
+							</div>
+						</div>
+						<hr>
+						<div class="vehicles_asset_info properties_element">
+							<h2>Список транспорта:</h2>
+							<div v-if="properties.Vehicles != null">
+								<div v-for="(veh, index) in properties.Vehicles">
+									<hr>
+									<p>
+										Модель: {{veh.model}}
+									</p>
+									<p>
+										Номера: {{veh.number}}
+									</p>
+									<p>
+										Цена: {{veh.price}}
+									</p>
+									<p>
+										Топливо: {{veh.fuel}}
+									</p>
+								</div>
+							</div>
+							<div v-else>
+								<span>У вас нет ни одного транспорта!</span>
+							</div>
+						</div>
+					</div>
+					<!-- TODO -->
 				</div>
+
 			</div>
-	</transition>
+		</transition>
 		</div>		
 	</div>	
 	</transition>

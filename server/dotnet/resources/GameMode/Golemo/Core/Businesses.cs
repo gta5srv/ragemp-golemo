@@ -848,6 +848,23 @@ namespace Golemo.Core
             }
 
         };
+
+        internal static Business GetBusinessToPlayer(Player player)
+        {
+            if (!Main.Players.ContainsKey(player)) return null;
+
+            List<int> bizData = Main.Players[player].BizIDs;
+            if (bizData.Count != 0)
+            {
+                if (BusinessManager.BizList.ContainsKey(bizData[0]))
+                {
+                    return BusinessManager.BizList[bizData[0]];
+                }
+                return null;
+            }
+            return null;
+        }
+
         public static Dictionary<string, Dictionary<int, List<Tuple<int, string, int>>>> Tuning = new Dictionary<string, Dictionary<int, List<Tuple<int, string, int>>>>()
         {
             { "Apriora", new Dictionary<int, List<Tuple<int, string, int>>>() {
@@ -6140,6 +6157,19 @@ namespace Golemo.Core
                     marker = NAPI.Marker.CreateMarker(26, EnterPoint + new Vector3(0, 0, 0.15), new Vector3(), new Vector3(), 3f, new Color(254, 94, 0, 100), false, 0);
                     break;
             }
+        }
+
+        public string GetBusinessToJson()
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>()
+            {
+                { "id", this.ID },
+                { "price", this.SellPrice },
+                { "typeName", BusinessManager.BusinessTypeNames[Type] },
+                { "position", this.EnterPoint },
+            };
+
+            return JsonConvert.SerializeObject(data);
         }
 
         public void UpdateLabel()
